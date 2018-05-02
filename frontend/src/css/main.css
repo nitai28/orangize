@@ -1,0 +1,7 @@
+@import './global/fonts.css';
+@import './global/base.css';
+@import './global/helpers.css';
+
+body{
+    font-family: Mina;
+}

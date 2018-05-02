@@ -1,0 +1,21 @@
+@font-face {
+    font-family: 'Kaushan';
+    src: url('../../assets/fonts/KaushanScript-Regular.ttf');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Mina';
+    src: url('../../assets/fonts/Mina-Regular.ttf'),
+    url('../../assets/fonts/Mina-Bold.ttf');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Tenor';
+    src: url('../../assets/fonts/TenorSans-Regular.ttf');
+    font-weight: normal;
+    font-style: normal;
+}
