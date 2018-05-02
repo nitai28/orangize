@@ -44,8 +44,8 @@ SocketService.init(http);
 
 const addUserRoutes = require('./routes/UserRoutes.js')
 addUserRoutes(app)
-const addCardItemRoutes = require('./routes/CardItemRoutes.js')
-addCardItemRoutes(app)
+const addItemRoutes = require('./routes/ItemRoutes.js')
+addItemRoutes(app)
 
 http.listen(3000, () => {
   console.log('listening on *:3000');
