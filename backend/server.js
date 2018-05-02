@@ -17,6 +17,7 @@ const clientSessions = require('client-sessions');
 
 var UserService = require('./services/UserService')
 var SocketService = require('./services/SocketService')
+var ListService = require('./services/ListService')
 
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
@@ -46,6 +47,8 @@ const addUserRoutes = require('./routes/UserRoutes.js')
 addUserRoutes(app)
 const addCardItemRoutes = require('./routes/CardItemRoutes.js')
 addCardItemRoutes(app)
+const addListRoutes = require('./routes/ListRoutes.js')
+addListRoutes(app)
 
 http.listen(3000, () => {
   console.log('listening on *:3000');
