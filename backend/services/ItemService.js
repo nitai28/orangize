@@ -35,7 +35,6 @@ function add(item) {
   return new Promise((resolve, reject) => {
     DBService.dbConnect().then(db => {
       db.collection("item").insertOne(item, (err, res) => {
-        console.log("resresresresresres", res);
         db
           .collection("item")
           .findOne(
@@ -65,9 +64,25 @@ function remove(itemId) {
   });
 }
 
+function update(item, itemId) {
+  itemId = new mongo.ObjectID(itemId);
+
+  return new Promise((resolve, reject)=>{
+      DBService.dbConnect()
+      .then(db=>{
+          db.collection('item').updateOne({_id : itemId}, { $set: item }, function (err, updatedItem) {
+              if (err)    reject(err)
+              else        resolve(updatedItem);
+              db.close();
+          });
+      })
+  });
+}
+
 module.exports = {
   query,
   getById,
   add,
-  remove
+  remove,
+  update
 };
