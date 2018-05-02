@@ -1,43 +1,50 @@
-var UserService = require('../services/UserService')
+var UserService = require("../services/UserService");
 
 module.exports = app => {
-  app.post('/login', (req, res) => {
-
+  // app.get('/user', isLoggedIn, (req, res) => {
+  app.get("/user", (req, res) => {
+    // UserService.query(req.session.user._id).then(user => {
+    UserService.query().then(user => {
+      console.log("USER: ", user);
+      res.json(user);
+    });
+  });
+  // app.post('/user', isLoggedIn, (req, res) => {
+  app.post("/user", (req, res) => {
     const user = req.body;
-    UserService.checkLogin(user).then(userFromDB => {
-      console.log('userFromDB', userFromDB)
-      if (userFromDB) {
-        console.log('Login!', req.session);
-        delete userFromDB.password;
-        req.session.user = userFromDB;
-
-        res.json({ token: 'Beareloginr: puk115th@b@5t', user: userFromDB });
-      } else {
-        console.log('Login NOT Successful');
-        req.session.user = null;
-        res.status(403).send({ error: 'Login failed!' });
-      }
+    // user.userId = req.session.user._id;
+    UserService.add(user).then(addedUser => {
+      res.json(addedUser);
     });
   });
 
-  app.post('/register', function (req, res) {
-    var user = req.body;
-    UserService.addUser(user)
-      .then(addedUser => res.json(addedUser))
-      .catch(err => res.status(403).send({ error: `Register failed, ERROR:${err}` }));
+  app.delete(`/user/:userId`, (req, res) => {
+    console.log("delete");
+
+    const userId = req.params.userId;
+    if (!userId) {
+      res.status(500).send("Missing userID to delete");
+    }
+    UserService.deleteUser(userId)
+      .then(_ => res.end())
+      .catch(err => res.status(500).send("Could not delete user"));
   });
 
-  app.post('/logout', function (req, res) {
-    req.session.reset();
-    res.end('Loggedout');
+  app.get(`/user/:userId`, (req, res) => {
+    const userId = req.params.userId;
+    UserService.getById(userId)
+      .then(user => {
+        res.json(user);
+      })
+      .catch(err => res.status(500).send(err.message));
   });
 
-  app.get('/profile', isLoggedIn, (req, res) => {
-    res.end(`Profile of ${req.session.user.name}`);
-  });
-
-
-
+  app.put(`/user/:userId`, (req, res) => {
+    const userId = req.params.userId;
+    const user = req.body;
+    UserService
+        .updateUser(user)
+        .then(user => res.json(user))
+        .catch(err => res.status(500).send('Could not update user'))
+})
 };
-
-
