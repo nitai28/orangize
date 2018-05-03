@@ -1,59 +1,58 @@
 <template>
     <section class="item-list">
-          <ul class="clean-list"> 
-             <li class="item-preview toggle-modal" @click="toggleModal" v-for="item in list.items" :key="item._id">
-               <!-- <router-link :to="'orangize/'+item._id"> -->
-                  <item-preview :item="item"></item-preview>
-                <!-- </router-link> -->
-              </li>
-              <li class="new-item item-preview">
-                <div>
-                  Create item...
-                </div>
-              </li>
+      <ul>
+        <li v-for="list in lists" :key="list._id">
+          <h3>{{list.title}}</h3>
+          <ul class="clean-list">
+            <li class="item-preview toggle-modal" @click="toggleModal" v-for="item in list.items" :key="item._id">
+              <router-link :to="'/orangize/'+item._id">
+                <item-preview :item="item" ></item-preview>
+              </router-link>
+            </li>
+            <li class="new-item item-preview" @click="createItem(list)">
+                Create item...
+            </li>
           </ul>
-
-
-<div class="item-modal">
-  <item-modal :activated="modalActive"></item-modal>
-</div>
-
+          </li>
+      </ul>
+      <div class="item-modal">
+        <item-modal :activated="modalActive"></item-modal>
+      </div>
     </section>
 </template>
 
 <script>
-import ItemService from "../../services/ItemService.js";
-import ItemPreview from './ItemPreview.vue';
-import ItemModal from './ItemModal.vue'
+// import ItemService from "../../services/ItemService.js";
+import ItemPreview from "./ItemPreview.vue";
+import ItemModal from "./ItemModal.vue";
 
 export default {
-  props: ['list'],
   created() {
-    
-    this.$store.dispatch({ type: "loadItems" });
+    this.$store.dispatch({ type: "loadLists" });
   },
-  
-
-    data() {
-      return {
-        modalActive: false
-      };
-    },
-    methods: {
-      toggleModal() {
-        this.modalActive = !this.modalActive;
-      }
-    },
+  data() {
+    return {
+      modalActive: false
+    };
+  },
   computed: {
-    items() {
-      return this.$store.getters.getItems;
+    lists() {
+      return this.$store.getters.getLists;
+    }
+  },
+  methods: {
+    createItem(list) {
+      this.$store.dispatch({ type: "createItem", list: list });
+    },
+    toggleModal() {
+      this.modalActive = !this.modalActive;
     }
   },
   components: {
     ItemPreview,
     ItemModal
   }
-}
+};
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
@@ -63,6 +62,6 @@ export default {
   margin: 2px;
 }
 .new-item {
-  background-color: rgba(146, 255, 57, 0.5)
+  background-color: rgba(146, 255, 57, 0.5);
 }
 </style>

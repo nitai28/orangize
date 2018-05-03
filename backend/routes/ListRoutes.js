@@ -44,9 +44,11 @@ module.exports = app => {
   app.put(`/list/:listId`, (req, res) => {
     const listId = req.params.listId;
     const list = req.body;
+    console.log(list._id)
+    console.log(listId, "*********************", list);
     // List.userId = req.session.user._id;
     ListService.updateList(list, listId)
       .then(list => res.json(list))
-      .catch(err => res.status(500).send("Could not update list"));
+      .catch(err => res.status(500).send(err));
   });
 };
