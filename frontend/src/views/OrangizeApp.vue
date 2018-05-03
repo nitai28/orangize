@@ -62,6 +62,6 @@ export default {
     height: 30px;
   }
   h1 {
-    display: inline-block;
+    display: inline-block; 
   }
 </style>
