@@ -1,8 +1,7 @@
+
 <template>
     <section class="orangize-app">
-        <h1>DOGS for User</h1>
-          {{dogs.length}} Dogs
-        <button @click="add">ADD</button>
+        <item-details></item-details>
     </section>
 </template>
 
@@ -11,6 +10,7 @@
 import EventBusService, { SHOW_MSG } from "../services/EventBusService.js";
 import axios from 'axios';
 const BASE_URL = 'localhost:3000'
+import itemDetails from '../components/item/ItemDetails'
 
 export default {
   name: "OrangizeApp",
@@ -32,7 +32,10 @@ export default {
       });
     }
   },
-  computed: {}
+  computed: {},
+  components:{
+    itemDetails
+  }
 };
 </script>
 

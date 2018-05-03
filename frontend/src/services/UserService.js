@@ -1,35 +1,43 @@
-// import axios from 'axios';
-// const BASE_URL = 'localhost:3000'
 
-function login(user) {
-
-  return axios
-    .post(`/login`, user)
-    .then(res => {
-      sessionStorage.user = JSON.stringify(res.data.user)
-      return res.data.user
-    })
-    .catch(() => {throw new Error('Login Failed')})
+function emptyUser() {
+  return {_id:'',name: '', email:'',password:'',img:'',isLoggedin:'',isAdmin:'',items:[]}
 }
 
-function register(user) {
+function getUser() {
   return axios
-    .post(`${BASE_URL}/register`, user)
-    .then(res => console.log(res.data))
-    .catch(() => {throw new Error('Register Failed')})
+          .get()
+          .then(res => res.data)
+          .catch(e => console.log('No User', e))
 }
 
-function logout() {
+function saveUser(user) {
+  if (user._id) return axios.put(_getUserUrl(user._id), user)
+  else return axios.post(user);  
+}
+
+function deleteUser(userId) {
+  return axios.delete(_getUserUrl(userId))
+}
+
+
+function getUserById(userId) {
   return axios
-    .post(`${BASE_URL}/logout`)
-    .then(() => {
-      delete sessionStorage.user;
-    })
-    .catch(() => {throw new Error('Logout Failed')})
+  .get(_getUserUrl(userId))
+  .then(res => res.data)
+}
+
+// function deleteMultUsers(userIds) {
+// }
+
+function _getUserUrl(userId) {
+  return `/${userId}`;
 }
 
 export default {
-  login,
-  register,
-  logout
-};
+  getUser,
+  saveUser,
+  deleteUser,
+  emptyUser,
+  getUserById
+}
+  // deleteMultUsers
