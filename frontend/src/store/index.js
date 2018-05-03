@@ -4,12 +4,16 @@ import Vuex from "vuex";
 Vue.use(Vuex);
 
 import UserStore from './UserStore.js'
+import ItemStore from './ItemStore.js'
 
 export default new Vuex.Store({
   strict: true,
-  state: {},
+  state: {
+    
+  },
   modules: {
-    UserStore
+    UserStore,
+    ItemStore
   }
   
 })
