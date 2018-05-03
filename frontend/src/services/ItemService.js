@@ -1,15 +1,18 @@
 const ITEM_URL = '/item';
 import ListService from './ListService.js'
+var shortid = require('shortid');
 
-function emptyItem() {
+function emptyItem(listId) {
     return {
+        _id: shortid.generate(),
         title : 'EMPTY ITEM',
         users : [],
         labels : [],
         desc : 'This is an empty item!',
         comments : [],
         deadline : '10/05/2018',
-        isDone : false
+        isDone : false,
+        listId
     }
 }
 

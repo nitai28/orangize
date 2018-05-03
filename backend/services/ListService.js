@@ -71,10 +71,12 @@ function deleteList(listId) {
 
 function updateList(list, listId) {
   listId = new mongo.ObjectID(listId);
+  delete list._id;
   return new Promise((resolve, reject)=>{
+    
       DBService.dbConnect()
       .then(db=>{
-          db.collection('list').updateOne({_id : listId}, {$set: list}, (err, updatedList) => {
+          db.collection('list').updateOne({_id : listId}, list, (err, updatedList) => {
               if (err)    reject(err)
               else        resolve(updatedList);
               db.close();

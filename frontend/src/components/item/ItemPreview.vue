@@ -18,5 +18,8 @@ export default {
 </script>
 
 <style>
-
+  h3 {
+    padding: 5px;
+    background-color: #eae7e7f0;
+  }
 </style>

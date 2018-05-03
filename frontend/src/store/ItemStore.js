@@ -1,4 +1,5 @@
 import ItemService from "../services/ItemService.js";
+import ListService from "../services/ListService.js";
 
 export default {
   strict: true,
@@ -10,16 +11,10 @@ export default {
     items: [],
     itemToShow: null,
     selectedItem: null
-    // user: {
-    //   userName: '',
-    //   actions: [{
-    //     name: '',
-    //     at: 0
-    //   }]
-    // },
+
   },
   mutations: {
-    setItems(state, { items }) {
+    setLists(state, { items }) {
       console.log("STORE: Items has been loaded.");
       state.items = items;
     },
@@ -29,7 +24,7 @@ export default {
 
   },
   getters: {
-    getItems(state) {
+    getLists(state) {
       return state.items;
     },
     getSelectedItem(state) {
@@ -39,7 +34,7 @@ export default {
 
   },
   actions: {
-    loadItems(store) {
+    loadLists(store) {
       console.log("STORE: Loading items.");
       // store.state.ItemFilter
       return ItemService.query().then(items => {

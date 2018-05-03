@@ -45,8 +45,6 @@ const addUserRoutes = require('./routes/UserRoutes.js')
 addUserRoutes(app)
 const addListRoutes = require('./routes/ListRoutes.js')
 addListRoutes(app)
-const addItemRoutes = require('./routes/ItemRoutes.js')
-addItemRoutes(app)
 
 http.listen(3000, () => {
   console.log('listening on *:3000');
