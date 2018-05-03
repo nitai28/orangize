@@ -2,29 +2,37 @@
 <template>
     <section class='orangize-app'>
         <h1>Orangize</h1>
-        <item-list></item-list>
+        <ul>
+          <li v-for="list in lists" :key="list._id">
+            <item-list :list="list"></item-list>
+          </li>
+        </ul>
+        <item-details v-if="showDetails"></item-details>
     </section>
 </template>
 
 <script>
 
 import EventBusService, { SHOW_MSG } from "../services/EventBusService.js";
-import axios from 'axios';
-const BASE_URL = 'localhost:3000'
-import itemDetails from '../components/item/ItemDetails'
+import itemDetails from '../components/item/ItemDetails.vue'
 import ItemList from '../components/item/ItemList.vue';
+import ListService from '../services/ListService.js'
 
 export default {
   name: 'OrangizeApp',
   data() {
     return {
+      lists: []
     };
   },
   created() {
-    // axios.get(`${BASE_URL}/dog`).then(res => {
-    //   console.log('DOGS', res.data);
-    //   this.dogs = res.data;
+    // axios.get(`${BASE_URL}/list`).then(res => {
+    //   console.log('LISTS', res.data);
+    //   this.lists = res.data;
     // });
+    ListService.getLists().then(lists => {
+      this.lists = lists
+    })
   },
   methods: {
     // add() {
@@ -33,9 +41,15 @@ export default {
     //   });
     // }
   },
-  computed: {},
+  computed: {
+    showDetails() {
+      console.log('id of item to show',this.$route.params.id)
+      return this.$route.params.id
+    }
+  },
   components: {
-    ItemList
+    ItemList,
+    itemDetails
   }
 };
 </script>

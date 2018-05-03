@@ -20,7 +20,8 @@ export default new Router({
       // beforeEnter: userOnlyRoute
     },
     { path: "/login", component: Login },
-    { path: "/register", component: Register }
+    { path: "/register", component: Register },
+    { path: "/orangize/:id", component: OrangizeApp }
   ]
 });
 

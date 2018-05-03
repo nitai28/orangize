@@ -13,15 +13,19 @@
 
 <script>
 export default {
+  name: 'ItemDetails',
+  created() {
+
+  },
   // props: ['currTodo'],
   data() {
     return {
       item: {
-        id: 3,
-        name: "todo",
-        labels: ["yellow", "red", "green"],
-        desc: "doing all the job",
-        comments: ["delete this item"],
+        id: null,
+        name: '',
+        labels: [],
+        desc: '',
+        comments: [],
         deadlines: Date.now()
       }
     };

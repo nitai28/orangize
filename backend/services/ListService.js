@@ -28,7 +28,6 @@ function getById(listId) {
   })
 }
 
-
 function validateDetails(List) {
   console.log(List);
   return List.name !== 'puki';

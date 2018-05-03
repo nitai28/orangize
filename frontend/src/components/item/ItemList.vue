@@ -1,12 +1,10 @@
 <template>
     <section class="item-list">
-          <ul class="clean-list">
-              <li class="item-preview" v-for="item in items" :key="item._id">
-                <div>
-                  {{item.title}} | {{ item.labels }} | Deadline: {{ item.deadline }}
-                </div>
-                <!-- {{ item }} -->
-                  <!-- <todo-item :currTodo="todo"></todo-item> -->
+          <ul class="clean-list"> 
+             <li class="item-preview" v-for="item in list.items" :key="item._id">
+               <router-link :to="'orangize/'+item._id">
+                  <item-preview :item="item" ></item-preview>
+                </router-link>
               </li>
               <li class="new-item item-preview">
                 <div>
@@ -16,20 +14,13 @@
           </ul>
     </section>
 </template>
-{
-        _id: "5ae9c24dafaf4a13784ba582",
-        title: "chen",
-        users: [],
-        labels: [],
-        desc: "This is a Item #5!",
-        comments: [],
-        deadline: "Date.now()",
-        isDone: false
-      };
+
 <script>
 import ItemService from "../../services/ItemService.js";
+import ItemPreview from './ItemPreview.vue';
 
 export default {
+  props: ['list'],
   created() {
     
     this.$store.dispatch({ type: "loadItems" });
@@ -40,7 +31,7 @@ export default {
     }
   },
   components: {
-    // ItemItem,
+    ItemPreview,
   }
 }
 </script>

@@ -7,7 +7,8 @@ export default {
     //   byStatus: 'All',
     //   bySearch: ''
     // },
-    items: []
+    items: [],
+    itemToShow: null,
 
     // user: {
     //   userName: '',

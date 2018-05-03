@@ -40,5 +40,6 @@ export default {
     saveList,
     deleteList,
     emptyList,
-    getListById
+    getListById,
+    
 }
