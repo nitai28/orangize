@@ -40,7 +40,7 @@ export default {
     },
     createItem(store, {list}) {
       var editedList = JSON.parse(JSON.stringify(list));
-      editedList.items.push(ItemService.emptyItem());
+      editedList.items.push(ItemService.emptyItem(list._id));
       ListService.saveList(editedList).then(_ => {
         store.commit({type: 'updateList', updatedList: editedList});
       })

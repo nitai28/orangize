@@ -3,7 +3,7 @@
     <section class='orangize-app'>
         <i class="orangize"></i> <h1>Orangize</h1>
         <item-list></item-list>
-        <item-details v-if="showDetails"></item-details>
+        <!-- <item-details :item="selectedItem" v-if="showDetails"></item-details> -->
     </section>
 </template>
 
@@ -39,6 +39,9 @@ export default {
       console.log('id of item to show',this.$route.params.id)
       return this.$route.params.id
     },
+    selectedItem() {
+      return this.$store.getters.getSelectedItem;
+    }
   },
   components: {
     ItemList,

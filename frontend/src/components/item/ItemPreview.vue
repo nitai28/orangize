@@ -1,5 +1,5 @@
 <template>
-    <section @click="showDetails(item._id)">
+    <section @click="showDetails(item)">
         <h3>{{ item.title }}</h3>
         <div>{{ item.labels }}</div>
     </section>
@@ -10,8 +10,8 @@ export default {
   name: "ItemPreview",
   props: ["item"],
   methods: {
-    showDetails(itemId) {
-      this.$emit("showDetails", itemId);
+    showDetails(item) {
+      this.$store.commit({type: 'setSelectedItem', item});
     }
   }
 };
