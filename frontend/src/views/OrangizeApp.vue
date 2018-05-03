@@ -2,12 +2,8 @@
 <template>
     <section class='orangize-app'>
         <h1>Orangize</h1>
-        <ul>
-          <li v-for="list in lists" :key="list._id">
-            <item-list :list="list"></item-list>
-          </li>
-        </ul>
-        <item-details v-if="showDetails"></item-details>
+        <item-list></item-list>
+        <!-- <item-details v-if="showDetails"></item-details> -->
     </section>
 </template>
 
@@ -17,12 +13,12 @@ import EventBusService, { SHOW_MSG } from "../services/EventBusService.js";
 import itemDetails from '../components/item/ItemDetails.vue'
 import ItemList from '../components/item/ItemList.vue';
 import ListService from '../services/ListService.js'
+// import ItemList from '../components/list/List.vue';
 
 export default {
   name: 'OrangizeApp',
   data() {
     return {
-      lists: []
     };
   },
   created() {
@@ -30,9 +26,6 @@ export default {
     //   console.log('LISTS', res.data);
     //   this.lists = res.data;
     // });
-    ListService.getLists().then(lists => {
-      this.lists = lists
-    })
   },
   methods: {
     // add() {
@@ -45,7 +38,7 @@ export default {
     showDetails() {
       console.log('id of item to show',this.$route.params.id)
       return this.$route.params.id
-    }
+    },
   },
   components: {
     ItemList,

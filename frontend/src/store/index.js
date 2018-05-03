@@ -4,7 +4,7 @@ import Vuex from "vuex";
 Vue.use(Vuex);
 
 import UserStore from './UserStore.js'
-import ItemStore from './ItemStore.js'
+import ListStore from './ListStore.js'
 
 export default new Vuex.Store({
   strict: true,
@@ -13,7 +13,7 @@ export default new Vuex.Store({
   },
   modules: {
     UserStore,
-    ItemStore
+    ListStore
   }
   
 })

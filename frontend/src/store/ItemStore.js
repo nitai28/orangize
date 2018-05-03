@@ -1,4 +1,5 @@
 import ItemService from "../services/ItemService.js";
+import ListService from "../services/ListService.js";
 
 export default {
   strict: true,
@@ -9,7 +10,6 @@ export default {
     // },
     items: [],
     itemToShow: null,
-
     // user: {
     //   userName: '',
     //   actions: [{
@@ -19,7 +19,7 @@ export default {
     // },
   },
   mutations: {
-    setItems(state, { items }) {
+    setLists(state, { items }) {
       console.log("STORE: Items has been loaded.");
       state.items = items;
     }
@@ -55,7 +55,7 @@ export default {
     // }
   },
   getters: {
-    getItems(state) {
+    getLists(state) {
       return state.items;
     }
     // getActiveTodosLength(state) {
@@ -68,13 +68,34 @@ export default {
     // }
   },
   actions: {
-    loadItems(store) {
+    loadLists(store) {
       console.log("STORE: Loading items.");
       // store.state.ItemFilter
       return ItemService.query().then(items => {
         store.commit({ type: "setItems", items });
       });
-    }
+    },
+    // createItem(store, {list}) {
+    //   console.log(list)
+    //   list.items.push(ItemService.emptyItem());
+    //   ListService.saveList(list)
+    // }
+
+    // saveTodo(store, { todo }) {
+    //         const isEdit = !!todo.id
+    //         todosService.saveTodo(todo)
+    //           .then(todo => {
+    //             if (isEdit) {
+    //               store.commit({ type: 'updateTodo', todo });
+    //               store.dispatch({ type: 'updateUserAction', actionName: 'updateTodo'});
+    //             } 
+    //             else {
+    //               store.commit({ type: 'addTodo', todo });
+    //               store.dispatch({ type: 'updateUserAction', actionName: 'addTodo'});
+    //             }
+    //           })
+    //       },
+
     // loadUserData(store) {
     //   console.log('STORE: Loading user actions.');
     //   return todosService.queryUserData()
