@@ -1,9 +1,9 @@
 
 <template>
     <section class='orangize-app'>
-        <h1>Orangize</h1>
+        <i class="orangize"></i> <h1>Orangize</h1>
         <item-list></item-list>
-        <!-- <item-details v-if="showDetails"></item-details> -->
+        <item-details v-if="showDetails"></item-details>
     </section>
 </template>
 
@@ -47,6 +47,14 @@ export default {
 };
 </script>
 
-<style>
-
+<style scoped>
+  .orangize {
+    display: inline-block;
+    background-image: url('../assets/icon/orange.svg');
+    width: 30px;
+    height: 30px;
+  }
+  h1 {
+    display: inline-block;
+  }
 </style>
