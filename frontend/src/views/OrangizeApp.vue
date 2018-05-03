@@ -1,8 +1,8 @@
 
 <template>
     <section class='orangize-app'>
-        <h1>Orangize</h1>
-        <ul>
+        <i class="orangize"></i> <h1>Orangize</h1>
+        <ul class="flex flex-row">
           <li v-for="list in lists" :key="list._id">
             <item-list :list="list"></item-list>
           </li>
@@ -54,6 +54,14 @@ export default {
 };
 </script>
 
-<style>
-
+<style scoped>
+  .orangize {
+    display: inline-block;
+    background-image: url('../assets/icon/orange.svg');
+    width: 30px;
+    height: 30px;
+  }
+  h1 {
+    display: inline-block;
+  }
 </style>
