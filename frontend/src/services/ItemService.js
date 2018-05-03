@@ -13,28 +13,28 @@ function emptyItem() {
     }
 }
 
-function query() {
-    return axios
-            .get(ITEM_URL)
-            .then(res => res.data)
-            .catch(e => console.log('No Items', e))
-}
+// function query() {
+//     return axios
+//             .get(ITEM_URL)
+//             .then(res => res.data)
+//             .catch(e => console.log('No Items', e))
+// }
 
-function saveItem(item) {
-    if (item._id) return axios.put(_getItemUrl(item._id), item)
-    else return axios.post(ITEM_URL, item);  
-}
+// function saveItem(item) {
+//     if (item._id) return axios.put(_getItemUrl(item._id), item)
+//     else return axios.post(ITEM_URL, item);  
+// }
 
-function deleteItem(itemId) {
-    return axios.delete(_getItemUrl(itemId))
-}
+// function deleteItem(itemId) {
+//     return axios.delete(_getItemUrl(itemId))
+// }
 
-function deleteMultItems(itemIds) {
-}
+// function deleteMultItems(itemIds) {
+// }
 
-function _getItemUrl(itemId) {
-    return `${ITEM_URL}/${itemId}`;
-}
+// function _getItemUrl(itemId) {
+//     return `${ITEM_URL}/${itemId}`;
+// }
 
 
 function getItemById(listId, itemId) {
@@ -50,15 +50,25 @@ function deleteItem(listId, itemId) {
         .put(_getListUrl(listId))
         .then(res => res,data)
 }
+function updateComment(updateItem,listId){
+    var currList = ListService.getListById(listId); 
+    currItem =  currList.items.find(item => item.id === updateItem.id)
+    // currItem
+    currItem.comments.unshift();
+    return axios
+        .put(_getListUrl(listId))
+        .then(res => res,data)
+}
 
 
 export default {
-    query,
-    saveItem,
-    deleteItem,
+    // query,
+    // saveItem,
+    // deleteItem,
     emptyItem,
+    // getItemById,
+    // deleteMultItems,
     getItemById,
-    deleteMultItems,
-    getItemById,
-    deleteItem
+    deleteItem,
+    updateComment
 }

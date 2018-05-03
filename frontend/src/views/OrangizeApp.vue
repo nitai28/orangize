@@ -7,7 +7,7 @@
             <item-list :list="list"></item-list>
           </li>
         </ul>
-        <item-details v-if="showDetails"></item-details>
+        <item-details :item="selectedItem" v-if="selectedItem"></item-details>
     </section>
 </template>
 
@@ -45,6 +45,9 @@ export default {
     showDetails() {
       console.log('id of item to show',this.$route.params.id)
       return this.$route.params.id
+    },
+    selectedItem() {
+      return this.$store.getters.getSelectedItem;
     }
   },
   components: {

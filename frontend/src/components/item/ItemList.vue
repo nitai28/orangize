@@ -2,8 +2,8 @@
     <section class="item-list">
           <ul class="clean-list"> 
              <li class="item-preview" v-for="item in list.items" :key="item._id">
-               <router-link :to="'orangize/'+item._id">
-                  <item-preview :item="item" ></item-preview>
+                <router-link :to="'/orangize/'+item._id">
+                  <item-preview :list="list" :item="item" ></item-preview>
                 </router-link>
               </li>
               <li class="new-item item-preview">
@@ -23,7 +23,7 @@ export default {
   props: ['list'],
   created() {
     
-    this.$store.dispatch({ type: "loadItems" });
+    // this.$store.dispatch({ type: "loadItems" });
   },
   computed: {
     items() {
