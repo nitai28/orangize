@@ -2,7 +2,6 @@ const LIST_URL = '/list';
 
 function emptyList() {
     return {
-        _id : ObjectId('5ae9c24dafaf4a13784ba582'),
         title : 'Some Sort of List',
         items : []
     }
@@ -17,13 +16,12 @@ function getLists() {
 
 function saveList(list) {
     if (list._id) return axios.put(_getListUrl(list._id), list)
-    else return axios.post(LIST_URL, list);  
+    else return axios.post(LIST_URL, list).then(res => res.data[0])
 }
 
 function deleteList(listId) {
     return axios.delete(_getListUrl(listId))
 }
-
 
 function getListById(listId) {
     return axios

@@ -22,6 +22,14 @@ export default {
       console.log
       const listIdx = state.lists.findIndex(list => list._id === updatedList._id);
       state.lists.splice(listIdx, 1, updatedList);
+    },
+    newList(state, {newList}) {
+      state.lists.push(newList);
+      console.log('new list:', newList)
+    },
+    deleteList(state, {listIdToDelete}) {
+      const listIdx = state.lists.findIndex(list => list._id === listIdToDelete);
+      state.lists.splice(listIdx, 1);
     }
   },
   actions: {
@@ -43,6 +51,18 @@ export default {
       editedList.items.push(ItemService.emptyItem(list._id));
       ListService.saveList(editedList).then(_ => {
         store.commit({type: 'updateList', updatedList: editedList});
+      })
+    },
+    addList(store) {
+      var createdList = ListService.emptyList();
+      ListService.saveList(createdList).then((newList) => {
+        store.commit({type: 'newList', newList})
+      })
+    },
+    deleteList(store, {listId}) {
+      ListService.deleteList(listId).then((listIdToDelete) => {
+        console.log('list deleted')
+        store.commit({type: 'deleteList', listIdToDelete})
       })
     }
   },
