@@ -8,7 +8,7 @@
             <h3 v-show="editableListId !== list._id" @dblclick="editTitle(list)">{{list.title}}</h3>
             <input v-show="editableListId === list._id" v-model="currList.title" 
                    @blur="editableListId=null; updateListTitle(currList)"
-                   @keyup.enter="editableListId=null; updateListTitle(currList)" ref="titleInput">
+                   @keyup.enter="editableListId=null; updateListTitle(currList)">
             <img src="../../assets/icon/rubbish-bin.svg" class="delete-list" @click="deleteList(list._id)">
           </div>
           <ul class="clean-list">
@@ -67,7 +67,7 @@ export default {
       this.$store.dispatch({type: "updateList", updatedList})
     },
     editTitle(list) {
-      this.$refs.titleInput.focus();
+      // this.$refs.titleInput.focus();
       this.editableListId = list._id;
       this.currList = JSON.parse(JSON.stringify(list));
 
