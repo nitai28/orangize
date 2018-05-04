@@ -1,4 +1,4 @@
-const LIST_URL = '/list';
+const LIST_URL = "/list";
 
 function emptyList() {
     return {
@@ -8,10 +8,10 @@ function emptyList() {
 }
 
 function getLists() {
-    return axios
-            .get(LIST_URL)
-            .then(res => res.data)
-            .catch(e => console.log('No Lists', e))
+  return axios
+    .get(LIST_URL)
+    .then(res => res.data)
+    .catch(e => console.log("No Lists", e));
 }
 
 function saveList(list) {
@@ -20,24 +20,22 @@ function saveList(list) {
 }
 
 function deleteList(listId) {
-    return axios.delete(_getListUrl(listId))
+  return axios.delete(_getListUrl(listId));
 }
 
 function getListById(listId) {
-    return axios
-    .get(_getListUrl(listId))
-    .then(res => res.data)
+  return axios.get(_getListUrl(listId)).then(res => res.data);
 }
 
 function _getListUrl(listId) {
-    return `${LIST_URL}/${listId}`;
+  return `${LIST_URL}/${listId}`;
 }
 
+
 export default {
-    getLists,
-    saveList,
-    deleteList,
-    emptyList,
-    getListById,
-    
-}
+  getLists,
+  saveList,
+  deleteList,
+  emptyList,
+  getListById,
+};

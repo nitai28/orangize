@@ -12,7 +12,7 @@
             <img src="../../assets/icon/rubbish-bin.svg" class="delete-list" @click="deleteList(list._id)">
           </div>
           <ul class="clean-list">
-            <li class="item-preview toggle-modal" @click="toggleModal" v-for="item in list.items" :key="item._id">
+            <li class="item-preview toggle-modal"  v-for="item in list.items" :key="item._id">
               <router-link :to="'/orangize/'+item._id">
                 <item-preview :item="item" ></item-preview>
               </router-link>
@@ -110,3 +110,4 @@ export default {
 }
 
 </style>
+// @click="toggleModal"

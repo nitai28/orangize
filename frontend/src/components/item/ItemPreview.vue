@@ -1,6 +1,6 @@
 <template>
-    <!-- <section @click="showDetails(item)"> -->
-    <section>
+    <section @click="showDetails(item)">
+    <!-- <section> -->
         <h3>{{ item.title }}</h3>
         <div>{{ item.labels }}</div>
         <button @click.stop="removeItem(item)">X</button>
@@ -12,9 +12,9 @@ export default {
   name: "ItemPreview",
   props: ["item"],
   methods: {
-    // showDetails(item) {
-    //   this.$store.commit({type: 'setSelectedItem', item});
-    // },
+    showDetails(item) {
+      this.$store.commit({type: 'setSelectedItem', item});
+    },
     removeItem(item) {
       this.$store.dispatch({ type: 'removeItem', item});
     }
