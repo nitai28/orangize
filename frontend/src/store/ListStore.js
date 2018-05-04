@@ -26,6 +26,15 @@ export default {
     setSelectedItem(state, { item }) {
       state.selectedItem = item;
     }
+,
+    newList(state, {newList}) {
+      state.lists.push(newList);
+      console.log('new list:', newList)
+    },
+    deleteList(state, {listIdToDelete}) {
+      const listIdx = state.lists.findIndex(list => list._id === listIdToDelete);
+      state.lists.splice(listIdx, 1);
+    }
   },
   actions: {
     loadLists(store) {
@@ -60,6 +69,29 @@ export default {
           store.commit({ type: "setSelectedItem", item: list.items[itemIdx] });
         });
       });
+    },
+    addList(store) {
+      var createdList = ListService.emptyList();
+      ListService.saveList(createdList).then((newList) => {
+        store.commit({type: 'newList', newList})
+      })
+    },
+    deleteList(store, {listId}) {
+      ListService.deleteList(listId).then((listIdToDelete) => {
+        console.log('list deleted')
+        store.commit({type: 'deleteList', listIdToDelete})
+      })
+    },
+    removeItem(store, {item}) {
+      ListService.getListById(item.listId)
+      .then(list => {
+        console.log('list items BEFORE', list.items)
+        list.items = list.items.filter(currItem => currItem._id !== item._id);
+        ListService.saveList(list).then(_ => {
+          store.commit({type: 'updateList', updatedList: list});
+        })
+        console.log('list items AFTER', list.items);
+      })
     }
   },
   getters: {

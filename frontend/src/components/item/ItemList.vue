@@ -1,8 +1,12 @@
 <template>
     <section class="item-list">
-      <ul>
+      <button @click="addList">Add List</button>
+      <ul class="flex flex-row">
         <li v-for="list in lists" :key="list._id">
-          <h3>{{list.title}}</h3>
+          <div class="list-title">
+            <h3 contenteditable="true">{{list.title}}</h3>
+            <img src="../../assets/icon/rubbish-bin.svg" class="delete-list" @click="deleteList(list._id)">
+          </div>
           <ul class="clean-list">
             <li class="item-preview toggle-modal"  v-for="item in list.items" :key="item._id">
               <router-link :to="'/orangize/'+item._id">
@@ -46,11 +50,18 @@ export default {
     },
     toggleModal() {
       this.modalActive = !this.modalActive;
+    },
+    addList() {
+      this.$store.dispatch({type: "addList"})
+    },
+    deleteList(listId) {
+      this.$store.dispatch({type: "deleteList", listId})
     }
   },
   components: {
     ItemPreview,
-    ItemModal
+    ItemModal,
+    
   }
 };
 </script>
@@ -64,5 +75,24 @@ export default {
 .new-item {
   background-color: rgba(146, 255, 57, 0.5);
 }
+
+.list-title {
+  display: inline-block
+}
+
+.list-title {
+  background-color: #eae7e7f0;
+}
+
+.list-title h3 {
+  display: inline-block
+}
+
+.delete-list {
+  display: inline-block;
+  width: 15px;
+  height: 15px;
+}
+
 </style>
 // @click="toggleModal"
