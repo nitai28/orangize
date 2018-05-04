@@ -4,7 +4,7 @@
         <li v-for="list in lists" :key="list._id">
           <h3>{{list.title}}</h3>
           <ul class="clean-list">
-            <li class="item-preview toggle-modal" @click="toggleModal" v-for="item in list.items" :key="item._id">
+            <li class="item-preview toggle-modal"  v-for="item in list.items" :key="item._id">
               <router-link :to="'/orangize/'+item._id">
                 <item-preview :item="item" ></item-preview>
               </router-link>
@@ -65,3 +65,4 @@ export default {
   background-color: rgba(146, 255, 57, 0.5);
 }
 </style>
+// @click="toggleModal"

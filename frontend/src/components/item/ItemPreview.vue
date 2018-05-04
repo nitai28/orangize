@@ -1,7 +1,6 @@
 <template>
     <section @click="showDetails(item)">
         <h3>{{ item.title }}</h3>
-        <div>{{ item.labels }}</div>
     </section>
 </template>
 
