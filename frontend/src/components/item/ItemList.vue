@@ -4,7 +4,11 @@
       <ul class="flex flex-row">
         <li v-for="list in lists" :key="list._id">
           <div class="list-title">
-            <h3 contenteditable="true">{{list.title}}</h3>
+            
+            <h3 v-show="editableListId !== list._id" @dblclick="editTitle(list)">{{list.title}}</h3>
+            <input v-show="editableListId === list._id" v-model="currList.title" 
+                   @blur="editableListId=null; updateListTitle(currList)"
+                   @keyup.enter="editableListId=null; updateListTitle(currList)">
             <img src="../../assets/icon/rubbish-bin.svg" class="delete-list" @click="deleteList(list._id)">
           </div>
           <ul class="clean-list">
@@ -36,7 +40,9 @@ export default {
   },
   data() {
     return {
-      modalActive: false
+      modalActive: false,
+      editableListId: null,
+      currList: {}
     };
   },
   computed: {
@@ -46,7 +52,7 @@ export default {
   },
   methods: {
     createItem(list) {
-      this.$store.dispatch({ type: "createItem", list: list });
+      this.$store.dispatch({ type: "createItem", list });
     },
     toggleModal() {
       this.modalActive = !this.modalActive;
@@ -56,6 +62,15 @@ export default {
     },
     deleteList(listId) {
       this.$store.dispatch({type: "deleteList", listId})
+    },
+    updateListTitle(updatedList) {
+      this.$store.dispatch({type: "updateList", updatedList})
+    },
+    editTitle(list) {
+      // this.$refs.titleInput.focus();
+      this.editableListId = list._id;
+      this.currList = JSON.parse(JSON.stringify(list));
+
     }
   },
   components: {
