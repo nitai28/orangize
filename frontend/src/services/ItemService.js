@@ -7,7 +7,7 @@ function emptyItem(listId) {
         _id: shortid.generate(),
         title : 'EMPTY ITEM',
         users : [],
-        labels : [],
+        label : '',
         desc : 'This is an empty item!',
         comments : [],
         deadline : '10/05/2018',

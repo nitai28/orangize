@@ -1,9 +1,10 @@
 <template>
   <section id="modal-component" @keyup.esc="close">
-  <div class="modal-body" v-bind:class="{'active-in-component': mutableActived }"> 
-    <div class="modal-content" v-html="message"></div>
-         <div class="modal-close" @click="close"><i class="zmdi zmdi-close"></i></div>
-         <slot></slot>
+  <div class="modal-body " v-bind:class="{'active-in-component': mutableActived }"> 
+         <slot class="modal-slot"></slot>
+    <div class="modal-content" ></div>
+         <div class="modal-close" @click="close"><i class="zmdi zmdi-close"></i>
+         </div>
   </div>     
 </section>
 
@@ -15,7 +16,7 @@ name: "modalComponent",
   data() {
     return {
       mutableActived: false,
-      message: "<i>Modal Content!</i>"
+      // message: "<i>Modal Content!</i>"
     };
   },
   props: ["activated"],
@@ -65,7 +66,7 @@ a {
 .page {
   width: 100%;
   height: 100%;
-  border: 10px ridge rebeccapurple;
+  border: 10px ridge rgb(165, 159, 172);
   box-sizing: border-box;
   background: #ffffff;
   background: linear-gradient(to bottom, #ffffff 0%, #f3f3f3 50%, #ededed 51%, #ffffff 100%);
@@ -132,8 +133,8 @@ a {
   width: 100%;
   height: 100%;
   display: flex;
-  justify-content: center;
-  align-items: center;
+  /* justify-content: center; */
+  /* align-items: center; */
   font-size: 100px;
   color: #fff;
   -webkit-user-select: none;
@@ -183,7 +184,18 @@ a {
   font-size: 6vw;
   transition: 300ms;
 }
-
+.moodal-slot{
+  margin: 10px 0;
+  width: 50%;
+  height: 50%;
+  align-items: center;
+  justify-content: center;
+  /* position: inherit; */
+  /* position: absolute; */
+  /* text-align: center; */
+  /* margin: 0 auto */
+}
 
 
 </style>
+// v-html="message"

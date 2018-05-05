@@ -1,5 +1,3 @@
-
-
 <template>
     <section class="flex flex-column ">
       <h3 v-show = "isTitleEditMode === false" @dblclick = "isTitleEditMode = true">{{editedItem.title}}</h3>
@@ -8,9 +6,16 @@
       @keyup.enter = "isTitleEditMode=false" autofocus>
       
       <label for="">Label LIst:</label>
-      <select name="" id="">
+      <div class="flex label-containe">
+        <div @click.stop="updateLabel('red')" class="color red"></div>
+        <div @click.stop="updateLabel('yellow')" class="color yellow"></div>
+        <div @click.stop="updateLabel('green')" class="color green"></div>
+        <div @click.stop="updateLabel('blue')" class="color blue"></div>
+      </div>
+
+      <!-- <select name="" id="">
         <option  value="" v-for="label in editedItem.labels" :key="label" >{{label}}</option>
-      </select>
+      </select> -->
         <div>
           <h4>Comments List</h4>
           <hr>
@@ -20,7 +25,7 @@
           </ol>
         </div>
          <textarea placeholder="Enter comment" contenteditable="true" name="" id="" cols="5" rows="5" v-model="addedComment.txt"></textarea>
-        <button @click="addComment">Add Comment</button>
+        <button @click.stop="addComment">Add Comment</button>
     </section> 
 </template>
 
@@ -37,9 +42,14 @@ export default {
   },
   methods: {
     addComment() {
+      this.editedItem.comments.unshift(this.addedComment);
       this.$store.dispatch({ type: "updateItem", editedItem: this.editedItem });
     },
     updateItem() {
+      this.$store.dispatch({ type: "updateItem", editedItem: this.editedItem });
+    },
+    updateLabel(color) {
+      this.editedItem.label = color;
       this.$store.dispatch({ type: "updateItem", editedItem: this.editedItem });
     }
   },
@@ -56,13 +66,29 @@ components: {
 
 <style scoped>
 section {
-  background: rgba(0, 0, 0, 0.329);
-  color: rgb(40, 40, 212);
-  width: 300px;
-  text-align: center;
-  margin: 0 auto;
+  background: rgba(0, 0, 0, 0.575);
+  color: rgb(255, 255, 255);
+  /* text-align: center; */
 }
 h4 {
   text-decoration: underline;
+}
+.color {
+  width: 30px;
+  height: 30px;
+  margin-right: 5px;
+  border-radius: 8px;
+}
+.red {
+  background: red;
+}
+.yellow {
+  background: yellow;
+}
+.green {
+  background: green;
+}
+.blue {
+  background: blue;
 }
 </style>

@@ -3,7 +3,7 @@
     <section class='orangize-app'>
         <i class="orangize"></i> <h1>Orangize</h1>
         <item-list></item-list>
-        <item-details v-if="selectedItem" :item="selectedItem" ></item-details>
+        <!-- <item-details v-if="selectedItem" :item="selectedItem" ></item-details> -->
     </section>
 </template>
 
@@ -22,33 +22,26 @@ export default {
     };
   },
   created() {
-    // axios.get(`${BASE_URL}/list`).then(res => {
-    //   console.log('LISTS', res.data);
-    //   this.lists = res.data;
-    // });
+
   },
   methods: {
-    // add() {
-    //   axios.post(`${BASE_URL}/dog`, { name: 'New Dog' }).then(res => {
-    //     console.log('NEW DOG', res.data);
-    //   });
-    // }
+   
   },
   computed: {
     showDetails() {
       console.log('id of item to show',this.$route.params.id)
       return this.$route.params.id
     },
-    selectedItem(){
-      console.log('sadsadsad',this.$store.getters.selectedItem);
+    // selectedItem(){
+    //   console.log('sadsadsad',this.$store.getters.selectedItem);
       
-      return this.$store.getters.selectedItem
-    }
+    //   return this.$store.getters.selectedItem
+    // }
     
   },
   components: {
     ItemList,
-    itemDetails
+    // itemDetails
   }
 };
 </script>

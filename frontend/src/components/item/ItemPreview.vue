@@ -1,8 +1,8 @@
 <template>
-    <section @click="showDetails(item)">
+    <section :class="{[item.label]: (item.label) }" @click="showDetails(item)">
     <!-- <section> -->
         <h3>{{ item.title }}</h3>
-        <div>{{ item.labels }}</div>
+        <!-- <div>{{ item.labels }}</div> -->
         <button @click.stop="removeItem(item)">X</button>
     </section>
 </template>
@@ -18,6 +18,13 @@ export default {
     removeItem(item) {
       this.$store.dispatch({ type: 'removeItem', item});
     }
+  },
+  computed:{
+    label(){
+      console.log(this.item.labels[0]);
+      
+      return this.item.labels[0]
+    }
   }
 };
 </script>
@@ -27,4 +34,16 @@ export default {
     padding: 5px;
     background-color: #eae7e7f0;
   }
+.red {
+  background: red;
+}
+.yellow {
+  background: yellow;
+}
+.green {
+  background: green;
+}
+.blue {
+  background: blue;
+}
 </style>

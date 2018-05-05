@@ -12,7 +12,7 @@
             <img src="../../assets/icon/rubbish-bin.svg" class="delete-list" @click="deleteList(list._id)">
           </div>
           <ul class="clean-list">
-            <li class="item-preview toggle-modal"  v-for="item in list.items" :key="item._id">
+            <li class="item-preview toggle-modal" @click="toggleModal" v-for="item in list.items" :key="item._id">
               <router-link :to="'/orangize/'+item._id">
                 <item-preview :item="item" ></item-preview>
               </router-link>
@@ -24,7 +24,7 @@
           </li>
       </ul>
       <div class="item-modal">
-        <item-modal :activated="modalActive"></item-modal>
+        <item-modal  :activated="modalActive"><item-details class="item-details" v-if="selectedItem" :item="selectedItem"></item-details></item-modal>
       </div>
     </section>
 </template>
@@ -33,6 +33,8 @@
 // import ItemService from "../../services/ItemService.js";
 import ItemPreview from "./ItemPreview.vue";
 import ItemModal from "./ItemModal.vue";
+import ItemDetails from "./ItemDetails.vue";
+
 
 export default {
   created() {
@@ -48,6 +50,11 @@ export default {
   computed: {
     lists() {
       return this.$store.getters.getLists;
+    },
+     selectedItem(){
+      console.log('sadsadsad',this.$store.getters.selectedItem);
+      
+      return this.$store.getters.selectedItem
     }
   },
   methods: {
@@ -76,6 +83,7 @@ export default {
   components: {
     ItemPreview,
     ItemModal,
+    ItemDetails
     
   }
 };
@@ -108,6 +116,7 @@ export default {
   width: 15px;
   height: 15px;
 }
+
 
 </style>
 // @click="toggleModal"
