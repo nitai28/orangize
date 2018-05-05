@@ -38,10 +38,6 @@ body{
     height: 100vh;
 }
 
-body.flex {
-  overflow: hidden;
-}
-
 a {
 	text-decoration: none;
   }
