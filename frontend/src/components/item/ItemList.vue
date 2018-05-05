@@ -2,32 +2,30 @@
     <section class="item-list">
       <button @click="addList">Add List</button>
       <ul class="flex flex-row">
-        <li  class="list-tasks" v-for="list in lists" :key="list._id">
-          <div class="list-title-container">
-            <div class="list-title">
-              <h3    v-show="editableListId !== list._id" @dblclick="editTitle(list)">{{list.title}}</h3>
-              <input v-show="editableListId === list._id" v-model="currList.title" 
-                    @blur="editableListId=null; updateListTitle(currList)"
-                    @keyup.enter="editableListId=null; updateListTitle(currList)">
-            </div>
-            <div class="delete-list">
-              <img src="../../assets/icon/rubbish-bin.svg" @click="deleteList(list._id)">
-            </div>
+        <draggable v-model="lists" class="flex flex-row clean-list">
+        <li class="list-title-container" v-for="list in lists" :key="list._id">
+          <div class="list-title">
+            <h3 v-show="editableListId !== list._id" @dblclick="editTitle(list)">{{list.title}}</h3>
+            <input v-show="editableListId === list._id" v-model="currList.title" 
+                   @blur="editableListId=null; updateListTitle(currList)"
+                   @keyup.enter="editableListId=null; updateListTitle(currList)">
+            <img src="../../assets/icon/rubbish-bin.svg" class="delete-list" @click="deleteList(list._id)">
           </div>
           <ul class="clean-list">
-            <li class="item-preview toggle-modal" @click="toggleModal" v-for="item in list.items" :key="item._id">
-              <router-link :to="'/orangize/'+item._id">
-                <item-preview :item="item" ></item-preview>
-              </router-link>
-            </li>
+              <li class="item-preview toggle-modal" @click="toggleModal" v-for="item in list.items" :key="item._id">
+                <router-link :to="'/orangize/'+item._id">
+                  <item-preview :item="item" ></item-preview>
+                </router-link> 
+              </li>
             <li class="new-item item-preview" @click="createItem(list)">
                 Create item...
             </li>
           </ul>
           </li>
+          </draggable>
       </ul>
       <div class="item-modal">
-        <item-modal  :activated="modalActive"><item-details class="item-details" v-if="selectedItem" :item="selectedItem"></item-details></item-modal>
+        <item-modal :activated="modalActive"><item-details class="item-details" v-if="selectedItem" :item="selectedItem"></item-details></item-modal>
       </div>
     </section>
 </template>
@@ -37,7 +35,7 @@
 import ItemPreview from "./ItemPreview.vue";
 import ItemModal from "./ItemModal.vue";
 import ItemDetails from "./ItemDetails.vue";
-
+import Draggable from 'vuedraggable';
 
 export default {
   created() {
@@ -51,13 +49,16 @@ export default {
     };
   },
   computed: {
-    lists() {
-      return this.$store.getters.getLists;
-    },
      selectedItem(){
-      console.log('sadsadsad',this.$store.getters.selectedItem);
-      
       return this.$store.getters.selectedItem
+     },
+    lists: {
+      get() {
+        return this.$store.getters.getLists;
+      },
+      set(value) {
+        this.$store.dispatch({type: 'updateListsOrder', lists: value})
+      }
     }
   },
   methods: {
@@ -65,6 +66,7 @@ export default {
       this.$store.dispatch({ type: "createItem", list });
     },
     toggleModal() {
+      console.log('LALALALALAALLALA')
       this.modalActive = !this.modalActive;
     },
     addList() {
@@ -85,8 +87,8 @@ export default {
   components: {
     ItemPreview,
     ItemModal,
-    ItemDetails
-    
+    ItemDetails,
+    Draggable
   }
 };
 </script>
@@ -125,13 +127,20 @@ export default {
 }
 
 .list-title {
+  display: inline-block;
   padding: 5px;
   align-self: flex-start;
+  background-color: #eae7e7f0;
+}
+
+.list-title h3 {
   display: inline-block;
 }
 
-.delete-list img {
+.delete-list {
   display: inline-block;
+  max-width: 30px;
+  max-height: 30px;
   width: 1.5rem;
   height: 1.5rem;
   padding: 5px;
