@@ -3,7 +3,7 @@
       <button @click="addList">Add List</button>
       <ul class="flex flex-row">
         <draggable v-model="lists" class="flex flex-row clean-list">
-        <li class="list-title-container" v-for="list in lists" :key="list._id">
+        <li class="list-container" v-for="list in lists" :key="list._id">
           <div class="list-title">
             <h3 v-show="editableListId !== list._id" @dblclick="editTitle(list)">{{list.title}}</h3>
             <input v-show="editableListId === list._id" v-model="currList.title" 
@@ -11,7 +11,7 @@
                    @keyup.enter="editableListId=null; updateListTitle(currList)">
             <img src="../../assets/icon/rubbish-bin.svg" class="delete-list" @click="deleteList(list._id)">
           </div>
-          <ul class="clean-list">
+          <ul class="clean-list items-container">
               <li class="item-preview toggle-modal" @click="toggleModal" v-for="item in list.items" :key="item._id">
                 <router-link :to="'/orangize/'+item._id">
                   <item-preview :item="item" ></item-preview>
@@ -100,51 +100,58 @@ export default {
   background-color: #c7c7c7f0;
   margin: 5px;
   border-radius: 5%;
-  
 }
 
 .item-preview {
   /* background-color: rgba(240, 240, 240, 0.904); */
-  margin: 2px;
   border-radius: 5%;
-  width: 100px;
+  width: 100%;
   transition: width .5s ease-in-out;
 }
 
 .new-item {
-  background-color: rgba(146, 255, 57, 0.5);
-  width: fit-content;
+  background-color: rgba(237, 143, 33, 0.75);
+  width: 100%;
   border-radius: 5px;
   border: 1px solid black;
   padding: 5px;
 }
 
-.list-title-container {
-  background-color: #c7c7c7f0;
+.list-container {
+  margin: 10px;
+  padding: 5px;
+  /* background-color: #c7c7c7f0; */
+  background: rgba(0,0,0,.3);
   display: flex;
-  justify-content: space-around;
+  flex-direction: column;
   align-items: center;
+  width: 200px;
 }
 
 .list-title {
+  width: 100%;
   display: inline-block;
   padding: 5px;
   align-self: flex-start;
-  background-color: #eae7e7f0;
+  /* background-color: #eae7e7f0; */
 }
 
 .list-title h3 {
   display: inline-block;
+  width: 85%;
 }
 
 .delete-list {
   display: inline-block;
-  max-width: 30px;
-  max-height: 30px;
-  width: 1.5rem;
-  height: 1.5rem;
-  padding: 5px;
+  width: 15px;
+  height: 15px;
+  margin-left: 10px;
 }
+
+.items-container {
+  width: 100%;
+}
+
 
 
 </style>
