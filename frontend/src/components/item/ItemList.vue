@@ -27,7 +27,7 @@
           </li>
       </ul>
       <div class="item-modal">
-        <item-modal :activated="modalActive"></item-modal>
+        <item-modal  :activated="modalActive"><item-details class="item-details" v-if="selectedItem" :item="selectedItem"></item-details></item-modal>
       </div>
     </section>
 </template>
@@ -36,6 +36,8 @@
 // import ItemService from "../../services/ItemService.js";
 import ItemPreview from "./ItemPreview.vue";
 import ItemModal from "./ItemModal.vue";
+import ItemDetails from "./ItemDetails.vue";
+
 
 export default {
   created() {
@@ -51,6 +53,11 @@ export default {
   computed: {
     lists() {
       return this.$store.getters.getLists;
+    },
+     selectedItem(){
+      console.log('sadsadsad',this.$store.getters.selectedItem);
+      
+      return this.$store.getters.selectedItem
     }
   },
   methods: {
@@ -77,7 +84,9 @@ export default {
   },
   components: {
     ItemPreview,
-    ItemModal
+    ItemModal,
+    ItemDetails
+    
   }
 };
 </script>
@@ -127,5 +136,6 @@ export default {
   height: 1.5rem;
   padding: 5px;
 }
+
 
 </style>
