@@ -9,6 +9,9 @@ export default {
     selectedItem: null
   },
   mutations: {
+    updateListIdx (state, { name, value }) {
+      state.pages[name] = value
+    },
     setItems(state, { items }) {
       console.log("STORE: Items has been loaded.");
       state.items = items;
@@ -23,10 +26,12 @@ export default {
       );
       state.lists.splice(listIdx, 1, updatedList);
     },
+    updateListsOrder(state, { updatedLists }) {
+      state.lists = updatedLists;
+    },
     setSelectedItem(state, { item }) {
       state.selectedItem = item;
-    }
-,
+    },
     newList(state, {newList}) {
       state.lists.push(newList);
       console.log('new list:', newList)
@@ -97,6 +102,9 @@ export default {
       .then(() => {
         store.commit({type: 'updateList', updatedList});
       })
+    },
+    updateListsOrder(store, {lists}) {
+      ListService.updateAllLists(lists)
     }
   },
   getters: {

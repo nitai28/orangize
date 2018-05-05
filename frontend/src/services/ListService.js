@@ -31,6 +31,10 @@ function _getListUrl(listId) {
   return `${LIST_URL}/${listId}`;
 }
 
+function updateAllLists(lists) {
+  // axios.put(_getListUrl(list._id), list)
+  return axios.put('/board', lists).then(res => res);
+}
 
 export default {
   getLists,
@@ -38,4 +42,5 @@ export default {
   deleteList,
   emptyList,
   getListById,
+  updateAllLists
 };
