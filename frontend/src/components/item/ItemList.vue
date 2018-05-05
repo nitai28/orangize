@@ -2,9 +2,9 @@
     <section class="item-list">
       <button @click="addList">Add List</button>
       <ul class="flex flex-row">
+        <draggable v-model="lists" class="flex flex-row clean-list">
         <li v-for="list in lists" :key="list._id">
           <div class="list-title">
-            
             <h3 v-show="editableListId !== list._id" @dblclick="editTitle(list)">{{list.title}}</h3>
             <input v-show="editableListId === list._id" v-model="currList.title" 
                    @blur="editableListId=null; updateListTitle(currList)"
@@ -12,16 +12,17 @@
             <img src="../../assets/icon/rubbish-bin.svg" class="delete-list" @click="deleteList(list._id)">
           </div>
           <ul class="clean-list">
-            <li class="item-preview toggle-modal"  v-for="item in list.items" :key="item._id">
-              <router-link :to="'/orangize/'+item._id">
-                <item-preview :item="item" ></item-preview>
-              </router-link>
-            </li>
+              <li class="item-preview toggle-modal"  v-for="item in list.items" :key="item._id">
+                <router-link :to="'/orangize/'+item._id">
+                  <item-preview :item="item" ></item-preview>
+                </router-link>
+              </li>
             <li class="new-item item-preview" @click="createItem(list)">
                 Create item...
             </li>
           </ul>
           </li>
+          </draggable>
       </ul>
       <div class="item-modal">
         <item-modal :activated="modalActive"></item-modal>
@@ -33,6 +34,7 @@
 // import ItemService from "../../services/ItemService.js";
 import ItemPreview from "./ItemPreview.vue";
 import ItemModal from "./ItemModal.vue";
+import Draggable from 'vuedraggable';
 
 export default {
   created() {
@@ -46,8 +48,15 @@ export default {
     };
   },
   computed: {
-    lists() {
-      return this.$store.getters.getLists;
+    lists: {
+      get() {
+        return this.$store.getters.getLists;
+      },
+      set(value) {
+        // console.log('DRAG AND DROP VALUE', value);
+        this.$store.commit({type: 'setLists', lists: value});
+        this.$store.dispatch({type: 'updateListOrder', lists: value})
+      }
     }
   },
   methods: {
@@ -58,25 +67,24 @@ export default {
       this.modalActive = !this.modalActive;
     },
     addList() {
-      this.$store.dispatch({type: "addList"})
+      this.$store.dispatch({ type: "addList" });
     },
     deleteList(listId) {
-      this.$store.dispatch({type: "deleteList", listId})
+      this.$store.dispatch({ type: "deleteList", listId });
     },
     updateListTitle(updatedList) {
-      this.$store.dispatch({type: "updateList", updatedList})
+      this.$store.dispatch({ type: "updateList", updatedList });
     },
     editTitle(list) {
       // this.$refs.titleInput.focus();
       this.editableListId = list._id;
       this.currList = JSON.parse(JSON.stringify(list));
-
     }
   },
   components: {
     ItemPreview,
     ItemModal,
-    
+    Draggable
   }
 };
 </script>
@@ -92,7 +100,7 @@ export default {
 }
 
 .list-title {
-  display: inline-block
+  display: inline-block;
 }
 
 .list-title {
@@ -100,7 +108,7 @@ export default {
 }
 
 .list-title h3 {
-  display: inline-block
+  display: inline-block;
 }
 
 .delete-list {
@@ -108,6 +116,5 @@ export default {
   width: 15px;
   height: 15px;
 }
-
 </style>
 // @click="toggleModal"

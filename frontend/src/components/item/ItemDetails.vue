@@ -4,8 +4,8 @@
     <section class="flex flex-column ">
       <h3 v-show = "isTitleEditMode === false" @dblclick = "isTitleEditMode = true">{{editedItem.title}}</h3>
       <input  v-show = "isTitleEditMode === true" v-model = "editedItem.title"
-      @blur= "isTitleEditMode=false; updateItem()"
-      @keyup.enter = "isTitleEditMode=false" autofocus>
+      @blur="isTitleEditMode=false; updateItem()"
+      @keyup.enter="isTitleEditMode=false" autofocus>
       
       <label for="">Label LIst:</label>
       <select name="" id="">
