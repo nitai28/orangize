@@ -1,8 +1,8 @@
 <template>
   <section id="modal-component" @keyup.esc="close">
   <div class="modal-body " v-bind:class="{'active-in-component': mutableActived }"> 
-         <slot class="modal-slot"></slot>
-    <div class="modal-content" ></div>
+         
+    <div class="modal-content"><slot class="modal-slot"></slot></div>
          <div class="modal-close" @click="close"><i class="zmdi zmdi-close"></i>
          </div>
   </div>     
@@ -131,10 +131,7 @@ a {
 }
 .modal-body .modal-content {
   width: 100%;
-  height: 100%;
   display: flex;
-  /* justify-content: center; */
-  /* align-items: center; */
   font-size: 100px;
   color: #fff;
   -webkit-user-select: none;

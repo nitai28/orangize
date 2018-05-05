@@ -1,9 +1,8 @@
 <template>
-    <section class="flex flex-column ">
+    <section class="details-container flex flex-column">
       <h3 v-show="isTitleEditMode === false" @dblclick="isTitleEditMode = true">{{editedItem.title}}</h3>
-      <input v-show="isTitleEditMode === true" v-model="editedItem.title"
-      @blur="isTitleEditMode=false; updateItem()"
-      @keyup.enter="isTitleEditMode=false" autofocus>
+      <input v-show="isTitleEditMode === true" v-model="editedItem.title" @blur="isTitleEditMode=false; updateItem()"
+             @keyup.enter="isTitleEditMode=false" autofocus>
       
       <label for="">Label LIst:</label>
       <div class="flex label-containe">
@@ -18,13 +17,11 @@
       </select> -->
         <div>
           <h4>Comments List</h4>
-          <hr>
           <ol>
             <li v-for="comment in editedItem.comments" :key="comment._id">{{comment.txt }} </li>
-            <hr>
           </ol>
         </div>
-         <textarea placeholder="Enter comment" contenteditable="true" name="" id="" cols="5" rows="5" v-model="addedComment.txt"></textarea>
+         <textarea placeholder="Enter comment" contenteditable="true" name="" id="" cols="75" rows="10" v-model="addedComment.txt"></textarea>
         <button @click.stop="addComment">Add Comment</button>
     </section> 
 </template>
@@ -73,6 +70,18 @@ section {
 h4 {
   text-decoration: underline;
 }
+
+.details-container {
+  margin: 0 auto;
+  margin-top: 50px;
+  font-size: 1.5rem;
+  font-family: 'Mina';
+}
+
+.details-container textarea {
+  margin: 10px;
+}
+
 .color {
   width: 30px;
   height: 30px;
@@ -80,15 +89,15 @@ h4 {
   border-radius: 8px;
 }
 .red {
-  background: red;
+  background: rgb(197, 0, 0);
 }
 .yellow {
-  background: yellow;
+  background: rgb(255, 136, 0);
 }
 .green {
-  background: green;
+  background: rgb(240, 224, 5);
 }
 .blue {
-  background: blue;
+  background: rgb(35, 149, 7);
 }
 </style>
