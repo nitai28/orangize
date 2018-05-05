@@ -12,11 +12,13 @@
             <img src="../../assets/icon/rubbish-bin.svg" class="delete-list" @click="deleteList(list._id)">
           </div>
           <ul class="clean-list items-container">
-              <li class="item-preview toggle-modal" @click="toggleModal" v-for="item in list.items" :key="item._id">
+            <draggable v-model="list.items" class="dragArea" :options="{group:'listItems'}" @change="checkMove($event, list)">
+              <li class="item-preview toggle-modal" @click="toggleModal" v-for="item in list.items" :key="item._id" @move="updated(item, list.items, item._id)">
                 <router-link :to="'/orangize/'+item._id">
                   <item-preview :item="item" ></item-preview>
                 </router-link> 
               </li>
+            </draggable>
             <li class="new-item item-preview" @click="createItem(list)">
                 Create item...
             </li>
@@ -59,9 +61,23 @@ export default {
       set(value) {
         this.$store.dispatch({type: 'updateListsOrder', lists: value})
       }
-    }
+    },
+  },
+  watch: {
+
   },
   methods: {
+    checkMove(ev, list) {
+    // if(ev.added) {
+      this.$store.dispatch({type: 'updateList', updatedList: list})
+      // list.items
+    // }
+    // else if(ev.removed) {
+
+    // }
+    // console.log('ev', ev.added);
+    // console.log('list', list);
+  },
     createItem(list) {
       this.$store.dispatch({ type: "createItem", list });
     },
@@ -106,7 +122,7 @@ export default {
   /* background-color: rgba(240, 240, 240, 0.904); */
   border-radius: 5%;
   width: 100%;
-  transition: width .5s ease-in-out;
+  transition: width 0.5s ease-in-out;
 }
 
 .new-item {
@@ -121,7 +137,7 @@ export default {
   margin: 10px;
   padding: 5px;
   /* background-color: #c7c7c7f0; */
-  background: rgba(0,0,0,.3);
+  background: rgba(0, 0, 0, 0.3);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -151,7 +167,4 @@ export default {
 .items-container {
   width: 100%;
 }
-
-
-
 </style>
