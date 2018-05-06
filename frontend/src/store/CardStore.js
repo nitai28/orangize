@@ -183,11 +183,8 @@ export default {
     },
   },
   getters: {
-    getTasks(state) {
-      return state.tasks;
-    },
-    getCards(state) {
-      return state.cards;
+    getCards(state, {filter}) {
+      // return state.cards.forEach(card => card.tasks.filter(''));
     },
     selectedTask(state) {
       return state.selectedTask;

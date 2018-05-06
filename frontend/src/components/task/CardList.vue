@@ -1,5 +1,6 @@
 <template>
     <section class="card-list">
+      <task-filter @filterChanged="setFilter(filter)"></task-filter>
       <button @click="addCard">Add Card</button>
       <ul class="flex flex-row">
         <draggable v-model="cards" class="flex flex-row clean-card">
@@ -12,7 +13,8 @@
             <img src="../../assets/icon/rubbish-bin.svg" class="delete-card" @click="deleteCard(card._id)">
           </div>
           <ul class="clean-card tasks-container">
-            <card-preview :card="card" :tasks="card.tasks"></card-preview>
+            <!-- <card-preview :filter="{byLabel: 'red'}" :card="card" :tasks="card.tasks"></card-preview> -->
+            <card-preview :filter="filter" :card="card" :tasks="card.tasks"></card-preview>
             <li class="new-task task-preview" @click="createTask(card)">
                 Create task...
             </li>
@@ -31,6 +33,7 @@ import EventBusService from '../../services/EventBusService';
 import Modal from "./Modal.vue";
 import TaskDetails from "./TaskDetails.vue";
 import CardPreview from './CardPreview.vue';
+import TaskFilter from './TaskFilter.vue';
 import Draggable from "vuedraggable";
 
 export default {
@@ -40,6 +43,7 @@ export default {
   },
   data() {
     return {
+      filter: {byLabel: '', byTitle: ''},
       modalActive: false,
       editableCardId: null,
       currCard: {}
@@ -56,10 +60,12 @@ export default {
       set(value) {
         this.$store.dispatch({ type: "updateCardsOrder", cards: value });
       }
-    }
+    },
   },
-
   methods: {
+    setFilter(filter) {
+      this.filter = filter;
+    },
     createTask(card) {
       this.$store.dispatch({ type: "createTask", card });
     },
@@ -84,7 +90,8 @@ export default {
     Modal,
     TaskDetails,
     Draggable,
-    CardPreview
+    CardPreview,
+    TaskFilter
   }
 };
 </script>

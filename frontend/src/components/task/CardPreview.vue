@@ -3,7 +3,7 @@
         <draggable v-model="cardTasks" class="dragArea" :options="{group:'cardTasks'}">
             <li v-for="task in cardTasks" :key="task._id">
             <router-link :to="'/orangize/'+task._id">
-                <task-preview :task="task"></task-preview>
+                <task-preview v-show="checkTaskFiltered(task)" :task="task"></task-preview>
             </router-link> 
             </li>
         </draggable>
@@ -16,7 +16,7 @@ import Draggable from "vuedraggable";
 
 export default {
   name: "CardPreview",
-  props: ["card", "tasks"],
+  props: ["filter", "card", "tasks"],
   computed: {
     cardTasks: {
       get() {
@@ -29,6 +29,12 @@ export default {
           cardId: this.card._id
         });
       }
+    }
+  },
+  methods: {
+    checkTaskFiltered(task) {
+      if(task.label === this.filter.byLabel || !this.filter.byLabel) return true;
+      else return false;
     }
   },
   components: {
