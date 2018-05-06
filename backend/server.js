@@ -10,12 +10,12 @@ var corsOptions = {
 app.use(cors(corsOptions))
 
 var http = require('http').Server(app);
-var io = require('socket.io')(http);
+// var io = require('socket.io')(http);
 var bodyParser = require('body-parser')
 const clientSessions = require('client-sessions');
 
 var UserService = require('./services/UserService')
-var SocketService = require('./services/SocketService')
+// var SocketService = require('./services/SocketService')
 var CardService = require('./services/CardService')
 
 app.use(bodyParser.urlencoded({ extended: false }))

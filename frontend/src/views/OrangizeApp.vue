@@ -9,7 +9,7 @@
 <script>
 
 import TaskList from '../components/task/TaskList.vue';
-import SocketSerivce from '../services/SocketService.js'
+// import SocketSerivce from '../services/SocketService.js'
 
 
 export default {
@@ -19,7 +19,7 @@ export default {
     };
   },
   created() {
-    SocketSerivce.connectSocket(); 
+    // SocketSerivce.connectSocket(); 
   },
   components: {
     TaskList,

@@ -54,7 +54,7 @@ function deleteCard(cardId) {
         if (err) reject(err);
         else {
           resolve(cardId)
-          socketService.sendUsers(users) //socketService funcs will come here
+          // socketService.sendUsers(users) //socketService funcs will come here
         };
         db.close();
       });
