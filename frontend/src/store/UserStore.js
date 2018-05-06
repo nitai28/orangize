@@ -22,7 +22,6 @@ export default {
           })
         },
         logout(store) {
-            console.log(store);
             return UserService.logout()
             .then(()=>{
               store.commit({type: 'setUser', user: null});

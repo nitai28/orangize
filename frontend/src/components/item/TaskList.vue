@@ -1,5 +1,5 @@
 <template>
-    <section class="item-list">
+    <section class="task-list">
       <button @click="addList">Add List</button>
       <ul class="flex flex-row">
         <draggable v-model="lists" class="flex flex-row clean-list">
@@ -12,26 +12,25 @@
             <img src="../../assets/icon/rubbish-bin.svg" class="delete-list" @click="deleteList(list._id)">
           </div>
           <ul class="clean-list items-container">
-            <list-item :list="list" :items="list.items"></list-item>
-            <li class="new-item item-preview" @click="createItem(list)">
+            <card-preview :list="list" :items="list.items"></card-preview>
+            <li class="new-item task-preview" @click="createItem(list)">
                 Create item...
             </li>
           </ul>
           </li>
           </draggable>
       </ul>
-      <div class="item-modal">
-        <item-modal :activated="modalActive"><item-details class="item-details" v-if="selectedItem" :item="selectedItem"></item-details></item-modal>
+      <div class="modal">
+        <modal :activated="modalActive"><task-details class="tasj-details" v-if="selectedItem" :item="selectedItem"></task-details></modal>
       </div>
     </section>
 </template>
 
 <script>
 import EventBusService from '../../services/EventBusService';
-import ItemPreview from "./ItemPreview.vue";
-import ItemModal from "./ItemModal.vue";
-import ItemDetails from "./ItemDetails.vue";
-import ListPreview from './ListPreview.vue';
+import Modal from "./Modal.vue";
+import TaskDetails from "./TaskDetails.vue";
+import CardPreview from './CardPreview.vue';
 import Draggable from "vuedraggable";
 
 export default {
@@ -65,7 +64,6 @@ export default {
       this.$store.dispatch({ type: "createItem", list });
     },
     toggleModal() {
-      console.log("LALALALALAALLALA");
       this.modalActive = !this.modalActive;
     },
     addList() {
@@ -84,11 +82,10 @@ export default {
     }
   },
   components: {
-    ItemPreview,
-    ItemModal,
-    ItemDetails,
+    Modal,
+    TaskDetails,
     Draggable,
-    ListPreview
+    CardPreview
   }
 };
 </script>

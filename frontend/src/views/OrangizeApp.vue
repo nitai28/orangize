@@ -3,7 +3,6 @@
     <section class='orangize-app'>
         <i class="orangize"></i> <h1>Orangize</h1>
         <task-list></task-list>
-        <!-- <item-details v-if="selectedItem" :item="selectedItem" ></item-details> -->
     </section>
 </template>
 
@@ -19,15 +18,6 @@ export default {
   },
   created() {
 
-  },
-  methods: {
-   
-  },
-  computed: {
-    // showDetails() {
-    //   console.log('id of item to show',this.$route.params.id)
-    //   return this.$route.params.id
-    // },
   },
   components: {
     TaskList,

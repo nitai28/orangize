@@ -1,5 +1,5 @@
 <template>
-    <section class="details-container flex flex-column">
+    <section class="task-details details-container flex flex-column">
       <h3 v-show="isTitleEditMode === false" @dblclick="isTitleEditMode = true">{{editedItem.title}}</h3>
       <input v-show="isTitleEditMode === true" v-model="editedItem.title" @blur="isTitleEditMode=false; updateItem()"
              @keyup.enter="isTitleEditMode=false" autofocus>
@@ -30,7 +30,7 @@
 import shortid from "shortid";
 import ItemService from "../../services/ItemService.js";
 export default {
-  name: "ItemDetails",
+  name: "TaskDetails",
   data() {
     return {
       addedComment: {},

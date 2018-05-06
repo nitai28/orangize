@@ -1,9 +1,9 @@
 <template>
-    <section class="list-item">
+    <section class="card-preview">
         <draggable v-model="listItems" class="dragArea" :options="{group:'listItems'}">
             <li v-for="item in listItems" :key="item._id">
             <router-link :to="'/orangize/'+item._id">
-                <item-preview :item="item"></item-preview>
+                <task-preview :task="item"></task-preview>
             </router-link> 
             </li>
         </draggable>
@@ -11,11 +11,11 @@
 </template>
 
 <script>
-import ItemPreview from "./ItemPreview.vue";
+import TaskPreview from "./TaskPreview.vue";
 import Draggable from "vuedraggable";
 
 export default {
-  name: "ListPreview",
+  name: "CardPreview",
   props: ["list", "items"],
   computed: {
     listItems: {
@@ -33,7 +33,7 @@ export default {
   },
   components: {
     Draggable,
-    ItemPreview
+    TaskPreview
   }
 };
 </script>

@@ -1,34 +1,34 @@
 <template>
-    <section class="item-prev-container" :class="{[item.label]: (item.label) }" @click="showDetails(item)">
-        <h3>{{ item.title }}</h3>
-        <button class="delete-item" @click.stop="removeItem(item)"><img src="../../assets/icon/rubbish-bin.svg" /></button>
+    <section class="task-preview" :class="{[task.label]: (task.label) }" @click="showDetails(task)">
+        <h3>{{ task.title }}</h3>
+        <button class="delete-task" @click.stop="removeTask(task)"><img src="../../assets/icon/rubbish-bin.svg" /></button>
     </section>
 </template>
 
 <script>
 import EventBusService from '../../services/EventBusService';
 export default {
-  name: "ItemPreview",
-  props: ["item"],
+  name: "TaskPreview",
+  props: ["task"],
   methods: {
-    showDetails(item) {
+    showDetails(task) {
       EventBusService.$emit('openModal');
-      this.$store.commit({type: 'setSelectedItem', item});
+      this.$store.commit({type: 'setSelectedTask', task});
     },
-    removeItem(item) {
-      this.$store.dispatch({ type: 'removeItem', item});
+    removeTask(task) {
+      this.$store.dispatch({ type: 'removeTask', task});
     }
   },
   computed:{
     label(){
-      return this.item.labels[0]
+      return this.task.labels[0]
     }
   }
 };
 </script>
 
 <style scoped>
-.item-prev-container {
+.task-preview {
   display: flex;
   flex-direction: row;
   background-color: #eae7e7f0;
@@ -45,18 +45,18 @@ h3 {
   border-radius: 5%;
 }
 
-.delete-item {
+.delete-task {
   display: inline-block;
   opacity: 0;
   transition: opacity .3s ease-in-out;
 }
 
-.delete-item img {
+.delete-task img {
   width: 15px;
   height: 15px;
 }
 
-.delete-item:hover {
+.delete-task:hover {
   opacity: 1;
 }
 

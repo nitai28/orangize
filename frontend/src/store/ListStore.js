@@ -12,14 +12,12 @@ export default {
     setItems(state, {
       items
     }) {
-      console.log("STORE: Items has been loaded.");
       state.items = items;
     },
     setLists(state, {
       lists
     }) {
       state.lists = lists;
-      console.log("STORE: Lists has been loaded.");
     },
     setItems(state, {
       items,
@@ -41,7 +39,7 @@ export default {
     }) {
       state.lists = updatedLists;
     },
-    setSelectedItem(state, {
+    setSelectedTask(state, {
       item
     }) {
       state.selectedItem = item;
@@ -50,12 +48,10 @@ export default {
       newList
     }) {
       state.lists.push(newList);
-      console.log('new list:', newList)
     },
     deleteList(state, {
       listId
     }) {
-      console.log('id to delete', listId)
       const listIdx = state.lists.findIndex(list => list._id === listId);
       state.lists.splice(listIdx, 1);
     }
@@ -95,8 +91,6 @@ export default {
     }) {
       ListService.getListById(editedItem.listId).then(list => {
         let itemIdx = list.items.findIndex(item => {
-          console.log(item._id, editedItem._id);
-
           return item._id === editedItem._id
         });
         list.items.splice(itemIdx, 1, editedItem);
@@ -127,14 +121,13 @@ export default {
       listId
     }) {
       ListService.deleteList(listId).then(() => {
-        console.log('list deleted')
         store.commit({
           listId,
           type: 'deleteList'
         })
       })
     },
-    removeItem(store, {
+    removeTask(store, {
       item
     }) {
       ListService.getListById(item.listId)
@@ -176,7 +169,6 @@ export default {
     }) {
       ListService.getListById(listId).then(list => {
         let copyItems = JSON.parse(JSON.stringify(items));
-        console.log(copyItems);
         copyItems.forEach(copyItem => copyItem.listId = listId);
         list.items = copyItems;
         ListService.saveList(list).then(_ => {
@@ -195,7 +187,6 @@ export default {
       return state.items;
     },
     getLists(state) {
-      console.log(state.lists);
       return state.lists;
     },
     selectedItem(state) {
