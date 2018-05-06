@@ -1,5 +1,5 @@
 <template>
-    <section class="task-list">
+    <section class="card-list">
       <button @click="addCard">Add Card</button>
       <ul class="flex flex-row">
         <draggable v-model="cards" class="flex flex-row clean-card">

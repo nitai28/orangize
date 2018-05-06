@@ -8,7 +8,7 @@
 
 <script>
 
-import TaskList from '../components/task/TaskList.vue';
+import CardList from '../components/task/CardList.vue';
 
 export default {
   name: 'OrangizeApp',
@@ -20,7 +20,7 @@ export default {
 
   },
   components: {
-    TaskList,
+    CardList,
   }
 };
 </script>
