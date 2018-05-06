@@ -15,7 +15,7 @@ import ItemPreview from "./ItemPreview.vue";
 import Draggable from "vuedraggable";
 
 export default {
-  name: "ListItem",
+  name: "ListPreview",
   props: ["list", "items"],
   computed: {
     listItems: {

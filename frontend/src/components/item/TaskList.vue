@@ -31,7 +31,7 @@ import EventBusService from '../../services/EventBusService';
 import ItemPreview from "./ItemPreview.vue";
 import ItemModal from "./ItemModal.vue";
 import ItemDetails from "./ItemDetails.vue";
-import ListItem from './ListItem.vue';
+import ListPreview from './ListPreview.vue';
 import Draggable from "vuedraggable";
 
 export default {
@@ -88,7 +88,7 @@ export default {
     ItemModal,
     ItemDetails,
     Draggable,
-    ListItem
+    ListPreview
   }
 };
 </script>
