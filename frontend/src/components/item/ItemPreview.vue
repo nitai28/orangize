@@ -60,15 +60,15 @@ h3 {
 }
 
 .red {
-  background: red;
+  background: rgb(197, 0, 0);
 }
 .yellow {
-  background: yellow;
+  background: rgb(255, 136, 0);
 }
 .green {
-  background: green;
+  background: rgb(240, 224, 5);
 }
 .blue {
-  background: blue;
+  background: rgb(35, 149, 7);
 }
 </style>
