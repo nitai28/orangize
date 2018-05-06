@@ -2,7 +2,7 @@
 <template>
     <section class='orangize-app'>
         <i class="orangize"></i> <h1>Orangize</h1>
-        <task-list></task-list>
+        <card-list></card-list>
     </section>
 </template>
 
