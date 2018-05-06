@@ -113,6 +113,8 @@ export default {
   border-radius: 5px;
   border: 1px solid black;
   padding: 5px;
+  margin-top: 5px;
+
 }
 
 .list-container {
@@ -147,4 +149,13 @@ export default {
 .items-container {
   width: 100%;
 }
+
+.items-details {
+    height: 90%;
+    width: 90%;
+    margin: auto;
+    margin-top: 40px;
+}
+
+
 </style>
