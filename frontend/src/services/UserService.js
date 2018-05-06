@@ -1,6 +1,6 @@
 
 function emptyUser() {
-  return {_id:'',name: '', email:'',password:'',img:'',isLoggedin:'',isAdmin:'',items:[]}
+  return {_id:'',name: '', email:'',password:'',img:'',isLoggedin:'',isAdmin:'',tasks:[]}
 }
 
 function getUser() {

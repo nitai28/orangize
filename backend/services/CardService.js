@@ -1,43 +1,43 @@
 const mongo = require("mongodb");
 var DBService = require("./DBService");
 
-function getLists(lists) {
+function getCards(cards) {
   return new Promise((resolve, reject) => {
     DBService.dbConnect().then(db => {
       db
-        .collection("list")
+        .collection("card")
         .find({})
-        .toArray((err, lists) => {
+        .toArray((err, cards) => {
           if (err) reject(err);
-          else resolve(lists);
+          else resolve(cards);
           db.close();
         });
     });
   });
 }
 
-function getById(listId) {
-  listId = new mongo.ObjectID(listId);
+function getById(cardId) {
+  cardId = new mongo.ObjectID(cardId);
   return new Promise((resolve, reject) => {
     DBService.dbConnect().then(db => {
-      db.collection("list").findOne({ _id: listId }, (err, list) => {
-        if (err) reject(list);
-        else resolve(list);
+      db.collection("card").findOne({ _id: cardId }, (err, card) => {
+        if (err) reject(card);
+        else resolve(card);
         db.close();
       });
     });
   });
 }
 
-function validateDetails(List) {
-  console.log(List);
-  return List.name !== "puki";
+function validateDetails(Card) {
+  console.log(Card);
+  return Card.name !== "puki";
 }
 
-function addList(list) {
+function addCard(card) {
   return new Promise((resolve, reject) => {
     DBService.dbConnect().then(db => {
-      db.collection("list").insert(list, (err, res) => {
+      db.collection("card").insert(card, (err, res) => {
         if (err) reject(err);
         else resolve(res.ops);
         db.close();
@@ -46,38 +46,35 @@ function addList(list) {
   });
 }
 
-function deleteList(listId) {
-  listId = new mongo.ObjectID(listId);
+function deleteCard(cardId) {
+  cardId = new mongo.ObjectID(cardId);
   return new Promise((resolve, reject) => {
     DBService.dbConnect().then(db => {
-      db.collection("list").deleteOne({ _id: listId }, (err, res) => {
-        
-        
+      db.collection("card").deleteOne({ _id: cardId }, (err, res) => {
         if (err) reject(err);
-        else 
-        {
-          resolve(listId);
+        else {
+          resolve(cardId)
           socketService.sendUsers(users) //socketService funcs will come here
-        }
+        };
         db.close();
       });
     });
   });
 }
 
-function updateList(list, listId) {
-  listId = new mongo.ObjectID(listId);
-  delete list._id;
+function updateCard(card, cardId) {
+  cardId = new mongo.ObjectID(cardId);
+  delete card._id;
   return new Promise((resolve, reject) => {
     DBService.dbConnect().then(db => {
       db
-        .collection("list")
-        .updateOne({ _id: listId }, list, (err, updatedList) => {
+        .collection("card")
+        .updateOne({ _id: cardId }, card, (err, updatedCard) => {
           if (err) reject(err);
           else {
-            resolve(updatedList);
-            //socketService funcs will come here
-          }
+          resolve(updatedCard);
+          //socketService funcs will come here
+        }
           db.close();
         });
     });
@@ -85,9 +82,9 @@ function updateList(list, listId) {
 }
 
 module.exports = {
-  getLists,
+  getCards,
   getById,
-  addList,
-  deleteList,
-  updateList
+  addCard,
+  deleteCard,
+  updateCard
 };

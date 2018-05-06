@@ -4,7 +4,7 @@ import Vuex from "vuex";
 Vue.use(Vuex);
 
 import UserStore from './UserStore.js'
-import ListStore from './ListStore.js'
+import CardStore from './CardStore.js'
 
 export default new Vuex.Store({
   strict: true,
@@ -13,7 +13,7 @@ export default new Vuex.Store({
   },
   modules: {
     UserStore,
-    ListStore
+    CardStore
   }
   
 })
