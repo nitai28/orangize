@@ -13,6 +13,7 @@ import EventBusService, { SHOW_MSG } from "../services/EventBusService.js";
 import itemDetails from '../components/item/ItemDetails.vue'
 import ItemList from '../components/item/ItemList.vue';
 import ListService from '../services/ListService.js'
+import SocketSerivce from '../services/SocketService.js'
 // import ItemList from '../components/list/List.vue';
 
 export default {
@@ -22,7 +23,7 @@ export default {
     };
   },
   created() {
-
+    SocketSerivce.connectSocket(); 
   },
   methods: {
    

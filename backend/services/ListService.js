@@ -51,8 +51,14 @@ function deleteList(listId) {
   return new Promise((resolve, reject) => {
     DBService.dbConnect().then(db => {
       db.collection("list").deleteOne({ _id: listId }, (err, res) => {
+        
+        
         if (err) reject(err);
-        else resolve(listId);
+        else 
+        {
+          resolve(listId);
+          socketService.sendUsers(users) //socketService funcs will come here
+        }
         db.close();
       });
     });
@@ -68,7 +74,10 @@ function updateList(list, listId) {
         .collection("list")
         .updateOne({ _id: listId }, list, (err, updatedList) => {
           if (err) reject(err);
-          else resolve(updatedList);
+          else {
+            resolve(updatedList);
+            //socketService funcs will come here
+          }
           db.close();
         });
     });

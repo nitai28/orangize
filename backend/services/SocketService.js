@@ -1,52 +1,29 @@
-var socketIo = require('socket.io');
+var nums = []
 
-var connectedCount = 0;
-var allSockets = [];
-
-function init(http) {
-    const io = socketIo(http);
-    io.on('connection', socket => {
-        console.log('a user connected');
-        connectedCount++;
-        allSockets.push(socket)
-      
-        socket.on('disconnect', () => {
-          console.log('user disconnected');
-          connectedCount--;
-          allSockets.splice(allSockets.findIndex(s => s === socket), 1)
-        });
-      
-        socket.on('chat newMessage', msg => {
-          console.log('message: ', msg);
-          if (socket.theTopic) {
-            console.log('Sending msg to all members in topic: ', socket.theTopic);
-            io.to(socket.theTopic).emit('chat message', msg);
-          } else {
-            io.emit('chat message', msg);
-          }
-        });
-      
-        socket.on('chat setTopic', topic => {
-          console.log('Server setting the TOPIC', topic);
-          if (socket.theTopic) socket.leave(socket.theTopic);
-          socket.join(topic);
-          socket.theTopic = topic;
-      
-          console.log('Connected Count', connectedCount, allSockets.length);
-        })
-      
-        socket.on('chat sendStatus', statusTxt => {
-          console.log('Server sending  the STATUS', statusTxt);
-          socket.broadcast.emit('chat setStatusTxt', statusTxt);
-        })
-      
-      });
-      
-      
-}
-
-
-
-module.exports = {
-    init
-}
+io.on('connection', function(socket){
+  socket.on('user connected', function(num) {
+    nums.push(num);
+    io.emit('users changed', nums);
+  })
+  socket.on('test', function(){
+    io.emit('test')
+  })
+  // socket.on('disconnect', function(){
+  //   if(!users) return;
+  //   removeUser(user.id);
+  //   socket.broadcast.emit('chat msg', {txt: `${user.nickName} has been disconnected!`, processed: false, from: 'SERVER'});
+  //   io.emit('users changed', users);
+  // });
+  // socket.on('chat msg', function(msg){
+  //   socket.broadcast.emit('chat msg', msg);
+  //   console.log('msg: ' + msg);
+  // });
+  // socket.on('user typing', function(typingUser, isTyping) {
+  //   console.log('isTyping:', isTyping);
+  //   setTypingUser(typingUser.id, isTyping);
+  //   io.emit('users changed', users);
+  // }),
+  // socket.on('open private chat', function(userId1, userId2) {
+    
+  // })
+});

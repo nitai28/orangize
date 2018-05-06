@@ -12,6 +12,7 @@
     "element-ui": "^2.3.5",
     "moment": "^2.22.1",
     "shortid": "^2.2.8",
+    "socket.io": "^2.1.0",
     "vue": "^2.5.13",
     "vue-moment": "^3.2.0",
     "vue-router": "^3.0.1",
