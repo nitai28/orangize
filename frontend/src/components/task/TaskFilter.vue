@@ -28,10 +28,10 @@ export default {
       console.log(copyFilter);
       this.$store.commit({ type: "setFilter", filter: copyFilter });
     },
-    filterBySearch: debounce(function (e) {
-     this.emitFilter()
+    filterBySearch: debounce(function(e) {
+      this.emitFilter();
     }, 500)
-  },
+  }
 };
 </script>
 
