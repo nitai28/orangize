@@ -15,7 +15,7 @@ const clientSessions = require('client-sessions');
 
 var UserService = require('./services/UserService')
 var SocketService = require('./services/SocketService')
-var ListService = require('./services/ListService')
+var CardService = require('./services/CardService')
 
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
@@ -43,8 +43,8 @@ SocketService.init(http);
 
 const addUserRoutes = require('./routes/UserRoutes.js')
 addUserRoutes(app)
-const addListRoutes = require('./routes/ListRoutes.js')
-addListRoutes(app)
+const addCardRoutes = require('./routes/CardRoutes.js')
+addCardRoutes(app)
 const addBoardRoutes = require('./routes/BoardRoutes.js')
 addBoardRoutes(app)
 
