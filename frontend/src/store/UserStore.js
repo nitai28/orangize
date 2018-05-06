@@ -2,11 +2,15 @@ import UserService from '../services/UserService.js'
 
 export default {
     state: {
-        loggedinUser: null
+        loggedinUser: null,
+        users:[]
       },
       mutations: {
-        setUser(state, {user}) {
+        setUsers(state, {user}) {
           state.loggedinUser = user;
+        },
+        saveUser(state, {user}){
+          this.users.push(user)
         }
       },
       getters: {
@@ -15,6 +19,16 @@ export default {
         }
       },
       actions: {
+        // loadUsers(store) {
+        //   return UserService.getUsers()
+        //     .then(users => store.commit({
+        //       type: "setUsers",
+        //       users
+        //     }))
+        //     .catch(err => err);
+        // },
+
+
         login(store, {userCredentials}) {
           return UserService.login(userCredentials)
           .then(user=>{
@@ -26,6 +40,16 @@ export default {
             .then(()=>{
               store.commit({type: 'setUser', user: null});
             })
-          }
+          },
+
+        register(store,{user}) {
+          console.log('$$$$$$$$$$$$$',user);
+          
+            return UserService.saveUser(user)
+            .then(()=>{
+              store.commit({type: 'saveUser', user});
+            })
+
+          } 
       }
 }

@@ -70,6 +70,19 @@ function updateUser(user) {
       })
   });
 }
+function checkLogin(user){
+  return new Promise((resolve, reject)=>{
+    DBService.dbConnect()
+    .then(db=>{
+        db.collection('user').findOne({name:user.name, password:user.password}, function (err, user) {
+            if (err|| user===null)    reject(err)
+            else        resolve(user);
+            db.close();
+        });
+    })
+});
+
+}
 
 
 module.exports = {
@@ -77,5 +90,6 @@ module.exports = {
   add,
   getById,
   updateUser,
-  deleteUser
+  deleteUser,
+  checkLogin
 }
