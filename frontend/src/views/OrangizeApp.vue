@@ -9,7 +9,6 @@
 <script>
 
 import TaskList from '../components/task/TaskList.vue';
-
 export default {
   name: 'OrangizeApp',
   data() {
