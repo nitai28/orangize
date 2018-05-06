@@ -1,11 +1,10 @@
 <template>
   <section id="modal-component" @keyup.esc="close">
   <div class="modal-body " v-bind:class="{'active-in-component': mutableActived }"> 
-         
     <div class="modal-content"><slot class="modal-slot"></slot></div>
-         <div class="modal-close" @click="close"><i class="zmdi zmdi-close"></i>
-         </div>
-  </div>     
+      <div class="modal-close" @click="close"><i class="zmdi zmdi-close"></i>
+      </div>
+    </div>     
 </section>
 
 </template>
@@ -16,7 +15,6 @@ name: "modalComponent",
   data() {
     return {
       mutableActived: false,
-      // message: "<i>Modal Content!</i>"
     };
   },
   props: ["activated"],
@@ -181,16 +179,12 @@ a {
   font-size: 6vw;
   transition: 300ms;
 }
-.moodal-slot{
+.modal-slot{
   margin: 10px 0;
   width: 50%;
   height: 50%;
   align-items: center;
   justify-content: center;
-  /* position: inherit; */
-  /* position: absolute; */
-  /* text-align: center; */
-  /* margin: 0 auto */
 }
 
 

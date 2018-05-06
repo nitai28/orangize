@@ -76,7 +76,6 @@ export default {
       this.$store.dispatch({ type: "updateCard", updatedCard });
     },
     editTitle(card) {
-      // this.$refs.titleInput.focus();
       this.editableCardId = card._id;
       this.currCard = JSON.parse(JSON.stringify(card));
     }
@@ -91,12 +90,6 @@ export default {
 </script>
 
 <style scoped>
-.card-tasks {
-  min-width: 200px;
-  background-color: #c7c7c7f0;
-  margin: 5px;
-  border-radius: 5%;
-}
 
 .new-task {
   background-color: rgba(237, 143, 33, 0.75);
@@ -105,7 +98,6 @@ export default {
   border: 1px solid black;
   padding: 5px;
   margin-top: 5px;
-
 }
 
 .card-container {
@@ -141,7 +133,7 @@ export default {
   width: 100%;
 }
 
-.tasks-details {
+.task-details {
     height: 90%;
     width: 90%;
     margin: auto;

@@ -39,6 +39,12 @@ export default {
 </script>
 
 <style>
+.card-tasks {
+  min-width: 200px;
+  background-color: #c7c7c7f0;
+  margin: 5px;
+  border-radius: 5%;
+}
 .dragArea {
   min-height: 10px;
 }

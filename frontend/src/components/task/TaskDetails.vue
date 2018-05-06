@@ -11,10 +11,6 @@
         <div @click.stop="updateLabel('green')" class="color green"></div>
         <div @click.stop="updateLabel('blue')" class="color blue"></div>
       </div>
-
-      <!-- <select name="" id="">
-        <option  value="" v-for="label in editedTask.labels" :key="label" >{{label}}</option>
-      </select> -->
         <div>
           <h4>Comments Card</h4>
           <ol>
@@ -28,7 +24,6 @@
 
 <script>
 import shortid from "shortid";
-import TaskService from "../../services/TaskService.js";
 export default {
   name: "TaskDetails",
   data() {
@@ -65,7 +60,6 @@ components: {
 section {
   background: rgba(0, 0, 0, 0.575);
   color: rgb(255, 255, 255);
-  /* text-align: center; */
 }
 h4 {
   text-decoration: underline;
