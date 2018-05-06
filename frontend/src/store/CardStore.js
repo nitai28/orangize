@@ -6,9 +6,13 @@ export default {
   state: {
     cards: [],
     taskToShow: null,
-    selectedTask: null
+    selectedTask: null,
+    filter: { byLabel: "", byTitle: "" },
   },
   mutations: {
+    setFilter(state, {filter}) {
+      state.filter = filter;
+    },
     setTasks(state, {
       tasks
     }) {
@@ -183,11 +187,14 @@ export default {
     },
   },
   getters: {
-    getCards(state, {filter}) {
-      // return state.cards.forEach(card => card.tasks.filter(''));
+    getCards(state) {
+      return state.cards;
     },
     selectedTask(state) {
       return state.selectedTask;
+    },
+    getFilter(state) {
+      return state.filter;
     }
   }
 };
