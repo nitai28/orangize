@@ -1,9 +1,9 @@
 <template>
     <section class="card-preview">
-        <draggable v-model="listItems" class="dragArea" :options="{group:'listItems'}">
-            <li v-for="item in listItems" :key="item._id">
-            <router-link :to="'/orangize/'+item._id">
-                <task-preview :task="item"></task-preview>
+        <draggable v-model="cardTasks" class="dragArea" :options="{group:'cardTasks'}">
+            <li v-for="task in cardTasks" :key="task._id">
+            <router-link :to="'/orangize/'+task._id">
+                <task-preview :task="task"></task-preview>
             </router-link> 
             </li>
         </draggable>
@@ -16,17 +16,17 @@ import Draggable from "vuedraggable";
 
 export default {
   name: "CardPreview",
-  props: ["list", "items"],
+  props: ["card", "tasks"],
   computed: {
-    listItems: {
+    cardTasks: {
       get() {
-        return this.items;
+        return this.tasks;
       },
-      set(changedItems) {
+      set(changedTasks) {
         this.$store.dispatch({
-          type: "updateItems",
-          items: changedItems,
-          listId: this.list._id
+          type: "updateTasks",
+          tasks: changedTasks,
+          cardId: this.card._id
         });
       }
     }

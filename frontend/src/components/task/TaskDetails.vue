@@ -1,10 +1,10 @@
 <template>
     <section class="task-details details-container flex flex-column">
-      <h3 v-show="isTitleEditMode === false" @dblclick="isTitleEditMode = true">{{editedItem.title}}</h3>
-      <input v-show="isTitleEditMode === true" v-model="editedItem.title" @blur="isTitleEditMode=false; updateItem()"
+      <h3 v-show="isTitleEditMode === false" @dblclick="isTitleEditMode = true">{{editedTask.title}}</h3>
+      <input v-show="isTitleEditMode === true" v-model="editedTask.title" @blur="isTitleEditMode=false; updateTask()"
              @keyup.enter="isTitleEditMode=false" autofocus>
       
-      <label for="">Label LIst:</label>
+      <label for="">Label Card:</label>
       <div class="flex label-containe">
         <div @click.stop="updateLabel('red')" class="color red"></div>
         <div @click.stop="updateLabel('yellow')" class="color yellow"></div>
@@ -13,12 +13,12 @@
       </div>
 
       <!-- <select name="" id="">
-        <option  value="" v-for="label in editedItem.labels" :key="label" >{{label}}</option>
+        <option  value="" v-for="label in editedTask.labels" :key="label" >{{label}}</option>
       </select> -->
         <div>
-          <h4>Comments List</h4>
+          <h4>Comments Card</h4>
           <ol>
-            <li v-for="comment in editedItem.comments" :key="comment._id">{{comment.txt }} </li>
+            <li v-for="comment in editedTask.comments" :key="comment._id">{{comment.txt }} </li>
           </ol>
         </div>
          <textarea placeholder="Enter comment" contenteditable="true" name="" id="" cols="75" rows="10" v-model="addedComment.txt"></textarea>
@@ -28,7 +28,7 @@
 
 <script>
 import shortid from "shortid";
-import ItemService from "../../services/ItemService.js";
+import TaskService from "../../services/TaskService.js";
 export default {
   name: "TaskDetails",
   data() {
@@ -39,21 +39,21 @@ export default {
   },
   methods: {
     addComment() {
-      this.editedItem.comments.unshift(this.addedComment);
-      this.$store.dispatch({ type: "updateItem", editedItem: this.editedItem });
+      this.editedTask.comments.unshift(this.addedComment);
+      this.$store.dispatch({ type: "updateTask", editedTask: this.editedTask });
     },
-    updateItem() {
-      this.$store.dispatch({ type: "updateItem", editedItem: this.editedItem });
+    updateTask() {
+      this.$store.dispatch({ type: "updateTask", editedTask: this.editedTask });
     },
     updateLabel(color) {
-      this.editedItem.label = color;
-      this.$store.dispatch({ type: "updateItem", editedItem: this.editedItem });
+      this.editedTask.label = color;
+      this.$store.dispatch({ type: "updateTask", editedTask: this.editedTask });
     }
   },
   computed: {
-    editedItem() {
+    editedTask() {
       this.addedComment = { _id: shortid.generate(), txt: "" };
-      return JSON.parse(JSON.stringify(this.$store.getters.selectedItem));
+      return JSON.parse(JSON.stringify(this.$store.getters.selectedTask));
     }
   }
 };
