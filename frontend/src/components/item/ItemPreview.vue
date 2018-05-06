@@ -32,6 +32,10 @@ export default {
   display: flex;
   flex-direction: row;
   background-color: #eae7e7f0;
+  margin-bottom: 4px;
+  border-radius: 5%;
+  width: 100%;
+  transition: width 0.5s ease-in-out;
 }
 
 h3 {

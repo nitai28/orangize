@@ -101,12 +101,6 @@ export default {
   border-radius: 5%;
 }
 
-.item-preview {
-  border-radius: 5%;
-  width: 100%;
-  transition: width 0.5s ease-in-out;
-}
-
 .new-item {
   background-color: rgba(237, 143, 33, 0.75);
   width: 100%;
