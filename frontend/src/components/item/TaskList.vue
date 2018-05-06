@@ -12,13 +12,7 @@
             <img src="../../assets/icon/rubbish-bin.svg" class="delete-list" @click="deleteList(list._id)">
           </div>
           <ul class="clean-list items-container">
-            <draggable v-model="list.items" class="dragArea" :options="{group:'listItems'}" @change="checkMove($event, list)">
-              <li class="item-preview toggle-modal" @click="toggleModal" v-for="item in list.items" :key="item._id" @move="updated(item, list.items, item._id)">
-                <router-link :to="'/orangize/'+item._id">
-                  <item-preview :item="item" ></item-preview>
-                </router-link> 
-              </li>
-            </draggable>
+            <list-item :list="list" :items="list.items"></list-item>
             <li class="new-item item-preview" @click="createItem(list)">
                 Create item...
             </li>
@@ -33,15 +27,17 @@
 </template>
 
 <script>
-// import ItemService from "../../services/ItemService.js";
+import EventBusService from '../../services/EventBusService';
 import ItemPreview from "./ItemPreview.vue";
 import ItemModal from "./ItemModal.vue";
 import ItemDetails from "./ItemDetails.vue";
-import Draggable from 'vuedraggable';
+import ListItem from './ListItem.vue';
+import Draggable from "vuedraggable";
 
 export default {
   created() {
     this.$store.dispatch({ type: "loadLists" });
+    EventBusService.$on('openModal', this.toggleModal);
   },
   data() {
     return {
@@ -51,38 +47,25 @@ export default {
     };
   },
   computed: {
-     selectedItem(){
-      return this.$store.getters.selectedItem
-     },
+    selectedItem() {
+      return this.$store.getters.selectedItem;
+    },
     lists: {
       get() {
         return this.$store.getters.getLists;
       },
       set(value) {
-        this.$store.dispatch({type: 'updateListsOrder', lists: value})
+        this.$store.dispatch({ type: "updateListsOrder", lists: value });
       }
-    },
+    }
   },
-  watch: {
 
-  },
   methods: {
-    checkMove(ev, list) {
-    // if(ev.added) {
-      this.$store.dispatch({type: 'updateList', updatedList: list})
-      // list.items
-    // }
-    // else if(ev.removed) {
-
-    // }
-    // console.log('ev', ev.added);
-    // console.log('list', list);
-  },
     createItem(list) {
       this.$store.dispatch({ type: "createItem", list });
     },
     toggleModal() {
-      console.log('LALALALALAALLALA')
+      console.log("LALALALALAALLALA");
       this.modalActive = !this.modalActive;
     },
     addList() {
@@ -104,12 +87,12 @@ export default {
     ItemPreview,
     ItemModal,
     ItemDetails,
-    Draggable
+    Draggable,
+    ListItem
   }
 };
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 .list-tasks {
   min-width: 200px;
@@ -119,7 +102,6 @@ export default {
 }
 
 .item-preview {
-  /* background-color: rgba(240, 240, 240, 0.904); */
   border-radius: 5%;
   width: 100%;
   transition: width 0.5s ease-in-out;
@@ -136,7 +118,6 @@ export default {
 .list-container {
   margin: 10px;
   padding: 5px;
-  /* background-color: #c7c7c7f0; */
   background: rgba(0, 0, 0, 0.3);
   display: flex;
   flex-direction: column;
@@ -149,7 +130,6 @@ export default {
   display: inline-block;
   padding: 5px;
   align-self: flex-start;
-  /* background-color: #eae7e7f0; */
 }
 
 .list-title h3 {

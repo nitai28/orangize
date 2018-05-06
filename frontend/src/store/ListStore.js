@@ -9,34 +9,52 @@ export default {
     selectedItem: null
   },
   mutations: {
-    updateListIdx (state, { name, value }) {
-      state.pages[name] = value
-    },
-    setItems(state, { items }) {
+    setItems(state, {
+      items
+    }) {
       console.log("STORE: Items has been loaded.");
       state.items = items;
     },
-    setLists(state, { lists }) {
+    setLists(state, {
+      lists
+    }) {
       state.lists = lists;
       console.log("STORE: Lists has been loaded.");
     },
-    updateList(state, { updatedList }) {
+    setItems(state, {
+      items,
+      listId
+    }) {
+      const listIdx = state.lists.findIndex(list => list._id === listId);
+      state.lists[listIdx].items = items;
+    },
+    updateList(state, {
+      updatedList
+    }) {
       const listIdx = state.lists.findIndex(
         list => list._id === updatedList._id
       );
       state.lists.splice(listIdx, 1, updatedList);
     },
-    updateListsOrder(state, { updatedLists }) {
+    updateListsOrder(state, {
+      updatedLists
+    }) {
       state.lists = updatedLists;
     },
-    setSelectedItem(state, { item }) {
+    setSelectedItem(state, {
+      item
+    }) {
       state.selectedItem = item;
     },
-    newList(state, {newList}) {
+    newList(state, {
+      newList
+    }) {
       state.lists.push(newList);
       console.log('new list:', newList)
     },
-    deleteList(state, {listId}) {
+    deleteList(state, {
+      listId
+    }) {
       console.log('id to delete', listId)
       const listIdx = state.lists.findIndex(list => list._id === listId);
       state.lists.splice(listIdx, 1);
@@ -45,70 +63,132 @@ export default {
   actions: {
     loadLists(store) {
       return ListService.getLists()
-        .then(lists => store.commit({ type: "setLists", lists }))
+        .then(lists => store.commit({
+          type: "setLists",
+          lists
+        }))
         .catch(err => err);
     },
     loadItems(store) {
       return ItemService.query().then(items => {
-        store.commit({ type: "setItems", items });
+        store.commit({
+          type: "setItems",
+          items
+        });
       });
     },
 
-    createItem(store, { list }) {
+    createItem(store, {
+      list
+    }) {
       var editedList = JSON.parse(JSON.stringify(list));
       editedList.items.push(ItemService.emptyItem(list._id));
       ListService.saveList(editedList).then(_ => {
-        store.commit({ type: "updateList", updatedList: editedList });
+        store.commit({
+          type: "updateList",
+          updatedList: editedList
+        });
       });
     },
-    updateItem(store, { editedItem }) {
+    updateItem(store, {
+      editedItem
+    }) {
       ListService.getListById(editedItem.listId).then(list => {
         let itemIdx = list.items.findIndex(item => {
           console.log(item._id, editedItem._id);
-          
+
           return item._id === editedItem._id
         });
         list.items.splice(itemIdx, 1, editedItem);
-        
+
         ListService.saveList(list).then(_ => {
-          store.commit({ type: "updateList", updatedList: list });
-          store.commit({ type: "setSelectedItem", item: list.items[itemIdx] });
+          store.commit({
+            type: "updateList",
+            updatedList: list
+          });
+          store.commit({
+            type: "setSelectedItem",
+            item: list.items[itemIdx]
+          });
         });
       });
     },
+
     addList(store) {
       var createdList = ListService.emptyList();
       ListService.saveList(createdList).then((newList) => {
-        store.commit({type: 'newList', newList})
+        store.commit({
+          type: 'newList',
+          newList
+        })
       })
     },
-    deleteList(store, {listId}) {
+    deleteList(store, {
+      listId
+    }) {
       ListService.deleteList(listId).then(() => {
         console.log('list deleted')
-        store.commit({ listId, type: 'deleteList'})
-      })
-    },
-    removeItem(store, {item}) {
-      ListService.getListById(item.listId)
-      .then(list => {
-        list.items = list.items.filter(currItem => currItem._id !== item._id);
-        ListService.saveList(list).then(_ => {
-          store.commit({type: 'updateList', updatedList: list});
+        store.commit({
+          listId,
+          type: 'deleteList'
         })
       })
     },
-    updateList(store, {updatedList}) {
-      ListService.saveList(updatedList)
-      .then(() => {
-        store.commit({type: 'updateList', updatedList});
-      })
+    removeItem(store, {
+      item
+    }) {
+      ListService.getListById(item.listId)
+        .then(list => {
+          list.items = list.items.filter(currItem => currItem._id !== item._id);
+          ListService.saveList(list).then(_ => {
+            store.commit({
+              type: 'updateList',
+              updatedList: list
+            });
+          })
+        })
     },
-    updateListsOrder(store, {lists}) {
+    updateList(store, {
+      updatedList
+    }) {
+      ListService.saveList(updatedList)
+        .then(() => {
+          store.commit({
+            type: 'updateList',
+            updatedList
+          });
+        })
+    },
+    updateListsOrder(store, {
+      lists
+    }) {
       ListService.updateAllLists(lists)
         .then(updatedLists => {
-          store.commit({type: 'setLists', lists: updatedLists})
+          store.commit({
+            type: 'setLists',
+            lists: updatedLists
+          })
         })
-    }
+    },
+    updateItems(store, {
+      items,
+      listId
+    }) {
+      ListService.getListById(listId).then(list => {
+        let copyItems = JSON.parse(JSON.stringify(items));
+        console.log(copyItems);
+        copyItems.forEach(copyItem => copyItem.listId = listId);
+        list.items = copyItems;
+        ListService.saveList(list).then(_ => {
+          store.commit({
+            type: 'setItems',
+            items: copyItems,
+            listId
+          })
+        })
+      })
+
+    },
   },
   getters: {
     getItems(state) {

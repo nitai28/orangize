@@ -2,18 +2,14 @@
 <template>
     <section class='orangize-app'>
         <i class="orangize"></i> <h1>Orangize</h1>
-        <item-list></item-list>
+        <task-list></task-list>
         <!-- <item-details v-if="selectedItem" :item="selectedItem" ></item-details> -->
     </section>
 </template>
 
 <script>
 
-import EventBusService, { SHOW_MSG } from "../services/EventBusService.js";
-import itemDetails from '../components/item/ItemDetails.vue'
-import ItemList from '../components/item/ItemList.vue';
-import ListService from '../services/ListService.js'
-// import ItemList from '../components/list/List.vue';
+import TaskList from '../components/item/TaskList.vue';
 
 export default {
   name: 'OrangizeApp',
@@ -28,20 +24,13 @@ export default {
    
   },
   computed: {
-    showDetails() {
-      console.log('id of item to show',this.$route.params.id)
-      return this.$route.params.id
-    },
-    // selectedItem(){
-    //   console.log('sadsadsad',this.$store.getters.selectedItem);
-      
-    //   return this.$store.getters.selectedItem
-    // }
-    
+    // showDetails() {
+    //   console.log('id of item to show',this.$route.params.id)
+    //   return this.$route.params.id
+    // },
   },
   components: {
-    ItemList,
-    // itemDetails
+    TaskList,
   }
 };
 </script>

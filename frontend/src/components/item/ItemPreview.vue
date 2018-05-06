@@ -1,19 +1,18 @@
 <template>
     <section class="item-prev-container" :class="{[item.label]: (item.label) }" @click="showDetails(item)">
-    <!-- <section> -->
         <h3>{{ item.title }}</h3>
-        <!-- <div>{{ item.labels }}</div> -->
-         <!-- <div v-show="item.labels">{{ item.labels }}</div>  -->
         <button class="delete-item" @click.stop="removeItem(item)"><img src="../../assets/icon/rubbish-bin.svg" /></button>
     </section>
 </template>
 
 <script>
+import EventBusService from '../../services/EventBusService';
 export default {
   name: "ItemPreview",
   props: ["item"],
   methods: {
     showDetails(item) {
+      EventBusService.$emit('openModal');
       this.$store.commit({type: 'setSelectedItem', item});
     },
     removeItem(item) {
@@ -22,8 +21,6 @@ export default {
   },
   computed:{
     label(){
-      console.log(this.item.labels[0]);
-      
       return this.item.labels[0]
     }
   }
