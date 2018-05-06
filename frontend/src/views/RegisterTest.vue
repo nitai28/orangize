@@ -1,33 +1,74 @@
 <template>
   <section class="register">
-    <form class="signUp" :class="{ 'active-sx': !this.isLoginMode, 'inactive-sx': this.isLoginMode }">
+    <form @submit.prevent="register" class="signUp" :class="{ 'active-sx': !this.isLoginMode, 'inactive-sx': this.isLoginMode }">
       <h3>Create Your Account</h3>
       <p>Just enter your email address and your password for join.</p>
-      <input class="w100" type="email" placeholder="Insert eMail" required autocomplete='off' />
-      <input type="password" placeholder="Insert Password" required />
-      <input type="password" placeholder="Verify Password" required />
-      <button class="form-btn sx log-in" @click="isLoginMode = true" type="button">Log In</button>
-      <button class="form-btn dx" type="submit">Sign Up</button>
+      <input class="w100" type="text" placeholder="Insert Username" v-model="user.name" required autocomplete='off' />
+      <input type="password" placeholder="Insert Password" v-model="user.password" required />
+      <input type="password" placeholder="Verify Password" v-model="verifyPass" required />
+      <button class="form-btn sx log-in" @click="toggleLoginMode" type="button">Log In</button>
+      <button class="form-btn dx" type="submit" :disabled="!this.user.name || !this.user.password">Sign Up</button>
     </form>
-    <form class="signIn" :class="{ 'active-dx': this.isLoginMode, 'inactive-dx': !this.isLoginMode }">
+    <form @submit.prevent="checkLogin" class="login" :class="{ 'active-dx': this.isLoginMode, 'inactive-dx': !this.isLoginMode }">
       <h3>Welcome Back !</h3>
       <button class="fb" type="button">Log In With Facebook</button>
       <p>- or -</p>
-      <input type="email" placeholder="Insert eMail" autocomplete='off' required />
-      <input type="password" placeholder="Insert Password" required />
-      <button class="form-btn sx back" @click="isLoginMode = false" type="button">Back</button>
-      <button class="form-btn dx" type="submit">Log In</button>
+      <input ref="txtUserName" type="text" placeholder="Insert Username" v-model="user.name" autocomplete='off' required />
+      <input type="password" v-model="user.password" placeholder="Insert Password" required />
+      <button class="form-btn sx back" @click="toggleLoginMode" type="button">Back</button>
+      <button class="form-btn dx" type="submit" :disabled="!this.user.name || !this.user.password">Log In</button>
     </form>
   </section>
 </template>
 
 <script>
+import UserService from '../services/UserService';
+import EventBusService, { SHOW_MSG } from '../services/EventBusService.js'
+
 export default {
+  name: 'LoginPage',
   data() {
     return {
+      user: { name: '', password: '' },
+      verifyPass: '',
       isLoginMode: true
     }
   },
+  methods: {
+    toggleLoginMode() {
+      this.isLoginMode = !this.isLoginMode;
+      this.user = {name: '', password: ''}
+    },
+    register() {
+      if(this.verifyPass !== user.password) return false;
+      UserService.register(this.user)
+        .then(res => {
+          console.log("Register Completed, now try to log-in!");
+          EventBusService.$emit(SHOW_MSG, {
+            txt: "Registration Completed! please login"
+          });
+          this.$router.push("/login");
+        })
+        .catch(err => console.log("Register Failed!"));
+    },
+    checkLogin() {
+      this.$store
+        .dispatch({ type: "login", userCredentials: this.user })
+        .then(res => {
+          console.log("You have been logged-in!");
+          EventBusService.$emit(SHOW_MSG, { txt: `Welcome ${this.user.name}` });
+          this.$router.push("/chat");
+        })
+        .catch(err => {
+          console.log("Login Failed!");
+          EventBusService.$emit(SHOW_MSG, {
+            txt: `Wrong Credentials, please try again`,
+            type: "danger"
+          });
+          this.$refs.txtUserName.focus();
+        });
+    }
+  }
 };
 </script>
 
