@@ -75,9 +75,10 @@ export default {
         var copyCards = JSON.parse(JSON.stringify(cards));
         copyCards.forEach((card, idx) => {
           card.tasks = card.tasks.filter(task => {
-            if (!this.filter.byLabel || task.label === this.filter.byLabel)
-              return true;
-            else return false;
+            if ((!this.filter.byLabel || task.label === this.filter.byLabel) &&
+                (!this.filter.byTitle || task.title.toLowerCase().includes(this.filter.byTitle.toLowerCase())))
+                  return true;
+            else  return false;
           });
         });
         return copyCards;
