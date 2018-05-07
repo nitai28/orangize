@@ -2,6 +2,7 @@ import TaskService from "../services/TaskService.js";
 import CardService from "../services/CardService.js";
 import SocketService from "../services/SocketService.js";
 import BusService from "../services/EventBusService.js";
+import ActivityService from "../services/ActivityService";
 
 export default {
   strict: true,
@@ -10,6 +11,7 @@ export default {
     taskToShow: null,
     selectedTask: null,
     filter: { byLabel: "", byTitle: "" },
+    activities: []
   },
   mutations: {
     setFilter(state, {filter}) {
@@ -48,6 +50,9 @@ export default {
     },
     addCard(state, { card }) {
       state.cards.push(card);
+    },
+    addActivity(state, {activity}) {
+      state.activities.push(activity);
     }
   },
   actions: {
@@ -88,8 +93,10 @@ export default {
 
         CardService.saveCard(card).then(_ => {
           store.commit({ type: "updateCard", updatedCard: card });
-          store.commit({ type: "setSelectedTask", task: card.tasks[taskIdx]
-          });
+          store.commit({ type: "setSelectedTask", task: card.tasks[taskIdx]});
+          ActivityService.updateTask(editedTask).then(activity => {
+            store.commit({type: 'addActivity', activity});
+          })
         });
       });
     },
@@ -103,6 +110,9 @@ export default {
     updateCard(store, { updatedCard }) {
       CardService.saveCard(updatedCard).then(() => {
         store.commit({ type: "updateCard", updatedCard });
+        ActivityService.updateCard(updatedCard).then(activity => {
+          store.commit({type: 'addActivity', activity});
+        })
       });
     },
 
@@ -111,7 +121,7 @@ export default {
         store.commit({ type: "setCards", cards: updatedCards });
       });
     },
-
+    
     updateTasks(store, { tasks, cardId }) {
       CardService.getCardById(cardId).then(card => {
         let copyTasks = JSON.parse(JSON.stringify(tasks));
@@ -123,7 +133,11 @@ export default {
             tasks: copyTasks,
             cardId
           });
+          ActivityService.moveTask().then(activity => {
+            store.commit({type: 'addActivity', activity});
+          })
         });
+
       });
     }
   },
@@ -137,6 +151,9 @@ export default {
     },
     getFilter(state) {
       return state.filter;
+    },
+    getActivities(state) {
+      return state.activities;
     }
   }
 };

@@ -31,6 +31,7 @@
 import EventBusService from "../../services/EventBusService";
 import TaskService from "../../services/TaskService";
 import CardService from "../../services/CardService";
+import ActivityService from "../../services/ActivityService"
 import Modal from "./Modal.vue";
 import TaskDetails from "./TaskDetails.vue";
 import CardPreview from "./CardPreview.vue";
@@ -99,17 +100,31 @@ export default {
     createTask(card) {
       var editedCard = JSON.parse(JSON.stringify(card));
       editedCard.tasks.push(TaskService.emptyTask(card._id));
-      CardService.addTask(editedCard);
+      CardService.addTask(editedCard).then(addedTask => {
+        ActivityService.addTask(addedTask).then(activity => {
+          this.$store.commit({type: 'addActivity', activity});
+        })
+      })
     },
     toggleModal() {
       this.modalActive = !this.modalActive;
     },
     addCard() {
       var createdCard = CardService.emptyCard();
-      CardService.saveCard(createdCard);
+      CardService.saveCard(createdCard).then(addedCard => {
+        ActivityService.addCard(addedCard).then(activity => {
+            this.$store.commit({type: 'addActivity', activity});
+          })
+      })
     },
     deleteCard(cardId) {
-      CardService.deleteCard(cardId);
+        CardService.getCardById(cardId).then(card => {
+          CardService.deleteCard(cardId).then(_ => {
+          ActivityService.removeCard(card).then(activity => {
+              this.$store.commit({type: 'addActivity', activity});
+            })
+        })
+      })
     },
     updateCardTitle(updatedCard) {
       this.$store.dispatch({ type: "updateCard", updatedCard });
@@ -124,7 +139,11 @@ export default {
     deleteTask(task) {
       CardService.getCardById(task.cardId).then(card => {
         card.tasks = card.tasks.filter(currTask => currTask._id !== task._id);
-        CardService.deleteTask(card);
+        CardService.deleteTask(card).then(_ => {
+        ActivityService.removeTask(task).then(activity => {
+          this.$store.commit({type: 'addActivity', activity});
+        })
+      })
       });
     },
     /////////// After DB has been updated
