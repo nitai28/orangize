@@ -100,26 +100,18 @@ export default {
       });
     },
 
-    removeTask(store, { task }) {
-      CardService.getCardById(task.cardId).then(card => {
-        card.tasks = card.tasks.filter(currTask => currTask._id !== task._id);
-        CardService.saveCard(card).then(_ => {
-          store.commit({ type: "updateCard", updatedCard: card });
-          SocketService.removeTask(card);
-        });
-      });
-    },
-
     updateCard(store, { updatedCard }) {
       CardService.saveCard(updatedCard).then(() => {
         store.commit({ type: "updateCard", updatedCard });
       });
     },
+
     updateCardsOrder(store, { cards }) {
       CardService.updateAllCards(cards).then(updatedCards => {
         store.commit({ type: "setCards", cards: updatedCards });
       });
     },
+
     updateTasks(store, { tasks, cardId }) {
       CardService.getCardById(cardId).then(card => {
         let copyTasks = JSON.parse(JSON.stringify(tasks));
@@ -135,6 +127,7 @@ export default {
       });
     }
   },
+
   getters: {
     getCards(state) {
       return state.cards;
