@@ -42,9 +42,30 @@ module.exports = app => {
   app.put(`/user/:userId`, (req, res) => {
     const userId = req.params.userId;
     const user = req.body;
-    UserService
-        .updateUser(user)
-        .then(user => res.json(user))
-        .catch(err => res.status(500).send('Could not update user'))
-})
+    UserService.updateUser(user)
+      .then(user => res.json(user))
+      .catch(err => res.status(500).send("Could not update user"));
+  });
+  app.post("/user/login", function(req, res) {
+    // console.log(req.body);
+    
+    var user = { name: req.body.name, password: req.body.password };
+      UserService.checkLogin(user).then(userFromDB=>  res.json(userFromDB))
+      .catch(err => res.status(500).send("Could not login "));
+    // .then(userFromDB => {
+    //   if (userFromDB) {
+    //     console.log("Login!");
+    //     delete userFromDB.pass;
+    //     req.session.user = userFromDB;
+
+    //     res.json({ token: "Beareloginr: puk115th@b@5t", user: userFromDB });
+    //   } else {
+    //     console.log("Login NOT Succesful");
+    //     req.session.user = null;
+    //     res.json(403, { error: "Login failed" });
+    //   }
+    // });
+    // console.log('bchscbhsdchs######');
+    
+  });
 };
