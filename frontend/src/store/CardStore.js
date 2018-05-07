@@ -36,7 +36,7 @@ export default {
       state.selectedTask = task;
     },
     newCard(state, { newCard }) {
-      state.cards.push(newCard);
+      state.cards.unshift(newCard);
     },
     deleteCard(state, { cardId }) {
       const cardIdx = state.cards.findIndex(card => card._id === cardId);
