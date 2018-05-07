@@ -24,10 +24,15 @@ function saveCard(card) {
       })
 }
 
+function updateCard(updatedCard) { //Try and make any action inside a card call this func
+  return axios.put(_getCardUrl(updatedCard._id), updatedCard).then(_ => {
+    SocketService.updateCard(updatedCard);
+  })
+}
+
 function deleteTask(card) {
   return axios.put(_getCardUrl(card._id), card).then(_ =>{
     SocketService.removeTask(card);
-
   })
 }
 
@@ -65,5 +70,6 @@ export default {
   getCardById,
   updateAllCards,
   addTask,
-  deleteTask
+  deleteTask,
+  updateCard
 };

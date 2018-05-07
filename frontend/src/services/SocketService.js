@@ -22,6 +22,10 @@ function connectSocket() {
     socket.on('card added', (card) => {
         busService.$emit('card added', card);
     });
+
+    socket.on('card updated', (card) => {
+        busService.$emit('card updated', card);
+    })
     socket.on('chat msg', function (msg) {
         // JIF
         // if (user.nickName === msg.from) msgs[msgs.length - 1].processed = true;
@@ -44,6 +48,10 @@ const addTask = (task) => {
 
 const addCard = (card) => {
     socket.emit('card added', card);
+}
+
+const updateCard = (card) => {
+    socket.emit('card updated', card);
 }
 // const send = (msg) => {
 //     msgs.push(msg);
@@ -71,7 +79,8 @@ export default {
     removeTask,
     addTask,
     removeCard,
-    addCard
+    addCard,
+    updateCard
     // emitTyping,
     // openPrivateChat
     

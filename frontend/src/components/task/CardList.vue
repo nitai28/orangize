@@ -22,7 +22,7 @@
           </draggable>
       </ul>
       <div class="modal">
-        <modal :activated="modalActive"><task-details class="tasj-details" v-if="selectedTask" :task="selectedTask"></task-details></modal>
+        <modal :activated="modalActive" @updateTask="updateTask"><task-details class="task-details" v-if="selectedTask" :task="selectedTask"></task-details></modal>
       </div>
     </section>
 </template>
@@ -53,6 +53,9 @@ export default {
     });
     EventBusService.$on("card added", card => {
       this.addedCard(card);
+    });
+    EventBusService.$on("card updated", card => {
+      this.updatedCard(card);
     });
   },
   data() {
@@ -112,11 +115,21 @@ export default {
       CardService.deleteCard(cardId);
     },
     updateCardTitle(updatedCard) {
-      this.$store.dispatch({ type: "updateCard", updatedCard });
+      // this.$store.dispatch({ type: "updateCard", updatedCard });
+      CardService.updateCard(updatedCard);
     },
     editTitle(card) {
       this.editableCardId = card._id;
       this.currCard = JSON.parse(JSON.stringify(card));
+    },
+    updateTask(taskId) {
+      let updatedTask;
+      this.cards.forEach(card => {
+        let tempTask = card.tasks.find(task => task._id === taskId)
+        if (tempTask) updatedTask = tempTask 
+      })
+      let updatedCard = this.cards.find(card => card._id === updatedTask.cardId)
+      CardService.updateCard(updatedCard);
     },
     updateCard(card) {
       this.$store.commit({ type: "updateCard", updatedCard: card });
@@ -136,6 +149,9 @@ export default {
     },
     addedCard(card) {
       this.$store.commit({ type: "addCard", card });
+    },
+    updatedCard(card) {
+      this.$store.commit({ type: "updateCard", updatedCard: card });
     }
   },
   components: {

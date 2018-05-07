@@ -1,6 +1,6 @@
 <template>
   <section id="modal-component" @keyup.esc="close">
-  <div class="modal-body " v-bind:class="{'active-in-component': mutableActived }"> 
+  <div class="modal-body" v-bind:class="{'active-in-component': mutableActived }"> 
     <div class="modal-content"><slot class="modal-slot"></slot></div>
       <div class="modal-close" @click="close"><i class="zmdi zmdi-close"></i>
       </div>
@@ -22,6 +22,7 @@ name: "modalComponent",
     close() {
       this.mutableActived = !this.mutableActived;
       this.$el.blur();
+      this.$emit('updateTask', this.$route.params.id);
     }
   },
   watch: {

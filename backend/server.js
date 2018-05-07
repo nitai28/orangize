@@ -59,7 +59,6 @@ io.on('connection', (socket) => {
   //   io.emit('users changed', nums);
   // }),
   socket.on('task removed', (card) => {
-    console.log('a task as removed from the card:', card);
     io.emit('task removed', card)
   }),
   socket.on('card removed', (cardId) => {
@@ -70,6 +69,9 @@ io.on('connection', (socket) => {
   }),
   socket.on('card added', (card) => {
     io.emit('card added', card)
+  }),
+  socket.on('card updated', (card) => {
+    io.emit('card updated', card)
   })
 
 
