@@ -39,7 +39,9 @@ function addCard(card) {
     DBService.dbConnect().then(db => {
       db.collection("card").insert(card, (err, res) => {
         if (err) reject(err);
-        else resolve(res.ops);
+        else {
+          console.log('res-ops',res.ops)
+          resolve(res.ops)};
         db.close();
       });
     });
@@ -52,7 +54,10 @@ function deleteCard(cardId) {
     DBService.dbConnect().then(db => {
       db.collection("card").deleteOne({ _id: cardId }, (err, res) => {
         if (err) reject(err);
-        else resolve(cardId);
+        else {
+          resolve(cardId)
+          // socketService.sendUsers(users) //socketService funcs will come here
+        };
         db.close();
       });
     });
@@ -68,7 +73,10 @@ function updateCard(card, cardId) {
         .collection("card")
         .updateOne({ _id: cardId }, card, (err, updatedCard) => {
           if (err) reject(err);
-          else resolve(updatedCard);
+          else {
+          resolve(updatedCard);
+          //socketService funcs will come here
+        }
           db.close();
         });
     });

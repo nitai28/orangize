@@ -7,6 +7,7 @@
 
 <script>
 import EventBusService from '../../services/EventBusService';
+import TaskService from '../../services/TaskService';
 export default {
   name: "TaskPreview",
   props: ["task"],
@@ -16,7 +17,7 @@ export default {
       this.$store.commit({type: 'setSelectedTask', task});
     },
     removeTask(task) {
-      this.$store.dispatch({ type: 'removeTask', task});
+      this.$emit('removeTask', task)
     }
   },
   computed:{

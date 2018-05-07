@@ -13,7 +13,7 @@
             <img src="../../assets/icon/rubbish-bin.svg" class="delete-card" @click="deleteCard(card._id)">
           </div>
           <ul class="clean-card tasks-container">
-            <card-preview :card="card" :tasks="card.tasks"></card-preview>
+            <card-preview @removeTask="deleteTask" :card="card" :tasks="card.tasks"></card-preview>
             <li class="new-task task-preview" @click="createTask(card)">
                 Create task...
             </li>
@@ -29,6 +29,8 @@
 
 <script>
 import EventBusService from "../../services/EventBusService";
+import TaskService from "../../services/TaskService";
+import CardService from "../../services/CardService";
 import Modal from "./Modal.vue";
 import TaskDetails from "./TaskDetails.vue";
 import CardPreview from "./CardPreview.vue";
@@ -39,6 +41,19 @@ export default {
   created() {
     this.$store.dispatch({ type: "loadCards" });
     EventBusService.$on("openModal", this.toggleModal);
+
+    EventBusService.$on("task removed", card => {
+      this.updateCard(card);
+    });
+    EventBusService.$on("task added", task => {
+      this.addedTask(task);
+    });
+    EventBusService.$on("card removed", cardId => {
+      this.cardRemoved(cardId);
+    });
+    EventBusService.$on("card added", card => {
+      this.addedCard(card);
+    });
   },
   data() {
     return {
@@ -75,23 +90,26 @@ export default {
   },
   methods: {
     isFilter: function() {
-      console.log('isFILTER', !this.filter.byLabel)
+      console.log("isFILTER", !this.filter.byLabel);
       return !this.filter.byLabel;
     },
     setFilter(filter) {
       this.filter = filter;
     },
     createTask(card) {
-      this.$store.dispatch({ type: "createTask", card });
+      var editedCard = JSON.parse(JSON.stringify(card));
+      editedCard.tasks.push(TaskService.emptyTask(card._id));
+      CardService.addTask(editedCard);
     },
     toggleModal() {
       this.modalActive = !this.modalActive;
     },
     addCard() {
-      this.$store.dispatch({ type: "addCard" });
+      var createdCard = CardService.emptyCard();
+      CardService.saveCard(createdCard);
     },
     deleteCard(cardId) {
-      this.$store.dispatch({ type: "deleteCard", cardId });
+      CardService.deleteCard(cardId);
     },
     updateCardTitle(updatedCard) {
       this.$store.dispatch({ type: "updateCard", updatedCard });
@@ -99,6 +117,25 @@ export default {
     editTitle(card) {
       this.editableCardId = card._id;
       this.currCard = JSON.parse(JSON.stringify(card));
+    },
+    updateCard(card) {
+      this.$store.commit({ type: "updateCard", updatedCard: card });
+    },
+    deleteTask(task) {
+      CardService.getCardById(task.cardId).then(card => {
+        card.tasks = card.tasks.filter(currTask => currTask._id !== task._id);
+        CardService.deleteTask(card);
+      });
+    },
+    /////////// After DB has been updated
+    cardRemoved(cardId) {
+      this.$store.commit({ type: "deleteCard", cardId: cardId });
+    },
+    addedTask(task) {
+      this.$store.commit({ type: "addTask", task });
+    },
+    addedCard(card) {
+      this.$store.commit({ type: "addCard", card });
     }
   },
   components: {

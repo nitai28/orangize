@@ -8,15 +8,20 @@
 </template>
 
 <script>
+
 import UserMsg from "../components/global/UserMsg.vue";
+import SocketSerivce from '../services/SocketService.js'
 import CardList from '../components/task/CardList.vue';
 
 export default {
   name: "OrangizeApp",
   data() {
-    return {};
+    return {
+    };
   },
-  created() {},
+  created() {
+    SocketSerivce.connectSocket(); 
+  },
   components: {
     UserMsg,
     CardList,
