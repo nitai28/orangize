@@ -88,19 +88,18 @@ WHITE: #f5f5f5
   background: #231f20;
   margin-bottom: 4px;
   box-shadow: 0px 1px 2px 1px #000000b0;
+  padding-left: 5px;
 }
 
 .activity-txt {
   height: 18px;
-  padding-left: 5px;
 }
 
 .timestamp {
+  color: #f5f5f5a9;
   height: 15px;
-  text-align: right;
   width: 100%;
   padding: 1px;
   font-size: 13px;
-  align-self: flex-start;
 }
 </style>
