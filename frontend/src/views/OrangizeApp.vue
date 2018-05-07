@@ -3,6 +3,7 @@
     <section class='orangize-app'>
         <user-msg></user-msg>
         <card-list></card-list>
+        <activity-log></activity-log>
     </section>
 </template>
 
@@ -11,6 +12,7 @@
 import UserMsg from "../components/global/UserMsg.vue";
 import SocketSerivce from '../services/SocketService.js'
 import CardList from '../components/task/CardList.vue';
+import ActivityLog from '../components/activity/ActivityLog.vue'
 
 export default {
   name: "OrangizeApp",
@@ -24,6 +26,7 @@ export default {
   components: {
     UserMsg,
     CardList,
+    ActivityLog
   }
 };
 </script>
