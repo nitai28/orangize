@@ -1,11 +1,12 @@
 import ioClient from 'socket.io-client'
 
-// import busService from './bus.service';
+import busService from './EventBusService';
 
 var socket = null;
 
 function connectSocket() {
     socket = ioClient('http://localhost:3000');
+    // socket = ioClient('http://127.0.0.1:3000');
     socket.emit('user connected', 5);
     socket.on('users changed', function(nums) {
         console.log('USERS CHANGED!', nums)
@@ -13,6 +14,22 @@ function connectSocket() {
         // busService.$emit('users changed', users);
         
     });
+
+    socket.on('task removed', (card) => {
+        busService.$emit('task removed', card); 
+    });
+
+    socket.on('task added', (task) => {
+        busService.$emit('task added', task);
+    })
+
+    socket.on('card removed', (cardId) => {
+        busService.$emit('card removed', cardId); 
+    });
+
+    socket.on('card added', (card) => {
+        busService.$emit('card added', card);
+    })
     socket.on('chat msg', function (msg) {
         // JIF
         // if (user.nickName === msg.from) msgs[msgs.length - 1].processed = true;
@@ -20,6 +37,22 @@ function connectSocket() {
     });
 }
 
+const removeTask = (card) => {
+    // console.log('task removed from', card)
+    socket.emit('task removed', card);
+}
+
+const removeCard = (cardId) => {
+    socket.emit('card removed', cardId);
+}
+
+const addTask = (task) => {
+    socket.emit('task added', task);
+}
+
+const addCard = (card) => {
+    socket.emit('card added', card);
+}
 // const send = (msg) => {
 //     msgs.push(msg);
 //     socket.emit('chat msg', msg);
@@ -42,7 +75,11 @@ export default {
     // user,
     // users,
     // createEmptyMsg,
-    connectSocket
+    connectSocket,
+    removeTask,
+    addTask,
+    removeCard,
+    addCard
     // emitTyping,
     // openPrivateChat
     

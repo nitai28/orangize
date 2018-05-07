@@ -27,16 +27,30 @@
 </template>
 
 <script>
-import EventBusService from '../../services/EventBusService';
+import EventBusService from "../../services/EventBusService";
+import CardService from "../../services/CardService";
+import TaskService from "../../services/TaskService";
 import Modal from "./Modal.vue";
 import TaskDetails from "./TaskDetails.vue";
-import CardPreview from './CardPreview.vue';
+import CardPreview from "./CardPreview.vue";
 import Draggable from "vuedraggable";
 
 export default {
   created() {
     this.$store.dispatch({ type: "loadCards" });
-    EventBusService.$on('openModal', this.toggleModal);
+    EventBusService.$on("openModal", this.toggleModal);
+    EventBusService.$on("task removed", card => {
+      this.updateCard(card);
+    });
+    EventBusService.$on("task added", task => {
+      this.addedTask(task);
+    });
+    EventBusService.$on("card removed", cardId => {
+      this.cardRemoved(cardId);
+    });
+    EventBusService.$on("card added", card => {
+      this.addedCard(card);
+    });
   },
   data() {
     return {
@@ -61,16 +75,21 @@ export default {
 
   methods: {
     createTask(card) {
-      this.$store.dispatch({ type: "createTask", card });
+      // this.$store.dispatch({ type: "createTask", card });
+      var editedCard = JSON.parse(JSON.stringify(card));
+      editedCard.tasks.push(TaskService.emptyTask(card._id));
+      CardService.saveCard(editedCard);
     },
     toggleModal() {
       this.modalActive = !this.modalActive;
     },
     addCard() {
-      this.$store.dispatch({ type: "addCard" });
+      // this.$store.dispatch({ type: "addCard" });
+      var createdCard = CardService.emptyCard();
+      CardService.saveCard(createdCard);
     },
     deleteCard(cardId) {
-      this.$store.dispatch({ type: "deleteCard", cardId });
+      CardService.deleteCard(cardId);
     },
     updateCardTitle(updatedCard) {
       this.$store.dispatch({ type: "updateCard", updatedCard });
@@ -78,6 +97,18 @@ export default {
     editTitle(card) {
       this.editableCardId = card._id;
       this.currCard = JSON.parse(JSON.stringify(card));
+    },
+    updateCard(card) {
+      this.$store.commit({ type: "updateCard", updatedCard: card });
+    },
+    cardRemoved(cardId) {
+      this.$store.commit({ type: "deleteCard", cardId: cardId });
+    },
+    addedTask(task) {
+      this.$store.commit({ type: "addTask", task });
+    },
+    addedCard(card) {
+      this.$store.commit({ type: "addCard", card });
     }
   },
   components: {
@@ -90,7 +121,6 @@ export default {
 </script>
 
 <style scoped>
-
 .new-task {
   background-color: rgba(237, 143, 33, 0.75);
   width: 100%;
@@ -134,11 +164,9 @@ export default {
 }
 
 .task-details {
-    height: 90%;
-    width: 90%;
-    margin: auto;
-    margin-top: 40px;
+  height: 90%;
+  width: 90%;
+  margin: auto;
+  margin-top: 40px;
 }
-
-
 </style>

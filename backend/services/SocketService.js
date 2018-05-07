@@ -1,12 +1,19 @@
+// var http = require('http').Server(app);
+// var io = require('socket.io')(http);
+// var bodyParser = require('body-parser')
+
 // var nums = []
 
-// io.on('connection', function(socket){
-//   socket.on('user connected', function(num) {
+// io.on('connection', (socket) => {
+//   socket.on('user connected', (num) => {
 //     nums.push(num);
 //     io.emit('users changed', nums);
 //   })
-//   socket.on('test', function(){
+//   socket.on('test', () => {
 //     io.emit('test')
+//   }),
+//   socket.on('task removed', (card) => {
+//     console.log('a task as removed from the card:', card)
 //   })
 //   // socket.on('disconnect', function(){
 //   //   if(!users) return;

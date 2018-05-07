@@ -39,7 +39,9 @@ function addCard(card) {
     DBService.dbConnect().then(db => {
       db.collection("card").insert(card, (err, res) => {
         if (err) reject(err);
-        else resolve(res.ops);
+        else {
+          console.log('res-ops',res.ops)
+          resolve(res.ops)};
         db.close();
       });
     });

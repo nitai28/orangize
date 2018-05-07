@@ -1,4 +1,6 @@
 const CARD_URL = "/card";
+import SocketService from './SocketService.js'
+
 
 function emptyCard() {
     return {
@@ -15,12 +17,20 @@ function getCards() {
 }
 
 function saveCard(card) {
-    if (card._id) return axios.put(_getCardUrl(card._id), card)
-    else return axios.post(CARD_URL, card).then(res => res.data[0])
+    if (card._id) return axios.put(_getCardUrl(card._id), card).then(_ =>{
+      let addedTask = card.tasks[card.tasks.length - 1];
+      SocketService.addTask(addedTask);
+    })
+    else return axios.post(CARD_URL, card).then(res => {
+      let addedCard = res.data[0];  
+      SocketService.addCard(addedCard);
+      })
 }
 
 function deleteCard(cardId) {
-  return axios.delete(_getCardUrl(cardId));
+  return axios.delete(_getCardUrl(cardId)).then(() => {
+    SocketService.removeCard(cardId);
+  });
 }
 
 function getCardById(cardId) {
