@@ -64,12 +64,12 @@ h3 {
   background: rgb(197, 0, 0);
 }
 .yellow {
-  background: rgb(255, 136, 0);
-}
-.green {
   background: rgb(240, 224, 5);
 }
-.blue {
+.green {
   background: rgb(35, 149, 7);
+}
+.orange {
+  background: rgb(255, 174, 0);
 }
 </style>

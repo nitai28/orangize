@@ -1,6 +1,6 @@
 <template>
     <section class="card-preview">
-        <draggable v-model="cardTasks" class="dragArea" :options="{group:'cardTasks'}">
+        <draggable v-model="cardTasks" class="dragArea" :move="isFilter" :options="{group:'cardTasks'}">
             <li v-for="task in cardTasks" :key="task._id">
             <router-link :to="'/orangize/'+task._id">
                 <task-preview :task="task"></task-preview>
@@ -18,6 +18,9 @@ export default {
   name: "CardPreview",
   props: ["card", "tasks"],
   computed: {
+    filter() {
+      this.$store.getters.getFilter;
+    },
     cardTasks: {
       get() {
         return this.tasks;
@@ -29,6 +32,11 @@ export default {
           cardId: this.card._id
         });
       }
+    }
+  },
+  methods: {
+    isFilter: function() {
+      return !this.$store.getters.getFilter.byLabel;
     }
   },
   components: {
