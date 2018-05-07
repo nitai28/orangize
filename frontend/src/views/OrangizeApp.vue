@@ -3,7 +3,6 @@
     <section class='orangize-app'>
         <i class="orangize"></i> <h1>Orangize</h1>
         <user-msg></user-msg>
-        <task-list></task-list>
         <card-list></card-list>
     </section>
 </template>
