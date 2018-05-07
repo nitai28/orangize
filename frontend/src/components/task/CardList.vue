@@ -97,7 +97,6 @@ export default {
       this.filter = filter;
     },
     createTask(card) {
-      // this.$store.dispatch({ type: "createTask", card });
       var editedCard = JSON.parse(JSON.stringify(card));
       editedCard.tasks.push(TaskService.emptyTask(card._id));
       CardService.addTask(editedCard);
@@ -106,7 +105,6 @@ export default {
       this.modalActive = !this.modalActive;
     },
     addCard() {
-      // this.$store.dispatch({ type: "addCard" });
       var createdCard = CardService.emptyCard();
       CardService.saveCard(createdCard);
     },

@@ -47,7 +47,7 @@ export default {
       state.cards[cardIdx].tasks.push(task);      
     },
     addCard(state, { card }) {
-      state.cards.unshift(card);
+      state.cards.push(card);
     }
   },
   actions: {

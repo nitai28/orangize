@@ -6,15 +6,7 @@ var socket = null;
 
 function connectSocket() {
     socket = ioClient('http://localhost:3000');
-    // socket = ioClient('http://127.0.0.1:3000');
-    socket.emit('user connected', 5);
-    socket.on('users changed', function(nums) {
-        console.log('USERS CHANGED!', nums)
-        // users = serverUsers;
-        // busService.$emit('users changed', users);
-        
-    });
-
+    
     socket.on('task removed', (card) => {
         busService.$emit('task removed', card); 
     });
@@ -29,7 +21,7 @@ function connectSocket() {
 
     socket.on('card added', (card) => {
         busService.$emit('card added', card);
-    })
+    });
     socket.on('chat msg', function (msg) {
         // JIF
         // if (user.nickName === msg.from) msgs[msgs.length - 1].processed = true;

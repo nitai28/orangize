@@ -54,13 +54,10 @@ http.listen(3000, () => {
 var nums = []
 
 io.on('connection', (socket) => {
-  socket.on('user connected', (num) => {
-    nums.push(num);
-    io.emit('users changed', nums);
-  })
-  socket.on('test', () => {
-    io.emit('test')
-  }),
+  // socket.on('user connected', (num) => {
+  //   nums.push(num);
+  //   io.emit('users changed', nums);
+  // }),
   socket.on('task removed', (card) => {
     console.log('a task as removed from the card:', card);
     io.emit('task removed', card)
