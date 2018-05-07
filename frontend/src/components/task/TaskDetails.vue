@@ -7,9 +7,9 @@
       <label for="">Label Card:</label>
       <div class="flex label-containe">
         <div @click.stop="updateLabel('red')" class="color red"></div>
+        <div @click.stop="updateLabel('orange')" class="color orange"></div>
         <div @click.stop="updateLabel('yellow')" class="color yellow"></div>
         <div @click.stop="updateLabel('green')" class="color green"></div>
-        <div @click.stop="updateLabel('blue')" class="color blue"></div>
       </div>
         <div>
           <h4>Comments Card</h4>
@@ -86,12 +86,12 @@ h4 {
   background: rgb(197, 0, 0);
 }
 .yellow {
-  background: rgb(255, 136, 0);
-}
-.green {
   background: rgb(240, 224, 5);
 }
-.blue {
+.green {
   background: rgb(35, 149, 7);
+}
+.orange {
+  background: rgb(255, 174, 0);
 }
 </style>

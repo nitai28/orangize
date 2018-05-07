@@ -1,8 +1,9 @@
 <template>
-    <section class="task-list">
+    <section class="card-list">
+      <task-filter @filterChanged="setFilter(filter)"></task-filter>
       <button @click="addCard">Add Card</button>
       <ul class="flex flex-row">
-        <draggable v-model="cards" class="flex flex-row clean-card">
+        <draggable v-model="cards" class="flex flex-row clean-card" :move="isFilter">
         <li class="card-container" v-for="card in cards" :key="card._id">
           <div class="card-title">
             <h3 v-show="editableCardId !== card._id" @dblclick="editTitle(card)">{{card.title}}</h3>
@@ -27,16 +28,17 @@
 </template>
 
 <script>
-import EventBusService from '../../services/EventBusService';
+import EventBusService from "../../services/EventBusService";
 import Modal from "./Modal.vue";
 import TaskDetails from "./TaskDetails.vue";
-import CardPreview from './CardPreview.vue';
+import CardPreview from "./CardPreview.vue";
+import TaskFilter from "./TaskFilter.vue";
 import Draggable from "vuedraggable";
 
 export default {
   created() {
     this.$store.dispatch({ type: "loadCards" });
-    EventBusService.$on('openModal', this.toggleModal);
+    EventBusService.$on("openModal", this.toggleModal);
   },
   data() {
     return {
@@ -49,17 +51,35 @@ export default {
     selectedTask() {
       return this.$store.getters.selectedTask;
     },
+    filter() {
+      return this.$store.getters.getFilter;
+    },
     cards: {
       get() {
-        return this.$store.getters.getCards;
+        let cards = this.$store.getters.getCards;
+        var copyCards = JSON.parse(JSON.stringify(cards));
+        copyCards.forEach((card, idx) => {
+          card.tasks = card.tasks.filter(task => {
+            if (!this.filter.byLabel || task.label === this.filter.byLabel)
+                  return true;
+            else  return false;
+          });
+        });
+        return copyCards;
       },
       set(value) {
         this.$store.dispatch({ type: "updateCardsOrder", cards: value });
       }
     }
   },
-
   methods: {
+    isFilter: function() {
+      console.log('isFILTER', !this.filter.byLabel)
+      return !this.filter.byLabel;
+    },
+    setFilter(filter) {
+      this.filter = filter;
+    },
     createTask(card) {
       this.$store.dispatch({ type: "createTask", card });
     },
@@ -84,13 +104,13 @@ export default {
     Modal,
     TaskDetails,
     Draggable,
-    CardPreview
+    CardPreview,
+    TaskFilter
   }
 };
 </script>
 
 <style scoped>
-
 .new-task {
   background-color: rgba(237, 143, 33, 0.75);
   width: 100%;
@@ -134,11 +154,9 @@ export default {
 }
 
 .task-details {
-    height: 90%;
-    width: 90%;
-    margin: auto;
-    margin-top: 40px;
+  height: 90%;
+  width: 90%;
+  margin: auto;
+  margin-top: 40px;
 }
-
-
 </style>
