@@ -9,7 +9,7 @@
             <h3 v-show="editableCardId !== card._id" @dblclick="editTitle(card)">{{card.title}}</h3>
             <input v-show="editableCardId === card._id" v-model="currCard.title" 
                    @blur="editableCardId=null; updateCardTitle(currCard)"
-                   @keyup.enter="editableCardId=null; updateCardTitle(currCard)">
+                   @keyup.enter="editableCardId=null">
             <img src="../../assets/icon/rubbish-bin.svg" class="delete-card" @click="deleteCard(card._id)">
           </div>
           <ul class="clean-card tasks-container">

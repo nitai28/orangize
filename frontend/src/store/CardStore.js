@@ -14,7 +14,7 @@ export default {
     activities: []
   },
   mutations: {
-    setFilter(state, {filter}) {
+    setFilter(state, { filter }) {
       state.filter = filter;
     },
     setTasks(state, { tasks }) {
@@ -46,7 +46,7 @@ export default {
     },
     addTask(state, { task }) {
       const cardIdx = state.cards.findIndex(card => card._id === task.cardId);
-      state.cards[cardIdx].tasks.push(task);      
+      state.cards[cardIdx].tasks.push(task);
     },
     addCard(state, { card }) {
       state.cards.push(card);
@@ -102,11 +102,30 @@ export default {
     },
 
     addCard(store) {
+      var createdCard = CardService.emptyCard();
       CardService.saveCard(createdCard).then(newCard => {
         store.commit({ type: "newCard", newCard });
       });
     },
-
+    deleteCard(store, { cardId }) {
+      CardService.deleteCard(cardId).then(() => {
+        store.commit({
+          cardId,
+          type: "deleteCard"
+        });
+      });
+    },
+    removeTask(store, { task }) {
+      CardService.getCardById(task.cardId).then(card => {
+        card.tasks = card.tasks.filter(currTask => currTask._id !== task._id);
+        CardService.saveCard(card).then(_ => {
+          store.commit({
+            type: "updateCard",
+            updatedCard: card
+          });
+        });
+      });
+    },
     updateCard(store, { updatedCard }) {
       CardService.saveCard(updatedCard).then(() => {
         store.commit({ type: "updateCard", updatedCard });
@@ -115,7 +134,6 @@ export default {
         })
       });
     },
-
     updateCardsOrder(store, { cards }) {
       CardService.updateAllCards(cards).then(updatedCards => {
         store.commit({ type: "setCards", cards: updatedCards });
