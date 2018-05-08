@@ -1,6 +1,6 @@
 <template>
     <section class="card-preview">
-        <draggable v-model="cardTasks" class="dragArea" :move="isFilter" :options="{group:'cardTasks'}">
+        <draggable element='ul' v-model="cardTasks" class="dragArea" :move="isFilter" :options="{ghostClass: 'ghost', group:'cardTasks'}">
             <li v-for="task in cardTasks" :key="task._id">
             <router-link :to="'/orangize/'+task._id">
                 <task-preview @removeTask="removeTask" :task="task"></task-preview>
@@ -22,7 +22,6 @@ export default {
     filter: function() {
       this.$store.getters.getFilter;
     },
-
     cardTasks: {
       get() {
         return this.tasks;
@@ -33,6 +32,11 @@ export default {
           tasks: changedTasks,
           cardId: this.card._id
         });
+      }
+    },
+    dragOptions () {
+      return  {
+        ghostClass: 'ghost'
       }
     }
   },
@@ -60,5 +64,8 @@ export default {
 }
 .dragArea {
   min-height: 10px;
+}
+div .ghost {
+  opacity: .2;
 }
 </style>

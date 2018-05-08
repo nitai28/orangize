@@ -3,7 +3,7 @@
       <task-filter @filterChanged="setFilter(filter)"></task-filter>
       <button @click="addCard">Add Card</button>
       <ul class="flex flex-row">
-        <draggable v-model="cards" class="flex flex-row clean-card" :move="isFilter">
+        <draggable element="div" v-model="cards" :options="dragOptions" class="flex flex-row clean-card" :move="isFilter">
         <li class="card-container" v-for="card in cards" :key="card._id">
           <div class="card-title">
             <h3 v-show="editableCardId !== card._id" @dblclick="editTitle(card)">{{card.title}}</h3>
@@ -64,6 +64,11 @@ export default {
     };
   },
   computed: {
+    dragOptions () {
+      return  {
+        ghostClass: 'ghost'
+      }
+    },
     selectedTask() {
       return this.$store.getters.selectedTask;
     },
@@ -174,6 +179,35 @@ export default {
   border: 1px solid black;
   padding: 5px;
   margin-top: 5px;
+}
+
+.item {
+  padding: 5px;
+  background: #CCCCCC;
+  border: 1px solid black;
+}
+
+.flip-list-move {
+  transition: transform 0.5s;
+}
+.no-move {
+  transition: transform 0s;
+}
+div .ghost {
+  opacity: .2;
+}
+.list-group {
+  min-height: 20px;
+}
+.list-group-item {
+  cursor: move;
+}
+.list-group-item i{
+  cursor: pointer;
+}
+
+.dragArea {
+     min-height: 20px;	
 }
 
 .card-container {
