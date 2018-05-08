@@ -1,5 +1,6 @@
 const CARD_URL = "/card";
 import SocketService from './SocketService.js'
+import ActivityService from './ActivityService.js';
 
 function emptyCard() {
     return {
@@ -20,6 +21,7 @@ function saveCard(card) {
     else return axios.post(CARD_URL, card).then(res => {
       let addedCard = res.data[0];  
       SocketService.addCard(addedCard);
+      return addedCard;
       })
 }
 
@@ -45,6 +47,7 @@ function addTask(card) {
   return axios.put(_getCardUrl(card._id), card).then(_ =>{
     let addedTask = card.tasks[card.tasks.length - 1];
     SocketService.addTask(addedTask);
+    return addedTask;
 })
 }
 

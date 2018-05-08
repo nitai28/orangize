@@ -2,13 +2,8 @@
   <section class="activity-log" :class="{open: isOpen}">
     <button class="toggle-btn" @click="isOpen = !isOpen">Activity Log</button>
     <ul class="clean-list activities-container">
-        <!-- <li class="activity-container"><div class="timestamp">{{activity.at | changeDateFilter}}</div> <div class="activity-txt">{{activity.txt}}</div> </li> -->
-        <li class="activity-container"><div class="activity-txt">{{activity2.txt}}</div> <div class="timestamp">{{activity2.at | changeDateFilter}}</div></li>
-        <li class="activity-container"><div class="activity-txt">{{activity2.txt}}</div> <div class="timestamp">{{activity2.at | changeDateFilter}}</div></li>
-        <li class="activity-container"><div class="activity-txt">{{activity2.txt}}</div> <div class="timestamp">{{activity2.at | changeDateFilter}}</div></li>
-        <li class="activity-container"><div class="activity-txt">{{activity2.txt}}</div> <div class="timestamp">{{activity2.at | changeDateFilter}}</div></li>
-        <li class="activity-container"><div class="activity-txt">{{activity2.txt}}</div> <div class="timestamp">{{activity2.at | changeDateFilter}}</div></li>
-        <li class="activity-container"><div class="activity-txt">{{activity2.txt}}</div> <div class="timestamp">{{activity2.at | changeDateFilter}}</div></li>
+        <li class="activity-container flex space-between"><div class="activity-txt">{{activity.txt}}</div><div class="timestamp">{{activity.at | changeDateFilter}}</div>  </li>
+        <li v-for="activity in activities" :key="activity._id" class="activity-container flex space-between"><div class="activity-txt">{{activity.txt}}</div> <div class="timestamp">{{activity.at | changeDateFilter}}</div></li>
         <!-- <li class="activity-container flex space-between justify-center align-center"><span class="activity-txt">{{activity.txt}}</span> <span class="timestamp">{{activity.at | changeDateFilter}}</span></li>
         <li class="activity-container flex space-between justify-center align-center"><span class="activity-txt">{{activity.txt}}</span> <span class="timestamp">{{activity2.at | changeDateFilter}}</span></li>
         <li class="activity-container flex space-between justify-center align-center"><span class="activity-txt">{{activity2.txt}}</span> <span class="timestamp">{{activity.at | changeDateFilter}}</span></li> -->
@@ -18,15 +13,20 @@
 
 <script>
 const moment = require('moment');
-import Draggable from 'vuedraggable';
 
 export default {
   data() {
     return {
-      isOpen: false,
-      activity: {txt: 'Yotam has deleted a task.', at: Date.now()},
+      isOpen: true,
+      activity: {txt: 'Yotam has deleted a task.', at: new Date(2018, 4, 24)},
       activity2: {txt: 'Itay has updated a task.', at: Date.now()}
     };
+  },
+  computed: {
+    activities() {
+      console.log('ACTIVITIES:', this.$store.getters.getActivities)
+      return this.$store.getters.getActivities;
+    }
   },
   filters: {
     changeDateFilter:
@@ -34,13 +34,10 @@ export default {
         return moment(value).fromNow();
       }
   },
-  components: {
-    Draggable
-  }
 };
 </script>
 
-<style>
+<style scoped>
 /* 
 Black: #231f20
 LightOrange: #f26531
@@ -69,6 +66,11 @@ WHITE: #f5f5f5
   outline: none;
   font: inherit;
   padding: 2px;
+  transition: color 0.1s ease-in-out;
+}
+
+.toggle-btn:hover {
+  color: #f5f5f5;
 }
 
 .activities-container {
@@ -84,7 +86,8 @@ WHITE: #f5f5f5
 .activity-container {
   padding: 2px;
   padding-left: 5px;
-  height: 40px;
+  font-size: 14px;
+  height: 50px;
   overflow: hidden;
   background: #231f20;
   margin-bottom: 4px;
@@ -92,13 +95,13 @@ WHITE: #f5f5f5
 }
 
 .activity-txt {
-  height: 18px;
-}
+  width:70%;
+  }
 
 .timestamp {
+  width:30%;
+  text-align: center;
   color: #f5f5f5a9;
-  height: 15px;
-  width: 100%;
   padding: 1px;
   font-size: 13px;
   align-self: flex-start;

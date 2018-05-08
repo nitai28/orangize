@@ -28,7 +28,7 @@ export default {
       console.log(copyFilter);
       this.$store.commit({ type: "setFilter", filter: copyFilter });
     },
-    filterBySearch: debounce(function(e) {
+    filterBySearch: debounce(function() {
       this.emitFilter();
     }, 500)
   }

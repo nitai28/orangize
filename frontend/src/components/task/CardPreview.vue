@@ -13,15 +13,16 @@
 <script>
 import TaskPreview from "./TaskPreview.vue";
 import Draggable from "vuedraggable";
+var debounce = require("debounce");
 
 export default {
   name: "CardPreview",
-  props: ["card", "tasks"],
-
+  props: ["cards", "card", "tasks"],
   computed: {
-    filter() {
+    filter: function() {
       this.$store.getters.getFilter;
     },
+
     cardTasks: {
       get() {
         return this.tasks;
