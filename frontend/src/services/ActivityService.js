@@ -45,6 +45,7 @@ function removeTask(task) {
         resolve(activity);
     })
 }
+
 function updateTask(task) {
     return new Promise((resolve, reject) => {
         let activity = {
@@ -62,20 +63,20 @@ function updateTask(task) {
 }
 // TODO: Add debounce!
 function moveTask() {
-    return new Promise((resolve, reject) => {
-        // debounce(function() {
-        let activity = {
-            _id: shortid.generate(),
-            action: 'Move Task',
-            txt: `Task order has been changed by Itay.`,
-            at: Date.now(),
-            by: {
-                name: '#NAME#'
-            },
-        }
-        resolve(activity);
+    // debounce(function () {
+        return new Promise((resolve, reject) => {
+            let activity = {
+                _id: shortid.generate(),
+                action: 'Move Task',
+                txt: `Task order has been changed by Itay.`,
+                at: Date.now(),
+                by: {
+                    name: '#NAME#'
+                },
+            }
+            resolve(activity);
+        })
     // }, 200)
-    })
 }
 
 function addCard(card) {

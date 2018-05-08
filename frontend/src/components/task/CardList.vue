@@ -13,7 +13,7 @@
             <img src="../../assets/icon/rubbish-bin.svg" class="delete-card" @click="deleteCard(card._id)">
           </div>
           <ul class="clean-card tasks-container">
-            <card-preview @removeTask="deleteTask" :card="card" :tasks="card.tasks"></card-preview>
+            <card-preview @removeTask="deleteTask" :cards="cards" :card="card" :tasks="card.tasks"></card-preview>
             <li class="new-task task-preview" @click="createTask(card)">
                 Create task...
             </li>
@@ -91,7 +91,6 @@ export default {
   },
   methods: {
     isFilter: function() {
-      console.log("isFILTER", !this.filter.byLabel);
       return !this.filter.byLabel;
     },
     setFilter(filter) {
