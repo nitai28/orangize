@@ -92,7 +92,7 @@ a {
   color: rebeccapurple;
   outline: 0;
   transition: 300ms;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.9);
   cursor: pointer;
   text-transform: uppercase;
   font-weight: bold;
@@ -114,7 +114,7 @@ a {
   transition: 500ms all cubic-bezier(0.14, 1.02, 0.15, 0.98);
   width: 0px;
   height: 100vh;
-  background: rgba(0, 0, 0, 0.69);
+  background: rgba(0, 0, 0, 0.9);
   -webkit-transform: translate3d(-100vw, 100vh, 0);
           transform: translate3d(-100vw, 100vh, 0);
   position: absolute;

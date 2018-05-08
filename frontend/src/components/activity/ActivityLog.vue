@@ -1,5 +1,5 @@
 <template>
-  <section class="activity-log" :class="{open: isOpen}">
+  <section  v-drugs  class="activity-log" :class="{open: isOpen}">
     <button class="toggle-btn" @click="isOpen = !isOpen">Activity Log</button>
     <ul class="clean-list activities-container">
         <li class="activity-container flex space-between"><div class="activity-txt">{{activity.txt}}</div><div class="timestamp">{{activity.at | changeDateFilter}}</div>  </li>

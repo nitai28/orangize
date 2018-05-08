@@ -4,7 +4,7 @@ import ActivityService from './ActivityService.js';
 
 function emptyCard() {
     return {
-        title : 'Some Sort of Card',
+        title : 'New List',
         tasks : []
     }
 }

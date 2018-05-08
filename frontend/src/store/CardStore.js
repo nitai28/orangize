@@ -8,6 +8,7 @@ export default {
   strict: true,
   state: {
     cards: [],
+    cardsBackUp: [],
     taskToShow: null,
     selectedTask: null,
     filter: { byLabel: "", byTitle: "" },
