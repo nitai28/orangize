@@ -1,5 +1,5 @@
 <template>
-  <section class="activity-log" :class="{open: isOpen}">
+  <section  v-drugs  class="activity-log" :class="{open: isOpen}">
     <button class="toggle-btn" @click="isOpen = !isOpen">Activity Log</button>
     <ul class="clean-list activities-container">
         <li class="activity-container flex space-between"><div class="activity-txt">{{activity.txt}}</div><div class="timestamp">{{activity.at | changeDateFilter}}</div>  </li>
@@ -86,13 +86,13 @@ WHITE: #f5f5f5
 
 .activity-container {
   padding: 2px;
+  padding-left: 5px;
   font-size: 14px;
   height: 50px;
   overflow: hidden;
   background: #231f20;
   margin-bottom: 4px;
   box-shadow: 0px 1px 2px 1px #000000b0;
-  padding-left: 5px;
 }
 
 .activity-txt {
@@ -105,5 +105,6 @@ WHITE: #f5f5f5
   color: #f5f5f5a9;
   padding: 1px;
   font-size: 13px;
+  align-self: flex-start;
 }
 </style>

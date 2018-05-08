@@ -69,8 +69,7 @@ function updateCard(card, cardId) {
   delete card._id;
   return new Promise((resolve, reject) => {
     DBService.dbConnect().then(db => {
-      db
-        .collection("card")
+      db.collection("card")
         .updateOne({ _id: cardId }, card, (err, updatedCard) => {
           if (err) reject(err);
           else {

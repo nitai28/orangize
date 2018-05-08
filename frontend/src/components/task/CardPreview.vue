@@ -1,6 +1,6 @@
 <template>
     <section class="card-preview">
-        <draggable v-model="cardTasks" class="dragArea" :move="isFilter" :options="{group:'cardTasks'}">
+        <draggable element='ul' v-model="cardTasks" class="dragArea" :move="isFilter" :options="{ghostClass: 'ghost', group:'cardTasks'}">
             <li v-for="task in cardTasks" :key="task._id">
             <router-link :to="'/orangize/'+task._id">
                 <task-preview @removeTask="removeTask" :task="task"></task-preview>
@@ -22,17 +22,19 @@ export default {
     filter: function() {
       this.$store.getters.getFilter;
     },
-
     cardTasks: {
       get() {
         return this.tasks;
       },
       set(changedTasks) {
-        this.$store.dispatch({
-          type: "updateTasks",
-          tasks: changedTasks,
-          cardId: this.card._id
-        });
+        console.log('data sent 1st time on task drag', changedTasks)
+        // updateCard(changedTasks); //call method to emit to parent - check parameter
+        this.$store.dispatch({ type: "updateTasks", tasks: changedTasks, cardId: this.card._id });
+      }
+    },
+    dragOptions () {
+      return  {
+        ghostClass: 'ghost'
       }
     }
   },
@@ -41,7 +43,11 @@ export default {
       return !this.$store.getters.getFilter.byLabel;
     },
     removeTask(task) {
-      this.$emit("removeTask", task);
+      this.$emit('removeTask', task)
+    },
+    updateCard(updatedCard) {
+      console.log('card before emit from prev to list',updatedCard)
+      this.$emit('updateCard', updatedCard)
     }
   },
   components: {
@@ -60,5 +66,8 @@ export default {
 }
 .dragArea {
   min-height: 10px;
+}
+div .ghost {
+  opacity: .2;
 }
 </style>

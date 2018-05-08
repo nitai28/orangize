@@ -1,9 +1,9 @@
 <template>
     <section class="card-list">
       <task-filter @filterChanged="setFilter(filter)"></task-filter>
-      <button @click="addCard">Add Card</button>
+      <button @click="addCard">Add List</button>
       <ul class="flex flex-row">
-        <draggable v-model="cards" class="flex flex-row clean-card" :move="isFilter">
+        <draggable element="div" v-model="cards" :options="dragOptions" class="flex flex-row clean-card" :move="isFilter">
         <li class="card-container" v-for="card in cards" :key="card._id">
           <div class="card-title">
             <h3 v-show="editableCardId !== card._id" @dblclick="editTitle(card)">{{card.title}}</h3>
@@ -13,7 +13,7 @@
             <img src="../../assets/icon/rubbish-bin.svg" class="delete-card" @click="deleteCard(card._id)">
           </div>
           <ul class="clean-card tasks-container">
-            <card-preview @removeTask="deleteTask" :cards="cards" :card="card" :tasks="card.tasks"></card-preview>
+            <card-preview @removeTask="deleteTask" @updateCard="updateCard" :card="card" :tasks="card.tasks"></card-preview>
             <li class="new-task task-preview" @click="createTask(card)">
                 Create task...
             </li>
@@ -22,7 +22,7 @@
           </draggable>
       </ul>
       <div class="modal">
-        <modal :activated="modalActive"><task-details class="tasj-details" v-if="selectedTask" :task="selectedTask"></task-details></modal>
+        <modal :activated="modalActive" @updateTask="updateTask"><task-details class="task-details" v-if="selectedTask" :task="selectedTask"></task-details></modal>
       </div>
     </section>
 </template>
@@ -55,6 +55,12 @@ export default {
     EventBusService.$on("card added", card => {
       this.addedCard(card);
     });
+    EventBusService.$on("card updated", card => {
+      this.updateCard(card);
+    });
+    EventBusService.$on("cards order updated", cards => {
+      this.updatedCardsOrder(cards);
+    });
   },
   data() {
     return {
@@ -64,6 +70,11 @@ export default {
     };
   },
   computed: {
+    dragOptions () {
+      return  {
+        ghostClass: 'ghost'
+      }
+    },
     selectedTask() {
       return this.$store.getters.selectedTask;
     },
@@ -98,69 +109,122 @@ export default {
     isFilter: function() {
       return !this.filter.byLabel;
     },
+
     setFilter(filter) {
       this.filter = filter;
     },
+
     createTask(card) {
+      this.cardsBackUp = JSON.parse(JSON.stringify(this.cards));
+
       var editedCard = JSON.parse(JSON.stringify(card));
       let newTask = TaskService.emptyTask(card._id);
       editedCard.tasks.push(newTask);
+      this.addedTask(newTask);
 
       let newActivity = ActivityService.getAddTaskActivity(newTask);
       this.$store.commit({ type: "addActivity", activity: newActivity });
-      CardService.addTask(editedCard)
-        .then(addedTask => {
-          ActivityService.addActivity(newActivity)
+
+      CardService.addTask(editedCard).then(addedTask => {
+         ActivityService.addActivity(newActivity)
             .then(activity => {
               ActivityService.query().then(activities =>
                 this.$store.commit({ type: "setActivities", activities }));
             })
-        })
-        .catch(_ => {
+      })
+       .catch(_ => {
+          this.$store.commit({type: 'setCards', cards: this.cardsBackUp})
           this.$store.commit({ type: "loadBackupActivities" });
-        });
+          console.log('reverting back to state before change if promise was rejected')      
+        })  
     },
+
     toggleModal() {
       this.modalActive = !this.modalActive;
     },
+
     addCard() {
       var createdCard = CardService.emptyCard();
-      CardService.saveCard(createdCard).then(addedCard => {
+      this.cardsBackUp = JSON.parse(JSON.stringify(this.cards))
+      this.addedCard(createdCard);
+       console.log('updating state and frontend before promise sent to DB')
+
+      CardService.saveCard(createdCard)
+      .then(addedCard => {
+        this.$store.dispatch({type: 'loadCards'})
         ActivityService.addCard(addedCard).then(activity => {
-          this.$store.commit({ type: "addActivity", activity });
-        });
-      });
+            this.$store.commit({type: 'addActivity', activity});
+          })  
+      })
+      .catch(_ => {
+          this.$store.commit({type: 'setCards', cards: this.cardsBackUp})
+          console.log('reverting back to state before change if promise was rejected')      
+        })
     },
+
     deleteCard(cardId) {
-      CardService.getCardById(cardId).then(card => {
-        CardService.deleteCard(cardId).then(_ => {
-          ActivityService.removeCard(card).then(activity => {
-            this.$store.commit({ type: "addActivity", activity });
-          });
-        });
-      });
+       this.cardsBackUp = JSON.parse(JSON.stringify(this.cards))
+       this.cardRemoved(cardId);
+      //  this.$store.commit({ type: "deleteCard", cardId });
+       console.log('updating state and frontend before promise sent to DB')
+
+        CardService.getCardById(cardId)
+        .then(card => {
+          CardService.deleteCard(cardId).then(_ => {
+            ActivityService.removeCard(card).then(activity => {
+              this.$store.commit({type: 'addActivity', activity});
+                })
+            })
+          })
+        .catch(_ => {
+          this.$store.commit({type: 'setCards', cards: this.cardsBackUp})
+          console.log('reverting back to state before change if promise was rejected')      
+
+        })  
     },
     updateCardTitle(updatedCard) {
-      this.$store.dispatch({ type: "updateCard", updatedCard });
+      CardService.updateCard(updatedCard);
     },
+
     editTitle(card) {
       this.editableCardId = card._id;
       this.currCard = JSON.parse(JSON.stringify(card));
     },
-    updateCard(card) {
-      this.$store.commit({ type: "updateCard", updatedCard: card });
+
+    updateTask(taskId) {
+      let updatedTask;
+      this.cards.forEach(card => {
+        let tempTask = card.tasks.find(task => task._id === taskId)
+        if (tempTask) updatedTask = tempTask 
+      })
+      let updatedCard = this.cards.find(card => card._id === updatedTask.cardId)
+      CardService.updateCard(updatedCard);
     },
+
     deleteTask(task) {
+      this.cardsBackUp = JSON.parse(JSON.stringify(this.cards))
+      let card = this.cards.find(currCard => currCard._id === task.cardId)
+
       let newActivity = ActivityService.getRemoveTaskActivity(task)
       this.$store.commit({ type: "addActivity", activity: newActivity});
 
-      CardService.getCardById(task.cardId).then(card => {
-        card.tasks = card.tasks.filter(currTask => currTask._id !== task._id);
-        CardService.deleteTask(card).catch(_ => this.$store.commit({ type: 'loadBackupActivities'}))
+      let updatedCard = JSON.parse(JSON.stringify(card)) 
+      updatedCard.tasks = updatedCard.tasks.filter(currTask => currTask._id !== task._id);
+      this.updateCard(updatedCard)
+
+        CardService.deleteTask(updatedCard).then(_ => {
+          ActivityService.addActivity(newActivity)
+              .then(activity => {
+                ActivityService.query().then(activities =>
+                  this.$store.commit({ type: "setActivities", activities }));
+        })
       })
-      .catch(_ => this.$store.commit({ type: 'loadBackupActivities'}));
+      .catch(_ => {
+          this.$store.commit({type: 'setCards', cards: this.cardsBackUp})
+          this.$store.commit({ type: 'loadBackupActivities'})    
+        })  
     },
-    /////////// After DB has been updated
+    /////////// After DB has been updated ///////////////////
     cardRemoved(cardId) {
       this.$store.commit({ type: "deleteCard", cardId: cardId });
     },
@@ -169,6 +233,12 @@ export default {
     },
     addedCard(card) {
       this.$store.commit({ type: "addCard", card });
+    },
+    updateCard(card) {
+      this.$store.commit({ type: "updateCard", updatedCard: card });
+    },
+    updatedCardsOrder(cards) {
+      this.$store.commit({ type: "updateCardsOrder", cards: cards });
     }
   },
   components: {
@@ -189,6 +259,35 @@ export default {
   border: 1px solid black;
   padding: 5px;
   margin-top: 5px;
+}
+
+.item {
+  padding: 5px;
+  background: #CCCCCC;
+  border: 1px solid black;
+}
+
+.flip-list-move {
+  transition: transform 0.5s;
+}
+.no-move {
+  transition: transform 0s;
+}
+div .ghost {
+  opacity: .2;
+}
+.list-group {
+  min-height: 20px;
+}
+.list-group-item {
+  cursor: move;
+}
+.list-group-item i{
+  cursor: pointer;
+}
+
+.dragArea {
+     min-height: 20px;	
 }
 
 .card-container {
@@ -218,6 +317,8 @@ export default {
   width: 15px;
   height: 15px;
   margin-left: 10px;
+  opacity: 1;
+  transition: opacity 0.3s ease-in-out;
 }
 
 .tasks-container {
