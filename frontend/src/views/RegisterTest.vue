@@ -40,36 +40,22 @@ export default {
       this.user = {name: '', password: ''}
     },
     register() {
-      if(this.verifyPass !== user.password) return false;
-      UserService.register(this.user)
+      if(this.verifyPass !== this.user.password) return false;
+       UserService.saveUser(this.user)
         .then(res => {
-          console.log("Register Completed, now try to log-in!");
-          EventBusService.$emit(SHOW_MSG, {
-            txt: "Registration Completed! please login"
-          });
-          this.$router.push("/login");
+          let newUser = res.data;
+          this.toggleLoginMode()
         })
-        .catch(err => console.log("Register Failed!"));
     },
     checkLogin() {
-      this.$store
-        .dispatch({ type: "login", userCredentials: this.user })
-        .then(res => {
-          console.log("You have been logged-in!");
-          EventBusService.$emit(SHOW_MSG, { txt: `Welcome ${this.user.name}` });
-          this.$router.push("/chat");
-        })
-        .catch(err => {
-          console.log("Login Failed!");
-          EventBusService.$emit(SHOW_MSG, {
-            txt: `Wrong Credentials, please try again`,
-            type: "danger"
-          });
-          this.$refs.txtUserName.focus();
-        });
+      UserService.checkLogin(this.user).then(updatedUser => {
+            console.log('updatedUser', updatedUser)
+            this.$store.commit({type:'updateCurrUser',user:updatedUser})
+          })
     }
+    },
   }
-};
+// };
 </script>
 
 <style scoped>

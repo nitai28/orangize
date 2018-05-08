@@ -9,10 +9,10 @@ export default {
     cards: [],
     taskToShow: null,
     selectedTask: null,
-    filter: { byLabel: "", byTitle: "" },
+    filter: { byLabel: "", byTitle: "" }
   },
   mutations: {
-    setFilter(state, {filter}) {
+    setFilter(state, { filter }) {
       state.filter = filter;
     },
     setTasks(state, { tasks }) {
@@ -44,7 +44,7 @@ export default {
     },
     addTask(state, { task }) {
       const cardIdx = state.cards.findIndex(card => card._id === task.cardId);
-      state.cards[cardIdx].tasks.push(task);      
+      state.cards[cardIdx].tasks.push(task);
     },
     addCard(state, { card }) {
       state.cards.push(card);
