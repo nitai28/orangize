@@ -29,8 +29,8 @@ export default {
       const cardIdx = state.cards.findIndex(card => card._id === updatedCard._id);
       state.cards.splice(cardIdx, 1, updatedCard);
     },
-    updateCardsOrder(state, { updatedCards }) {
-      state.cards = updatedCards;
+    updateCardsOrder(state, { cards }) {
+      state.cards = cards;
     },
     setSelectedTask(state, { task }) {
       state.selectedTask = task;
@@ -54,19 +54,13 @@ export default {
     loadCards(store) {
       return CardService.getCards()
         .then(cards =>
-          store.commit({
-            type: "setCards",
-            cards
-          })
+          store.commit({ type: "setCards", cards })
         )
         .catch(err => err);
     },
     loadTasks(store) {
       return TaskService.query().then(tasks => {
-        store.commit({
-          type: "setTasks",
-          tasks
-        });
+        store.commit({ type: "setTasks", tasks });
       });
     },
 
@@ -98,8 +92,8 @@ export default {
   },
   
   updateCardsOrder(store, { cards }) {
-    CardService.updateAllCards(cards).then(updatedCards => {
-      store.commit({ type: "setCards", cards: updatedCards });
+    CardService.updateAllCards(cards).then(updatedCards => { 
+      store.commit({ type: "updateCardsOrder", cards: updatedCards });
     });
   },
   
@@ -108,7 +102,8 @@ export default {
       let copyTasks = JSON.parse(JSON.stringify(tasks));
       copyTasks.forEach(copyTask => (copyTask.cardId = cardId));
       card.tasks = copyTasks;
-      CardService.saveCard(card).then(_ => {
+      // CardService.moveTask(card).then(_ => { 
+        CardService.saveCard(card).then(_ => { 
         store.commit({ type: "setTasks", tasks: copyTasks, cardId });
       });
     });

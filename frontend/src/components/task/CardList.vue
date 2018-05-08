@@ -13,7 +13,7 @@
             <img src="../../assets/icon/rubbish-bin.svg" class="delete-card" @click="deleteCard(card._id)">
           </div>
           <ul class="clean-card tasks-container">
-            <card-preview @removeTask="deleteTask" :card="card" :tasks="card.tasks"></card-preview>
+            <card-preview @removeTask="deleteTask" @updateCard="updateCard" :card="card" :tasks="card.tasks"></card-preview>
             <li class="new-task task-preview" @click="createTask(card)">
                 Create task...
             </li>
@@ -56,6 +56,9 @@ export default {
     });
     EventBusService.$on("card updated", card => {
       this.updatedCard(card);
+    });
+    EventBusService.$on("cards order updated", cards => {
+      this.updatedCardsOrder(cards);
     });
   },
   data() {
@@ -115,7 +118,6 @@ export default {
       CardService.deleteCard(cardId);
     },
     updateCardTitle(updatedCard) {
-      // this.$store.dispatch({ type: "updateCard", updatedCard });
       CardService.updateCard(updatedCard);
     },
     editTitle(card) {
@@ -140,7 +142,7 @@ export default {
         CardService.deleteTask(card);
       });
     },
-    /////////// After DB has been updated
+    /////////// After DB has been updated ///////////////////
     cardRemoved(cardId) {
       this.$store.commit({ type: "deleteCard", cardId: cardId });
     },
@@ -152,6 +154,9 @@ export default {
     },
     updatedCard(card) {
       this.$store.commit({ type: "updateCard", updatedCard: card });
+    },
+    updatedCardsOrder(cards) {
+      this.$store.commit({ type: "updateCardsOrder", cards: cards });
     }
   },
   components: {

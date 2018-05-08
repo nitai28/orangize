@@ -114,7 +114,7 @@ a {
   transition: 500ms all cubic-bezier(0.14, 1.02, 0.15, 0.98);
   width: 0px;
   height: 100vh;
-  background: rgba(51, 111, 153, 0.82);
+  background: rgba(0, 0, 0, 0.69);
   -webkit-transform: translate3d(-100vw, 100vh, 0);
           transform: translate3d(-100vw, 100vh, 0);
   position: absolute;

@@ -72,9 +72,14 @@ io.on('connection', (socket) => {
   }),
   socket.on('card updated', (card) => {
     io.emit('card updated', card)
+  }),
+  socket.on('cards order updated', (cards) => {
+    io.emit('cards order updated', cards)
   })
-
-
+  socket.on('task moved', (card) => {
+    io.emit('task moved', card)
+  })
+  
   // socket.on('disconnect', function(){
   //   if(!users) return;
   //   removeUser(user.id);

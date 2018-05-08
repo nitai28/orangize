@@ -83,6 +83,7 @@ WHITE: #f5f5f5
 
 .activity-container {
   padding: 2px;
+  padding-left: 5px;
   height: 40px;
   overflow: hidden;
   background: #231f20;
@@ -92,12 +93,11 @@ WHITE: #f5f5f5
 
 .activity-txt {
   height: 18px;
-  padding-left: 5px;
 }
 
 .timestamp {
+  color: #f5f5f5a9;
   height: 15px;
-  text-align: right;
   width: 100%;
   padding: 1px;
   font-size: 13px;

@@ -1,7 +1,6 @@
 const CARD_URL = "/card";
 import SocketService from './SocketService.js'
 
-
 function emptyCard() {
     return {
         title : 'Some Sort of Card',
@@ -24,7 +23,7 @@ function saveCard(card) {
       })
 }
 
-function updateCard(updatedCard) { //Try and make any action inside a card call this func
+function updateCard(updatedCard) {
   return axios.put(_getCardUrl(updatedCard._id), updatedCard).then(_ => {
     SocketService.updateCard(updatedCard);
   })
@@ -33,6 +32,12 @@ function updateCard(updatedCard) { //Try and make any action inside a card call 
 function deleteTask(card) {
   return axios.put(_getCardUrl(card._id), card).then(_ =>{
     SocketService.removeTask(card);
+  })
+}
+
+function moveTask(card) {
+  return axios.put(_getCardUrl(card._id), card).then(_ =>{
+    SocketService.moveTask(card);
   })
 }
 
@@ -59,7 +64,10 @@ function _getCardUrl(cardId) {
 
 function updateAllCards(cards) {
   // axios.put(_getCardUrl(card._id), card)
-  return axios.put('/board', cards).then(res => res.data);
+  return axios.put('/board', cards).then(res => { 
+    SocketService.updateAllCards(res.data)  
+    return res.data
+  });
 }
 
 export default {

@@ -17,6 +17,7 @@ import Draggable from "vuedraggable";
 export default {
   name: "CardPreview",
   props: ["card", "tasks"],
+
   computed: {
     filter() {
       this.$store.getters.getFilter;
@@ -26,11 +27,9 @@ export default {
         return this.tasks;
       },
       set(changedTasks) {
-        this.$store.dispatch({
-          type: "updateTasks",
-          tasks: changedTasks,
-          cardId: this.card._id
-        });
+        console.log('data sent 1st time on task drag', changedTasks)
+        // updateCard(changedTasks); //call method to emit to parent - check parameter
+        this.$store.dispatch({ type: "updateTasks", tasks: changedTasks, cardId: this.card._id });
       }
     }
   },
@@ -40,6 +39,10 @@ export default {
     },
     removeTask(task) {
       this.$emit('removeTask', task)
+    },
+    updateCard(updatedCard) {
+      console.log('card before emit from prev to list',updatedCard)
+      this.$emit('updateCard', updatedCard)
     }
   },
   components: {
