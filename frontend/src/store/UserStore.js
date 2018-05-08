@@ -3,14 +3,19 @@ import UserService from '../services/UserService.js'
 export default {
     state: {
         loggedinUser: null,
-        users:[]
+        users:[],
+        currUser:null
       },
       mutations: {
         setUsers(state, {user}) {
           state.loggedinUser = user;
         },
         saveUser(state, {user}){
-          this.users.push(user)
+          state.users.push(user)
+        },
+        updateCurrUser(state,{user}){
+          console.log('store curr user',user);
+          state.currUser=user;
         }
       },
       getters: {

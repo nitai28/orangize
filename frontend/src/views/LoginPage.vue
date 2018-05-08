@@ -17,7 +17,7 @@ export default {
   name: "LoginPage",
   data() {
     return {
-      user: { name: "muki", password: "muki" }
+      user: { name:'' , password: '' }
     };
   },
   created() {
@@ -25,7 +25,10 @@ export default {
   },
   methods: {
     checkLogin(){
-          UserService.checkLogin(this.user);   
+          UserService.checkLogin(this.user).then(updatedUser => {
+            console.log('updatedUser', updatedUser)
+            this.$store.commit({type:'updateCurrUser',user:updatedUser})
+          })
         }
   },
   computed: {}

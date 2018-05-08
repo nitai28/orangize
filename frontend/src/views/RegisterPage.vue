@@ -14,7 +14,7 @@ import UserService from "../services/UserService.js";
 import EventBusService , { SHOW_MSG } from  '../services/EventBusService.js'
 
 export default {
-  name: "RegisterPage",
+  name: 'RegisterPage',
   created() {},
   data() {
     return {
@@ -23,16 +23,16 @@ export default {
   },
   methods: {
     register() {
-      UserService.saveUser(this.user)
-        .then(res => {
-          console.log("Register Completed, now try to log-in!");
-          EventBusService.$emit(SHOW_MSG, {
-            txt: "Registration Completed! please login"
-          });
-          this.$router.push("/login");
-        })
-        .catch(err => console.log("Register Failed!"));
-      console.log(this.user);
+      // UserService.saveUser(this.user)
+      //   .then(res => {
+      //     console.log("Register Completed, now try to log-in!");
+      //     EventBusService.$emit(SHOW_MSG, {
+      //       txt: "Registration Completed! please login"
+      //     });
+      //     this.$router.push("/login");
+      //   })
+      //   .catch(err => console.log("Register Failed!"));
+      // console.log(this.user);
 
       // this.$store.dispatch({ type: "register", user: this.user });
     }
@@ -41,6 +41,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
+
 
 </style>
