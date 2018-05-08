@@ -3,7 +3,7 @@
         <router-link to="/">Home</router-link> |
         <router-link to="/orangize">Orangize</router-link> |
         <router-link to="/login">Login</router-link> |
-        <router-link to="/register">Register</router-link>
+        <router-link to="/register">Register</router-link> |
         <router-link to="/registerTest">RegisterTest</router-link>
         <user-msg></user-msg>        
         <router-view></router-view>

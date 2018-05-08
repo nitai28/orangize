@@ -75,7 +75,7 @@ function checkLogin(user){
     DBService.dbConnect()
     .then(db=>{
         db.collection('user').findOne({name:user.name, password:user.password}, function (err, user) {
-            if (err|| user===null)    reject(err)
+            if (err || !user)    reject(err)
             else        resolve(user);
             db.close();
         });
