@@ -31,7 +31,7 @@
 import EventBusService from "../../services/EventBusService";
 import TaskService from "../../services/TaskService";
 import CardService from "../../services/CardService";
-import ActivityService from "../../services/ActivityService"
+import ActivityService from "../../services/ActivityService";
 import Modal from "./Modal.vue";
 import TaskDetails from "./TaskDetails.vue";
 import CardPreview from "./CardPreview.vue";
@@ -76,10 +76,15 @@ export default {
         var copyCards = JSON.parse(JSON.stringify(cards));
         copyCards.forEach((card, idx) => {
           card.tasks = card.tasks.filter(task => {
-            if ((!this.filter.byLabel || task.label === this.filter.byLabel) &&
-                (!this.filter.byTitle || task.title.toLowerCase().includes(this.filter.byTitle.toLowerCase())))
-                  return true;
-            else  return false;
+            if (
+              (!this.filter.byLabel || task.label === this.filter.byLabel) &&
+              (!this.filter.byTitle ||
+                task.title
+                  .toLowerCase()
+                  .includes(this.filter.byTitle.toLowerCase()))
+            )
+              return true;
+            else return false;
           });
         });
         return copyCards;
@@ -98,12 +103,22 @@ export default {
     },
     createTask(card) {
       var editedCard = JSON.parse(JSON.stringify(card));
-      editedCard.tasks.push(TaskService.emptyTask(card._id));
-      CardService.addTask(editedCard).then(addedTask => {
-        ActivityService.addTask(addedTask).then(activity => {
-          this.$store.commit({type: 'addActivity', activity});
+      let newTask = TaskService.emptyTask(card._id);
+      editedCard.tasks.push(newTask);
+
+      let newActivity = ActivityService.getAddTaskActivity(newTask);
+      this.$store.commit({ type: "addActivity", activity: newActivity });
+      CardService.addTask(editedCard)
+        .then(addedTask => {
+          ActivityService.addActivity(newActivity)
+            .then(activity => {
+              ActivityService.query().then(activities =>
+                this.$store.commit({ type: "setActivities", activities }));
+            })
         })
-      })
+        .catch(_ => {
+          this.$store.commit({ type: "loadBackupActivities" });
+        });
     },
     toggleModal() {
       this.modalActive = !this.modalActive;
@@ -112,18 +127,18 @@ export default {
       var createdCard = CardService.emptyCard();
       CardService.saveCard(createdCard).then(addedCard => {
         ActivityService.addCard(addedCard).then(activity => {
-            this.$store.commit({type: 'addActivity', activity});
-          })
-      })
+          this.$store.commit({ type: "addActivity", activity });
+        });
+      });
     },
     deleteCard(cardId) {
-        CardService.getCardById(cardId).then(card => {
-          CardService.deleteCard(cardId).then(_ => {
+      CardService.getCardById(cardId).then(card => {
+        CardService.deleteCard(cardId).then(_ => {
           ActivityService.removeCard(card).then(activity => {
-              this.$store.commit({type: 'addActivity', activity});
-            })
-        })
-      })
+            this.$store.commit({ type: "addActivity", activity });
+          });
+        });
+      });
     },
     updateCardTitle(updatedCard) {
       this.$store.dispatch({ type: "updateCard", updatedCard });
@@ -136,14 +151,14 @@ export default {
       this.$store.commit({ type: "updateCard", updatedCard: card });
     },
     deleteTask(task) {
+      let newActivity = ActivityService.getRemoveTaskActivity(task)
+      this.$store.commit({ type: "addActivity", activity: newActivity});
+
       CardService.getCardById(task.cardId).then(card => {
         card.tasks = card.tasks.filter(currTask => currTask._id !== task._id);
-        CardService.deleteTask(card).then(_ => {
-        ActivityService.removeTask(task).then(activity => {
-          this.$store.commit({type: 'addActivity', activity});
-        })
+        CardService.deleteTask(card).catch(_ => this.$store.commit({ type: 'loadBackupActivities'}))
       })
-      });
+      .catch(_ => this.$store.commit({ type: 'loadBackupActivities'}));
     },
     /////////// After DB has been updated
     cardRemoved(cardId) {

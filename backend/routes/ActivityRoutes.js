@@ -1,10 +1,20 @@
-var Service = require("../services/ActivityService");
+var ActivityService = require("../services/ActivityService.js");
 
 module.exports = app => {
-  app.put(`/board`, (req, res) => {
-    const newCards = req.body;
-    BoardService.updateBoard(newCards)
-      .then(response => res.json(response.ops))
-      .catch(err => res.status(500).send(err));
-  });    
+    app.post("/activity", (req, res) => {
+      const activity = req.body;
+      ActivityService.addActivity(activity).then(addedActivity => {
+        res.json(addedActivity);
+      });
+    });   
+
+    app.get("/activity", (req, res) => {
+      ActivityService.query().then(activities => {
+        console.log("ACTIVITIES: ", activities);
+        res.json(activities);
+      });
+    }); 
 }
+
+
+ 

@@ -8,10 +8,10 @@ export default {
   strict: true,
   state: {
     cards: [],
+    cardsBackup: [],
     taskToShow: null,
     selectedTask: null,
     filter: { byLabel: "", byTitle: "" },
-    activities: []
   },
   mutations: {
     setFilter(state, { filter }) {
@@ -51,9 +51,6 @@ export default {
     addCard(state, { card }) {
       state.cards.push(card);
     },
-    addActivity(state, {activity}) {
-      state.activities.push(activity);
-    }
   },
   actions: {
     loadCards(store) {
@@ -170,8 +167,5 @@ export default {
     getFilter(state) {
       return state.filter;
     },
-    getActivities(state) {
-      return state.activities;
-    }
   }
 };

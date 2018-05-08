@@ -74,6 +74,7 @@ WHITE: #f5f5f5
 }
 
 .activities-container {
+  overflow-y: scroll;
   padding: 7px 4px;
   background: #231f20d5;
   color: #f26531;

@@ -1,6 +1,8 @@
 import shortid from 'shortid';
 var debounce = require("debounce");
 
+const ACTIVITY_URL = '/activity'
+
 function _emptyActivity() {
     return {
         action: '',
@@ -13,26 +15,36 @@ function _emptyActivity() {
     }
 }
 
-function addTask(task) {
-    return new Promise((resolve, reject) => {
-        let activity = {
-            _id: shortid.generate(),
-            action: 'Add Task',
-            txt: 'A new task has been added by Itay.',
-            at: Date.now(),
-            // TODO: Insert user object into 'by'
-            by: {
-                name: '#NAME#'
-            },
-            taskId: task._id
-        }
-        resolve(activity);
+function query() {
+    return axios
+    .get(ACTIVITY_URL)
+    .then(res => res.data)
+    .catch(e => console.log("No Activities", e));
+}
+
+function addActivity(activity) {
+    return axios.post(ACTIVITY_URL, activity).then(res => {
+        let addedActivity = res.data[0];
+        return addedActivity;
     })
 }
 
-function removeTask(task) {
-    return new Promise((resolve, reject) => {
-        let activity = {
+function getAddTaskActivity(task) {
+    return {
+        // _id: shortid.generate(),
+        action: 'Add Task',
+        txt: 'A new task has been added by Itay.',
+        at: Date.now(),
+        // TODO: Insert user object into 'by'
+        by: {
+            name: '#NAME#'
+        },
+        taskId: task._id
+    }
+}
+
+function getRemoveTaskActivity(task) {
+        return  {
             _id: shortid.generate(),
             action: 'Remove Task',
             txt: `${task.title} has been removed by Itay.`,
@@ -42,8 +54,6 @@ function removeTask(task) {
             },
             taskId: task._id
         }
-        resolve(activity);
-    })
 }
 
 function updateTask(task) {
@@ -135,11 +145,13 @@ function updateCard(card) {
 //     SocketService.addTask(addedTask);
 // })
 export default {
-    addTask,
-    removeTask,
+    query,
+    addActivity,
     updateTask,
     moveTask,
     addCard,
     removeCard,
-    updateCard
+    updateCard,
+    getAddTaskActivity,
+    getRemoveTaskActivity
 }

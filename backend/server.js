@@ -43,8 +43,8 @@ const addCardRoutes = require('./routes/CardRoutes.js')
 addCardRoutes(app)
 const addBoardRoutes = require('./routes/BoardRoutes.js')
 addBoardRoutes(app)
-const addActivityRoutes = require('./routes/BoardRoutes.js')
-addBoardRoutes(app)
+const addActivityRoutes = require('./routes/ActivityRoutes.js')
+addActivityRoutes(app)
 
 
 http.listen(3000, () => {
