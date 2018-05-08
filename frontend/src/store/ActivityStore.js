@@ -19,15 +19,13 @@ export default {
     }
   },
   actions: {
-    // createTask(store, { card }) {
-    //   var editedCard = JSON.parse(JSON.stringify(card));
-    //   editedCard.tasks.push(TaskService.emptyTask(card._id));
-    //   CardService.saveCard(editedCard).then(_ => {
-    //     store.commit({ type: "updateCard", updatedCard: editedCard });
-    //     let addedTask = editedCard.tasks[editedCard.tasks.length - 1];
-    //     SocketService.addTask(addedTask);
-    //   });
-    // },
+    loadActivities(store) {
+      return ActivityService.query()
+        .then(activities =>
+          store.commit({ type: "setActivities", activities })
+        )
+        .catch(err => err);
+    },
   },
 
   getters: {

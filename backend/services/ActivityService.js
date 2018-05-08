@@ -7,7 +7,9 @@ function query() {
       db
         .collection("activity")
         .find({})
+        .sort({'at' : -1})
         .toArray((err, activities) => {
+          console.log('activities', activities)
           if (err) reject(err);
           else resolve(activities);
           db.close();

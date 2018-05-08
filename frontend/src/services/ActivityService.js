@@ -31,7 +31,6 @@ function addActivity(activity) {
 
 function getAddTaskActivity(task) {
     return {
-        // _id: shortid.generate(),
         action: 'Add Task',
         txt: 'A new task has been added by Itay.',
         at: Date.now(),
@@ -45,7 +44,6 @@ function getAddTaskActivity(task) {
 
 function getRemoveTaskActivity(task) {
         return  {
-            _id: shortid.generate(),
             action: 'Remove Task',
             txt: `${task.title} has been removed by Itay.`,
             at: Date.now(),
@@ -56,10 +54,8 @@ function getRemoveTaskActivity(task) {
         }
 }
 
-function updateTask(task) {
-    return new Promise((resolve, reject) => {
+function getUpdateTaskActivity(task) {
         let activity = {
-            _id: shortid.generate(),
             action: 'Update Task',
             txt: `${task.title} has been updated by Itay.`,
             at: Date.now(),
@@ -68,9 +64,7 @@ function updateTask(task) {
             },
             taskId: task._id
         }
-        resolve(activity);
-    })
-}
+    }
 // TODO: Add debounce!
 function moveTask() {
     // debounce(function () {
@@ -147,11 +141,11 @@ function updateCard(card) {
 export default {
     query,
     addActivity,
-    updateTask,
     moveTask,
     addCard,
     removeCard,
     updateCard,
     getAddTaskActivity,
-    getRemoveTaskActivity
+    getRemoveTaskActivity,
+    getUpdateTaskActivity
 }
