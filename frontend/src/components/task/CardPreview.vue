@@ -3,7 +3,7 @@
         <draggable v-model="cardTasks" class="dragArea" :move="isFilter" :options="{group:'cardTasks'}">
             <li v-for="task in cardTasks" :key="task._id">
             <router-link :to="'/orangize/'+task._id">
-                <task-preview :task="task"></task-preview>
+                <task-preview @removeTask="removeTask" :task="task"></task-preview>
             </router-link> 
             </li>
         </draggable>
@@ -35,8 +35,11 @@ export default {
     }
   },
   methods: {
-    isFilter: function() {
+    isFilter() {
       return !this.$store.getters.getFilter.byLabel;
+    },
+    removeTask(task) {
+      this.$emit('removeTask', task)
     }
   },
   components: {

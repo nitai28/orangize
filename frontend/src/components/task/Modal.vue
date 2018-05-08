@@ -20,6 +20,7 @@ name: "modalComponent",
   props: ["activated"],
   methods: {
     close() {
+      this.$router.push('/orangize')
       this.mutableActived = !this.mutableActived;
       this.$el.blur();
     }

@@ -1,36 +1,37 @@
 
 <template>
     <section class='orangize-app'>
-        <i class="orangize"></i> <h1>Orangize</h1>
         <user-msg></user-msg>
         <card-list></card-list>
+        <activity-log></activity-log>
     </section>
 </template>
 
 <script>
+
 import UserMsg from "../components/global/UserMsg.vue";
+import SocketSerivce from '../services/SocketService.js'
 import CardList from '../components/task/CardList.vue';
+import ActivityLog from '../components/activity/ActivityLog.vue'
 
 export default {
   name: "OrangizeApp",
   data() {
-    return {};
+    return {
+    };
   },
-  created() {},
+  created() {
+    SocketSerivce.connectSocket(); 
+  },
   components: {
     UserMsg,
     CardList,
+    ActivityLog
   }
 };
 </script>
 
 <style scoped>
-.orangize {
-  display: inline-block;
-  background-image: url("../assets/icon/orange.svg");
-  width: 30px;
-  height: 30px;
-}
 h1 {
   display: inline-block;
 }
