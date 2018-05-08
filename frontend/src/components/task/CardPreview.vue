@@ -27,11 +27,9 @@ export default {
         return this.tasks;
       },
       set(changedTasks) {
-        this.$store.dispatch({
-          type: "updateTasks",
-          tasks: changedTasks,
-          cardId: this.card._id
-        });
+        console.log('data sent 1st time on task drag', changedTasks)
+        // updateCard(changedTasks); //call method to emit to parent - check parameter
+        this.$store.dispatch({ type: "updateTasks", tasks: changedTasks, cardId: this.card._id });
       }
     },
     dragOptions () {
@@ -45,7 +43,11 @@ export default {
       return !this.$store.getters.getFilter.byLabel;
     },
     removeTask(task) {
-      this.$emit("removeTask", task);
+      this.$emit('removeTask', task)
+    },
+    updateCard(updatedCard) {
+      console.log('card before emit from prev to list',updatedCard)
+      this.$emit('updateCard', updatedCard)
     }
   },
   components: {

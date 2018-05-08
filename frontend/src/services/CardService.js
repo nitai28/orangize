@@ -2,10 +2,9 @@ const CARD_URL = "/card";
 import SocketService from './SocketService.js'
 import ActivityService from './ActivityService.js';
 
-
 function emptyCard() {
     return {
-        title : 'Some Sort of Card',
+        title : 'New List',
         tasks : []
     }
 }
@@ -26,9 +25,21 @@ function saveCard(card) {
       })
 }
 
+function updateCard(updatedCard) {
+  return axios.put(_getCardUrl(updatedCard._id), updatedCard).then(_ => {
+    SocketService.updateCard(updatedCard);
+  })
+}
+
 function deleteTask(card) {
   return axios.put(_getCardUrl(card._id), card).then(_ =>{
     SocketService.removeTask(card);
+  })
+}
+
+function moveTask(card) {
+  return axios.put(_getCardUrl(card._id), card).then(_ =>{
+    SocketService.moveTask(card);
   })
 }
 
@@ -56,7 +67,10 @@ function _getCardUrl(cardId) {
 
 function updateAllCards(cards) {
   // axios.put(_getCardUrl(card._id), card)
-  return axios.put('/board', cards).then(res => res.data);
+  return axios.put('/board', cards).then(res => { 
+    SocketService.updateAllCards(res.data)  
+    return res.data
+  });
 }
 
 export default {
@@ -67,5 +81,6 @@ export default {
   getCardById,
   updateAllCards,
   addTask,
-  deleteTask
+  deleteTask,
+  updateCard
 };

@@ -13,9 +13,7 @@ Vue.use(Router);
 export default new Router({
   routes: [
     { path: "/", name: "Home", component: Home },
-    {
-      path: "/orangize",
-      component: OrangizeApp,
+    { path: "/orangize", component: OrangizeApp,
       // beforeEnter: userOnlyRoute
     },
     { path: "/login", component: Login },
