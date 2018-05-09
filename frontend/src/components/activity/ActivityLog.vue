@@ -1,5 +1,6 @@
 <template>
-  <section  v-drugs class="activity-log" :class="{open: isOpen}">
+  <!-- <section  v-drugs class="activity-log" :class="{open: isOpen}"> -->
+  <section class="activity-log" :class="{open: isOpen}">
     <button class="toggle-btn" @click="isOpen = !isOpen">Activity Log</button>
     <ul class="clean-list activities-container">
         <li v-for="activity in activities" :key="activity._id" class="activity-container flex space-between">
