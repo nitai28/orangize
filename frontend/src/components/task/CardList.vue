@@ -85,14 +85,12 @@ export default {
       get() {
         let cards = this.$store.getters.getCards;
         var copyCards = JSON.parse(JSON.stringify(cards));
-        copyCards.forEach((card, idx) => {
-          card.tasks = card.tasks.filter(task => {
+        copyCards.forEach((copyCard, idx) => {
+          copyCard.tasks = copyCard.tasks.filter(task => {
             if (
               (!this.filter.byLabel || task.label === this.filter.byLabel) &&
-              (!this.filter.byTitle ||
-                task.title
-                  .toLowerCase()
-                  .includes(this.filter.byTitle.toLowerCase()))
+              (!this.filter.byTitle || 
+              task.title.toLowerCase().includes(this.filter.byTitle.toLowerCase()))
             )
               return true;
             else return false;
@@ -238,7 +236,8 @@ export default {
       this.$store.commit({ type: "updateCard", updatedCard: card });
     },
     updatedCardsOrder(cards) {
-      this.$store.commit({ type: "updateCardsOrder", cards: cards });
+      // console.log('LALALA')
+      this.$store.commit({ type: "setCards", cards: cards });
     }
   },
   components: {
