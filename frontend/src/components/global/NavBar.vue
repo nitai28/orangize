@@ -1,19 +1,32 @@
 <template>
-  <section class="nav-bar flex space-around align-center justify-center">
-    <router-link to="/">Home</router-link>
-    <router-link to="/orangize">Orangize</router-link>
-    <div class="flex">
-    <i class="orangize"></i> <span>Orangize</span>
+  <section class="nav-bar flex space-between align-center justify-left">
+    <router-link to="/about">About</router-link>
+    <div class="logo-container flex align-center">
+      <router-link to="/"><div class="logo flex">
+      <i></i> <span>rangize</span>
+      </div></router-link>
     </div>
-    <router-link to="/login">Login</router-link>
-    <router-link to="/register">Register</router-link>
-    <!-- <router-link to="/registerTest">RegisterTest</router-link> -->
+    <!-- <button v-if="currUser" @click="logout">{{currUser.name}} Logout</button> -->
+    <!-- <router-link to="/login">Login</router-link>
+    <router-link to="/register">Register</router-link> -->
+     <router-link v-if="currUser" @click.native="logout" to="/orangize">{{currUser.name}} Logout</router-link>
+    <router-link v-else to="/registerTest">Register</router-link>
   </section>
 </template>
 
 <script>
 export default {
   computed: {
+    currUser(){
+      return this.$store.getters.getCurrUser;
+    }
+  },
+  methods:{
+      logout() {
+            console.log('Logging out!');
+            this.$store.dispatch({type: 'logout'}).then(()=>{
+            })
+        }
   }
 };
 </script>
@@ -32,18 +45,45 @@ WHITE: #f5f5f5
 }
 a {
   /* display:block; */
+  padding: 0px 20px;
   color: #f26531;
-  transition: color .2s ease-in-out;
+  transition: color 0.2s ease-in-out;
 }
 a:hover {
   color: #f5f5f5;
 }
-.orangize {
+
+.logo-container {
+  position: relative;
+  background: inherit;
+  height: 95px;
+  height: 80px;
+  width: 210px;
+  border-radius: 0px 0px 45px 45px;
+  box-shadow: inherit;
+  padding-bottom: 25px;
+
+}
+
+.logo i {
   display: inline-block;
   background-image: url("../../assets/icon/orange.svg");
-  width: 30px;
-  height: 30px;
+  background-repeat: no-repeat;
+  width: 45px;
+  height: 45px;
 }
+.logo {
+  position:absolute;
+  font-size: 40px;
+  line-height: 40px;
+}
+
+.logo:hover {
+  position:absolute;
+  font-size: 40px;
+  line-height: 40px;
+}
+
 span {
   color: #f26531;
   font-family: Kaushan;

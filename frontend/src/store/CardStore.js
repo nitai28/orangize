@@ -32,6 +32,8 @@ export default {
       state.cards = JSON.parse(JSON.stringify(state.cardsBackUp));
     },
     setTasks(state, { tasks, cardId }) {
+      console.log('tasks', tasks, cardId);
+      
       const cardIdx = state.cards.findIndex(card => card._id === cardId);
       state.cards[cardIdx].tasks = tasks;
     },
@@ -168,19 +170,58 @@ export default {
         store.commit({ type: "newCard", newCard });
       });
     },
-
-    updateCard(store, { updatedCard }) {
-      CardService.saveCard(updatedCard).then(() => {
-        store.commit({ type: "updateCard", updatedCard });
-      });
-    }
-
-    // updateCardsOrder(store, { cards }) {
-    //   CardService.updateAllCards(cards).then(updatedCards => {
-    //     store.commit({ type: "updateCardsOrder", cards: updatedCards });
-    //   });
-    // },
+    addUserToTaskMember(store, { user, taskId }) {
+      console.log(store.state.selectedTask);
+        CardService.getCardById(store.state.selectedTask.cardId).then(card => {
+          // copyTasks.forEach(copyTask => (copyTask.cardId = cardId));
+          let taskIdx=card.tasks.findIndex(task=>task._id===taskId)
+          card.tasks[taskIdx].users.push(user)
+          CardService.saveCard(card).then(_ => {
+            store.commit({
+              type: "setTasks",
+              tasks: card.tasks,
+              cardId: store.state.selectedTask.cardId
+            });
+          });
+        });
+    },
+    deleteTaskMember(store, { user, taskId }) {
+      console.log(store.state.selectedTask);
+        CardService.getCardById(store.state.selectedTask.cardId).then(card => {
+          // copyTasks.forEach(copyTask => (copyTask.cardId = cardId));
+          let taskIdx=card.tasks.findIndex(task=>task._id===taskId)
+          card.tasks[taskIdx].users.splice(taskIdx,1)
+          CardService.saveCard(card).then(_ => {
+            store.commit({
+              type: "setTasks",
+              tasks: card.tasks,
+              cardId: store.state.selectedTask.cardId
+            });
+          });
+        });
+    },
   },
+  
+  
+  addCard(store) {
+    CardService.saveCard(createdCard).then(newCard => {
+      store.commit({ type: 'newCard', newCard });
+    });
+  },
+  
+  updateCard(store, { updatedCard }) {
+    CardService.saveCard(updatedCard).then(() => {
+      store.commit({ type: 'updateCard', updatedCard });
+    });
+  },
+  
+  // updateCardsOrder(store, { cards }) {
+  //   CardService.updateAllCards(cards).then(updatedCards => { 
+  //     store.commit({ type: "updateCardsOrder", cards: updatedCards });
+  //   });
+  // },
+  
+
 
   //     // createTask(store, { card }) {
   //   var editedCard = JSON.parse(JSON.stringify(card));
@@ -204,3 +245,12 @@ export default {
     }
   }
 };
+// let taskToUpdate = store.state.selectedTask.users.push(user);
+        // let cardIndex = store.state.cards.findIndex(
+          //   card => card.id === taskToUpdate.cardId
+          // );
+        
+          // let taskIdx = store.state.card[cardIndex].tasks.findIndex(
+            //   task => task._id === taskId
+            // );
+            // CardService.updateUserToTask(user,taskToUpdate);
