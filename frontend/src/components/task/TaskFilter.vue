@@ -54,7 +54,6 @@ export default {
 
 <style>
 .task-filter {
-  padding: 10px;
   width: fit-content;
 }
 .all:hover {

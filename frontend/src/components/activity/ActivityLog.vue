@@ -109,4 +109,29 @@ WHITE: #f5f5f5
   font-size: 13px;
   align-self: flex-start;
 }
+
+::-webkit-scrollbar {
+   width: 10px;
+}
+/* Track */
+::-webkit-scrollbar-track {
+   box-shadow: inset 0 0 2px #231f20;
+   border-radius: 10px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+   background: #f26531;
+   border-radius: 10px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+   background: #f26531; 
+}
+/*
+Black: #231f20
+LightOrange: #f26531
+WHITE: #f5f5f5
+*/
 </style>
