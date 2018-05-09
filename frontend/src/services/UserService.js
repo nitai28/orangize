@@ -69,10 +69,9 @@ function checkLogin(userCred) {
     .post(`/user/login`, userCred)
     .then(res => {
       delete res.data.password;
-      console.log("log in", res.data);
       var userMsg = { txt: "succesful-login", type: "success" };
       EventBusService.$emit(SHOW_MSG, userMsg);
-      // this.$store.commit({type:'updateCurrUser',currUser: newUser})
+      sessionStorage.user = JSON.stringify(res.data)
       return res.data;
     })
     .catch(e => {
@@ -80,6 +79,15 @@ function checkLogin(userCred) {
       EventBusService.$emit(SHOW_MSG, userMsg);
     });
   // throw new Error(e)});
+}
+
+function logout() {
+  return axios
+    .get(`/user/logout`)
+    .then(res => {
+      delete sessionStorage.user;
+    })
+    .catch(err => {throw new Error('Logout Failed')})
 }
 
 function _getUserUrl(userId) {
@@ -92,6 +100,7 @@ export default {
   deleteUser,
   emptyUser,
   getUserById,
-  checkLogin
+  checkLogin,
+  logout
 };
 // deleteMultUsers

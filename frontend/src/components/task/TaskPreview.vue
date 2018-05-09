@@ -1,6 +1,10 @@
 <template>
     <section class="task-preview" :class="{[task.label]: (task.label) }" @click="showDetails(task)">
         <h3>{{ task.title }}</h3>
+        <div class="flex ">
+        <i class="comment-icon"></i><span> {{commentNumbers}}</span> 
+        <i class="user-icon"></i><span> {{usernumbers}}</span> 
+        </div>
         <button class="delete-task" @click.stop="removeTask(task)"><img src="../../assets/icon/rubbish-bin.svg" /></button>
     </section>
 </template>
@@ -23,6 +27,14 @@ export default {
   computed:{
     label(){
       return this.task.labels[0]
+    },
+    commentNumbers(){
+      return this.task.comments.length
+    },
+    usernumbers(){
+      console.log(this.task.users.length);
+      
+       return this.task.users.length
     }
   }
 };
@@ -72,5 +84,17 @@ h3 {
 }
 .orange {
   background: rgb(255, 174, 0);
+}
+.user-icon{
+  display: inline-block;
+  background-image: url("../../assets/icon/users.svg");
+  width: 20px;
+  height:20px;
+}
+.comment-icon{
+  display: inline-block;
+  background-image: url("../../assets/icon/chat.svg");
+  width: 20px;
+  height:20px;
 }
 </style>

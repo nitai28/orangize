@@ -34,7 +34,7 @@ function updateCard(updatedCard) {
 }
 
 function deleteTask(card) {
-  return axios.put(_getCardUrl(card._id), card).then(_ =>{
+  return axios.put(_getCardUrl(card._id), card).then(_ => {
     SocketService.removeTask(card);
   })
 }
@@ -46,7 +46,7 @@ function moveTask(card) {
 }
 
 function addTask(card) {
-  return axios.put(_getCardUrl(card._id), card).then(_ =>{
+  return axios.put(_getCardUrl(card._id), card).then(_ => {
     let addedTask = card.tasks[card.tasks.length - 1];
     SocketService.addTask(addedTask);
     return addedTask;
@@ -74,6 +74,8 @@ function updateAllCards(cards) {
     return res.data
   });
 }
+
+
 
 export default {
   getCards,
