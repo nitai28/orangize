@@ -49,12 +49,17 @@ WHITE: #f5f5f5
 .activity-log {
   position: fixed;
   bottom: 0px;
-  left: 0px;
-  height: 30px;
-  transition: height 0.3s ease-in-out;
+  right: 0px;
+  overflow: hidden;
+  /* max-height: 30px; */
+  /* transition: height 0.3s ease-in-out; */
+  transition: transform 1s ease-in-out;
+  /* transform: translate(195px, 270px); */
+  transform: translate(195px, 300px);
 }
 .activity-log.open {
-  height: 300px;
+  /* height: 300px; */
+  transform: translate(0px, 0px);
 }
 
 .toggle-btn {
@@ -62,7 +67,7 @@ WHITE: #f5f5f5
   height: 30px;
   color: #f26531;
   background: #231f20d5;
-  border-radius: 0px 10px 0px 0px;
+  border-radius: 10px 10px 0px 0px;
   border: none;
   cursor: pointer;
   outline: none;
