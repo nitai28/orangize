@@ -1,12 +1,11 @@
 const CARD_URL = "/card";
-import SocketService from './SocketService.js'
-
+import SocketService from "./SocketService.js";
 
 function emptyCard() {
-    return {
-        title : 'Some Sort of Card',
-        tasks : []
-    }
+  return {
+    title: "Some Sort of Card",
+    tasks: []
+  };
 }
 
 function getCards() {
@@ -17,25 +16,25 @@ function getCards() {
 }
 
 function saveCard(card) {
-    if (card._id) return axios.put(_getCardUrl(card._id), card)
-    else return axios.post(CARD_URL, card).then(res => {
-      let addedCard = res.data[0];  
+  if (card._id) return axios.put(_getCardUrl(card._id), card);
+  else
+    return axios.post(CARD_URL, card).then(res => {
+      let addedCard = res.data[0];
       SocketService.addCard(addedCard);
-      })
+    });
 }
 
 function deleteTask(card) {
-  return axios.put(_getCardUrl(card._id), card).then(_ =>{
+  return axios.put(_getCardUrl(card._id), card).then(_ => {
     SocketService.removeTask(card);
-
-  })
+  });
 }
 
 function addTask(card) {
-  return axios.put(_getCardUrl(card._id), card).then(_ =>{
+  return axios.put(_getCardUrl(card._id), card).then(_ => {
     let addedTask = card.tasks[card.tasks.length - 1];
     SocketService.addTask(addedTask);
-})
+  });
 }
 
 function deleteCard(cardId) {
@@ -54,8 +53,10 @@ function _getCardUrl(cardId) {
 
 function updateAllCards(cards) {
   // axios.put(_getCardUrl(card._id), card)
-  return axios.put('/board', cards).then(res => res.data);
+  return axios.put("/board", cards).then(res => res.data);
 }
+
+
 
 export default {
   getCards,
@@ -65,5 +66,5 @@ export default {
   getCardById,
   updateAllCards,
   addTask,
-  deleteTask
+  deleteTask,
 };

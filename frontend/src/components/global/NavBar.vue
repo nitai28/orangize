@@ -5,15 +5,27 @@
     <div class="flex">
     <i class="orangize"></i> <span>Orangize</span>
     </div>
-    <router-link to="/login">Login</router-link>
-    <router-link to="/register">Register</router-link>
-    <!-- <router-link to="/registerTest">RegisterTest</router-link> -->
+    <!-- <button v-if="currUser" @click="logout">{{currUser.name}} Logout</button> -->
+    <!-- <router-link to="/login">Login</router-link>
+    <router-link to="/register">Register</router-link> -->
+     <router-link v-if="currUser" @click.native="logout" to="/orangize">{{currUser.name}} Logout</router-link>
+    <router-link v-else to="/registerTest">Register</router-link>
   </section>
 </template>
 
 <script>
 export default {
   computed: {
+    currUser(){
+      return this.$store.getters.getCurrUser;
+    }
+  },
+  methods:{
+      logout() {
+            console.log('Logging out!');
+            this.$store.dispatch({type: 'logout'}).then(()=>{
+            })
+        }
   }
 };
 </script>
