@@ -42,6 +42,8 @@ WHITE: #f5f5f5
   background: #231f20;
   height: 40px;
   box-shadow: 0px 0px 4px 2px #000000c4;
+  position: fixed;
+  width: 100vw;
 }
 a {
   /* display:block; */

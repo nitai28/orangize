@@ -1,9 +1,13 @@
 <template>
     <section class="task-preview" :class="{[task.label]: (task.label) }" @click="showDetails(task)">
         <h3>{{ task.title }}</h3>
-        <div class="flex ">
-        <i class="comment-icon"></i><span> {{commentNumbers}}</span> 
-        <i class="user-icon"></i><span> {{usernumbers}}</span> 
+        <div class="icon-container flex">
+          <div class="user-container flex">
+            <i class="user-icon"></i><span>{{usernumbers}}</span> 
+          </div>
+          <div class="comment-container flex">
+            <i class="comment-icon"></i><span>{{commentNumbers}}</span> 
+          </div>
         </div>
         <button class="delete-task" @click.stop="removeTask(task)"><img src="../../assets/icon/rubbish-bin.svg" /></button>
     </section>
@@ -46,7 +50,7 @@ export default {
   flex-direction: row;
   background-color: #eae7e7f0;
   margin-bottom: 4px;
-  border-radius: 5%;
+  border-radius: 5px;
   width: 100%;
   transition: width 0.5s ease-in-out;
 }
@@ -62,6 +66,7 @@ h3 {
   display: inline-block;
   opacity: 0;
   transition: opacity .3s ease-in-out;
+  border-radius: 5px; 
 }
 
 .delete-task img {
@@ -85,16 +90,27 @@ h3 {
 .orange {
   background: rgb(255, 174, 0);
 }
+
+.icon-container {
+  align-items: center;
+}
+
+.icon-container i {
+  padding: 5px;
+  margin: 5px;
+}
 .user-icon{
   display: inline-block;
   background-image: url("../../assets/icon/users.svg");
   width: 20px;
   height:20px;
 }
+
 .comment-icon{
   display: inline-block;
   background-image: url("../../assets/icon/chat.svg");
   width: 20px;
   height:20px;
 }
+
 </style>

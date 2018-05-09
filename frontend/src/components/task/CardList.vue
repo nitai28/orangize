@@ -290,13 +290,15 @@ div .ghost {
 }
 
 .card-container {
+  border-radius: 10px;
   margin: 10px;
   padding: 5px;
   background: rgba(0, 0, 0, 0.3);
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 200px;
+  width: 280px;
+  height: fit-content;
 }
 
 .card-title {
