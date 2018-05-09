@@ -42,7 +42,6 @@ function connectSocket() {
 }
 
 const removeTask = (card) => {
-    // console.log('task removed from', card)
     socket.emit('task removed', card);
 }
 
@@ -92,15 +91,7 @@ export default {
     removeCard,
     addCard,
     updateCard,
-    updateAllCards
-    // getMsgs,
-    // send,
-    // user,
-    // users,
-    // createEmptyMsg,
-    // emitTyping,
-    // openPrivateChat
-    
+    updateAllCards    
 }
 
 

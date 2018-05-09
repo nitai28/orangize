@@ -17,7 +17,9 @@ function getCards() {
 }
 
 function saveCard(card) {
-    if (card._id) return axios.put(_getCardUrl(card._id), card)
+    if (card._id) return axios.put(_getCardUrl(card._id), card).then(_ => {
+      SocketService.updateCard(card);
+    })
     else return axios.post(CARD_URL, card).then(res => {
       let addedCard = res.data[0];  
       SocketService.addCard(addedCard);

@@ -153,17 +153,17 @@ export default {
       .then(addedCard => {
         this.$store.dispatch({type: 'loadCards'})
         ActivityService.addCard(addedCard).then(activity => {
-            this.$store.commit({type: 'addActivity', activity});
+          this.$store.commit({type: 'addActivity', activity});
           })  
       })
       .catch(_ => {
-          this.$store.commit({type: 'setCards', cards: this.cardsBackUp})
+        this.$store.commit({type: 'setCards', cards: this.cardsBackUp})
           console.log('reverting back to state before change if promise was rejected')      
         })
     },
 
     deleteCard(cardId) {
-       this.cardsBackUp = JSON.parse(JSON.stringify(this.cards))
+      this.cardsBackUp = JSON.parse(JSON.stringify(this.cards))
        this.cardRemoved(cardId);
       //  this.$store.commit({ type: "deleteCard", cardId });
        console.log('updating state and frontend before promise sent to DB')
@@ -220,7 +220,7 @@ export default {
         })
       })
       .catch(_ => {
-          this.$store.commit({type: 'setCards', cards: this.cardsBackUp})
+        this.$store.commit({type: 'setCards', cards: this.cardsBackUp})
           this.$store.commit({ type: 'loadBackupActivities'})    
         })  
     },
@@ -331,4 +331,31 @@ div .ghost {
   margin: auto;
   margin-top: 40px;
 }
+
 </style>
+<!--
+////////////// Add Card with deboucnce - for rapid creation glitch bug ////////////
+// addCard() {
+//       var createdCard = CardService.emptyCard();
+//       this.cardsBackUp = JSON.parse(JSON.stringify(this.cards))
+//       this.addedCard(createdCard);
+//        console.log('updating state and frontend before promise sent to DB')
+
+//       CardService.saveCard(createdCard)
+//       .then(addedCard => {
+//         debounce(function() {
+//           this.$store.dispatch({type: 'loadCards'})
+//           ActivityService.addCard(addedCard).then(activity => {
+//               this.$store.commit({type: 'addActivity', activity});
+//             })  
+//         }, 200)
+          
+//         })
+//       .catch(_ => {
+//           this.$store.commit({type: 'setCards', cards: this.cardsBackUp})
+//           console.log('reverting back to state before change if promise was rejected')      
+//         })
+
+//     },
+-->
+
