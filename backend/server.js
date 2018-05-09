@@ -43,6 +43,8 @@ const addCardRoutes = require('./routes/CardRoutes.js')
 addCardRoutes(app)
 const addBoardRoutes = require('./routes/BoardRoutes.js')
 addBoardRoutes(app)
+const addActivityRoutes = require('./routes/ActivityRoutes.js')
+addActivityRoutes(app)
 
 
 http.listen(3000, () => {
@@ -54,25 +56,33 @@ http.listen(3000, () => {
 var nums = []
 
 io.on('connection', (socket) => {
+  socket.on('task removed', (card) => {
+    socket.broadcast.emit('task removed', card)
+  }),
+  socket.on('card removed', (cardId) => {
+    socket.broadcast.emit('card removed', cardId)
+  }),
+  socket.on('task added', (task) => {
+    socket.broadcast.emit('task added', task)
+  }),
+  socket.on('card added', (card) => {
+    socket.broadcast.emit('card added', card)
+  }),
+  socket.on('card updated', (card) => {
+    io.emit('card updated', card)
+  }),
+  socket.on('cards order updated', (cards) => {
+    io.emit('cards order updated', cards)
+  })
+  socket.on('task moved', (card) => {
+    io.emit('task moved', card)
+  })
+  
+
   // socket.on('user connected', (num) => {
   //   nums.push(num);
   //   io.emit('users changed', nums);
   // }),
-  socket.on('task removed', (card) => {
-    console.log('a task as removed from the card:', card);
-    io.emit('task removed', card)
-  }),
-  socket.on('card removed', (cardId) => {
-    io.emit('card removed', cardId)
-  }),
-  socket.on('task added', (task) => {
-    io.emit('task added', task)
-  }),
-  socket.on('card added', (card) => {
-    io.emit('card added', card)
-  })
-
-
   // socket.on('disconnect', function(){
   //   if(!users) return;
   //   removeUser(user.id);

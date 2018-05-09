@@ -1,6 +1,6 @@
 <template>
   <section id="modal-component" @keyup.esc="close">
-  <div class="modal-body " v-bind:class="{'active-in-component': mutableActived }"> 
+  <div class="modal-body" v-bind:class="{'active-in-component': mutableActived }"> 
     <div class="modal-content"><slot class="modal-slot"></slot></div>
       <div class="modal-close" @click="close"><i class="zmdi zmdi-close"></i>
       </div>
@@ -20,9 +20,9 @@ name: "modalComponent",
   props: ["activated"],
   methods: {
     close() {
-      this.$router.push('/orangize')
       this.mutableActived = !this.mutableActived;
       this.$el.blur();
+      this.$emit('updateTask', this.$route.params.id);
     }
   },
   watch: {
@@ -92,7 +92,7 @@ a {
   color: rebeccapurple;
   outline: 0;
   transition: 300ms;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.9);
   cursor: pointer;
   text-transform: uppercase;
   font-weight: bold;
@@ -114,7 +114,7 @@ a {
   transition: 500ms all cubic-bezier(0.14, 1.02, 0.15, 0.98);
   width: 0px;
   height: 100vh;
-  background: rgba(51, 111, 153, 0.82);
+  background: rgba(0, 0, 0, 0.9);
   -webkit-transform: translate3d(-100vw, 100vh, 0);
           transform: translate3d(-100vw, 100vh, 0);
   position: absolute;

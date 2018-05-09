@@ -22,6 +22,18 @@ function connectSocket() {
     socket.on('card added', (card) => {
         busService.$emit('card added', card);
     });
+
+    socket.on('card updated', (card) => {
+        busService.$emit('card updated', card);
+    });
+
+    socket.on('cards order updated',(cards) => {
+        busService.$emit('cards order updated', cards);
+    });
+    
+    socket.on('task moved',(card) => {
+        busService.$emit('task moved', card);
+    });
     socket.on('chat msg', function (msg) {
         // JIF
         // if (user.nickName === msg.from) msgs[msgs.length - 1].processed = true;
@@ -30,7 +42,6 @@ function connectSocket() {
 }
 
 const removeTask = (card) => {
-    // console.log('task removed from', card)
     socket.emit('task removed', card);
 }
 
@@ -44,6 +55,18 @@ const addTask = (task) => {
 
 const addCard = (card) => {
     socket.emit('card added', card);
+}
+
+const updateCard = (card) => {
+    socket.emit('card updated', card);
+}
+
+const updateAllCards = (cards) => {
+    socket.emit('cards order updated', cards)
+}
+
+const moveTask = (card) => {
+    socket.emit('task moved', card)
 }
 // const send = (msg) => {
 //     msgs.push(msg);
@@ -62,19 +85,13 @@ const addCard = (card) => {
 // }
 
 export default {
-    // getMsgs,
-    // send,
-    // user,
-    // users,
-    // createEmptyMsg,
     connectSocket,
     removeTask,
     addTask,
     removeCard,
-    addCard
-    // emitTyping,
-    // openPrivateChat
-    
+    addCard,
+    updateCard,
+    updateAllCards    
 }
 
 

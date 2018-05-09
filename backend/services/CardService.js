@@ -7,6 +7,7 @@ function getCards(cards) {
       db
         .collection("card")
         .find({})
+        .sort ({_id : -1})
         .toArray((err, cards) => {
           if (err) reject(err);
           else resolve(cards);
@@ -69,8 +70,7 @@ function updateCard(card, cardId) {
   delete card._id;
   return new Promise((resolve, reject) => {
     DBService.dbConnect().then(db => {
-      db
-        .collection("card")
+      db.collection("card")
         .updateOne({ _id: cardId }, card, (err, updatedCard) => {
           if (err) reject(err);
           else {

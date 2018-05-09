@@ -35,8 +35,8 @@
           </li>
         </ul>
       </div>
-         <textarea placeholder="Enter comment" contenteditable="true" name="" id="" cols="75" rows="10" v-model="addedComment.txt"></textarea>
-        <button @click.stop="addComment">Add Comment</button>
+         <textarea placeholder="Enter comment" contenteditable="true" name="" id="" cols="75" rows="5" v-model="addedComment.txt"></textarea>
+        <button class="add-comment" @click.stop="addComment">Add Comment</button>
     </section> 
 </template>
 
@@ -101,8 +101,8 @@ components: {
 
 <style scoped>
 section {
-  background: rgba(0, 0, 0, 0.575);
-  color: rgb(255, 255, 255);
+  background: #de5928c2;
+  color: #231f20;
 }
 h4 {
   text-decoration: underline;
@@ -123,6 +123,14 @@ h4 {
 
 .details-container textarea {
   margin: 10px;
+  border-radius: 5px;
+
+}
+
+.add-comment {
+  padding: 5px;
+  margin: 10px;
+  border-radius: 5%;
 }
 
 .color {
