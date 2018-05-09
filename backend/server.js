@@ -69,7 +69,7 @@ io.on('connection', (socket) => {
     socket.broadcast.emit('card added', card)
   }),
   socket.on('card updated', (card) => {
-    io.emit('card updated', card)
+    socket.broadcast.emit('card updated', card)
   }),
   socket.on('cards order updated', (cards) => {
     io.emit('cards order updated', cards)
