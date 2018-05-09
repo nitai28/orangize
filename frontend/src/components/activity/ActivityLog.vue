@@ -25,7 +25,7 @@ export default {
   },
   computed: {
     activities() {
-      console.log('ACTIVITIES:', this.$store.getters.getActivities)
+      // console.log('ACTIVITIES:', this.$store.getters.getActivities)
       return this.$store.getters.getActivities;
     }
   },
