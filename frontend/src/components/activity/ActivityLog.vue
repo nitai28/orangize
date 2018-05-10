@@ -1,5 +1,6 @@
 <template>
-  <section  v-drugs class="activity-log" :class="{open: isOpen}">
+  <!-- <section  v-drugs class="activity-log" :class="{open: isOpen}"> -->
+  <section class="activity-log" :class="{open: isOpen}">
     <button class="toggle-btn" @click="isOpen = !isOpen">Activity Log</button>
     <ul class="clean-list activities-container">
         <li v-for="activity in activities" :key="activity._id" class="activity-container flex space-between">
@@ -48,12 +49,17 @@ WHITE: #f5f5f5
 .activity-log {
   position: fixed;
   bottom: 0px;
-  left: 0px;
-  height: 30px;
-  transition: height 0.3s ease-in-out;
+  right: 0px;
+  overflow: hidden;
+  /* max-height: 30px; */
+  /* transition: height 0.3s ease-in-out; */
+  transition: transform 1s ease-in-out;
+  /* transform: translate(195px, 270px); */
+  transform: translate(195px, 300px);
 }
 .activity-log.open {
-  height: 300px;
+  /* height: 300px; */
+  transform: translate(0px, 0px);
 }
 
 .toggle-btn {
@@ -61,7 +67,7 @@ WHITE: #f5f5f5
   height: 30px;
   color: #f26531;
   background: #231f20d5;
-  border-radius: 0px 10px 0px 0px;
+  border-radius: 10px 10px 0px 0px;
   border: none;
   cursor: pointer;
   outline: none;
@@ -108,4 +114,29 @@ WHITE: #f5f5f5
   font-size: 13px;
   align-self: flex-start;
 }
+
+::-webkit-scrollbar {
+   width: 10px;
+}
+/* Track */
+::-webkit-scrollbar-track {
+   box-shadow: inset 0 0 2px #231f20;
+   border-radius: 10px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+   background: #f26531;
+   border-radius: 10px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+   background: #f26531; 
+}
+/*
+Black: #231f20
+LightOrange: #f26531
+WHITE: #f5f5f5
+*/
 </style>

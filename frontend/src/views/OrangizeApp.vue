@@ -26,7 +26,7 @@ export default {
   components: {
     UserMsg,
     CardList,
-    ActivityLog
+    ActivityLog,
   }
 };
 </script>

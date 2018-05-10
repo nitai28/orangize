@@ -1,7 +1,9 @@
 <template>
     <section class="card-list">
-      <task-filter @filterChanged="setFilter(filter)"></task-filter>
-      <button @click="addCard">Add List</button>
+      <div class="btns-container flex">
+        <task-filter @filterChanged="setFilter(filter)"></task-filter>
+        <button class="clean-btn btn" @click="addCard">Add List</button>
+      </div>
       <ul class="flex flex-row">
         <draggable element="div" v-model="cards" :options="dragOptions" class="flex flex-row clean-card" :move="isFilter">
         <li class="card-container" v-for="card in cards" :key="card._id">
@@ -251,6 +253,16 @@ export default {
 </script>
 
 <style scoped>
+
+.btns-container {
+  height: 60px;
+  padding: 10px;
+}
+
+.task-filter {
+  margin-right: 20px;
+}
+
 .new-task {
   background-color: rgba(237, 143, 33, 0.75);
   width: 100%;
