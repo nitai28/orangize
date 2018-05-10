@@ -1,5 +1,6 @@
 // var DB_URL = "mongodb://Admin:Admin@ds261929.mlab.com:61929/chat_app";
-const DB_URL = 'mongodb://admin:admin@ds111370.mlab.com:11370/orangize';
+// const DB_URL = 'mongodb://admin:admin@ds111370.mlab.com:11370/orangize';
+const DB_URL = 'mongodb://admin:admin@ds119080.mlab.com:19080/orangize-test';
 
 const mongo = require("mongodb");
 

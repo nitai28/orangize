@@ -26,10 +26,14 @@ export default {
       state.cards = cards;
     },
     saveCardsBackUp(state) {
+      // console.log('BEFORE', state.cardsBackUp);
       state.cardsBackUp = JSON.parse(JSON.stringify(state.cards));
+      // console.log('AFTER', state.cardsBackUp);
     },
     loadCardsBackUp(state) {
+      // console.log('BEFORE', state.cardsBackUp);
       state.cards = JSON.parse(JSON.stringify(state.cardsBackUp));
+      // console.log('AFTER', state.cardsBackUp);
     },
     setTasks(state, { tasks, cardId }) {
       console.log('tasks', tasks, cardId);
@@ -37,7 +41,6 @@ export default {
       const cardIdx = state.cards.findIndex(card => card._id === cardId);
       state.cards[cardIdx].tasks = tasks;
     },
-
     updateCard(state, { updatedCard }) {
       const cardIdx = state.cards.findIndex(
         card => card._id === updatedCard._id
@@ -69,7 +72,10 @@ export default {
   actions: {
     loadCards(store) {
       return CardService.getCards()
-        .then(cards => store.commit({ type: "setCards", cards }))
+        .then(cards => {
+          store.commit({ type: "setCards", cards });
+          store.commit({ type: "saveCardsBackUp" });
+        })
         .catch(err => err);
     },
 
@@ -88,6 +94,7 @@ export default {
 
         CardService.saveCard(card).then(_ => {
           store.commit({ type: "updateCard", updatedCard: card });
+          store.commit({ type: "saveCardsBackUp" });
           store.commit({ type: "setSelectedTask", task: card.tasks[taskIdx] });
           // ActivityService.updateTask(editedTask).then(activity => {
           //   store.commit({type: 'addActivity', activity});
@@ -148,14 +155,14 @@ export default {
 
     updateTasks(store, { tasks, cardId }) {
       store.commit({ type: "setTasks", tasks, cardId });
-      store.commit({ type: "saveCardsBackUp" });
       CardService.getCardById(cardId)
-        .then(card => {
-          let copyTasks = JSON.parse(JSON.stringify(tasks));
-          copyTasks.forEach(copyTask => (copyTask.cardId = cardId));
-          card.tasks = copyTasks;
-          CardService.saveCard(card).then(_ => {
-            ActivityService.moveTask().then(activity => {
+      .then(card => {
+        let copyTasks = JSON.parse(JSON.stringify(tasks));
+        copyTasks.forEach(copyTask => (copyTask.cardId = cardId));
+        card.tasks = copyTasks;
+        CardService.saveCard(card).then(_ => {
+          store.commit({ type: "saveCardsBackUp" });
+          ActivityService.moveTask().then(activity => {
               store.commit({ type: "addActivity", activity });
             });
           });
