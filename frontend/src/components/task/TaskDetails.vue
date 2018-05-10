@@ -1,42 +1,55 @@
 <template>
-    <section class="task-details details-container flex flex-column">
-      <h3 v-show="isTitleEditMode === false" @dblclick="isTitleEditMode = true">{{editedTask.title}}</h3>
-      <input v-show="isTitleEditMode === true" v-model="editedTask.title" @blur="isTitleEditMode=false; updateTask()"
-             @keyup.enter="isTitleEditMode=false" autofocus>
-      
-      <label for="">Label Card:</label>
-      <div class="flex label-containe">
-        <div @click.stop="updateLabel('red')" class="color red"></div>
-        <div @click.stop="updateLabel('orange')" class="color orange"></div>
-        <div @click.stop="updateLabel('yellow')" class="color yellow"></div>
-        <div @click.stop="updateLabel('green')" class="color green"></div>
-      </div>
-      <h4>Task Members</h4>
-      <button @click="userListOpen=!userListOpen">open users list </button>
-      <div class="user-list">
-        <ul>
-          <li  v-if=userListOpen v-for="user in users" :key="user._id">{{user.name}} <i @click="addUserToTaskMember(user)" class="user-icon"></i></li>
-        </ul>
-      </div>
-        <div>
-          <h4>Comments Card</h4>
-          <ol>
-            <li v-for="comment in editedTask.comments" :key="comment._id">{{comment.txt }} 
-              <p> <strong>{{comment.adddedBy}}</strong> {{comment.time | changeDateFilter}}</p>
-              <hr>
-               </li>
-          </ol>
+    <section>
+      <div class="task-details details-container flex">
+        <div class="details1">
+          <h3 v-show="isTitleEditMode === false" @dblclick="isTitleEditMode = true">{{editedTask.title}}</h3>
+            <input class="title-edit" v-show="isTitleEditMode === true" v-model="editedTask.title" @blur="isTitleEditMode=false; updateTask()"
+                  @keyup.enter="isTitleEditMode=false" autofocus>
+          <label for="">Label Card:</label>
+          <div class="color-container flex">
+            <div @click.stop="updateLabel('red')" class="color red"></div>
+            <div @click.stop="updateLabel('orange')" class="color orange"></div>
+            <div @click.stop="updateLabel('yellow')" class="color yellow"></div>
+            <div @click.stop="updateLabel('green')" class="color green"></div>
+          </div>
+          <h4>Task Members</h4>
+              <div class="task-user-list">
+                <ul class="add-member-list">
+                  <li v-for="taskMember in taskMembers" :key="taskMember._id"><i @click.stop="deleteTaskMember(taskMember)" class="delete-icon"></i>{{taskMember.name}}
+                    
+                  </li>
+                </ul>
+              </div>
         </div>
-        <div class="task-user-list">
-        <h1>member list</h1>
-        <ul>
-          <li v-for="taskMember in taskMembers" :key="taskMember._id">{{taskMember.name}}
-            <i @click.stop="deleteTaskMember(taskMember)" class="delete-icon"></i>
-          </li>
-        </ul>
-      </div>
-         <textarea placeholder="Enter comment" contenteditable="true" name="" id="" cols="75" rows="5" v-model="addedComment.txt"></textarea>
-        <button class="add-comment" @click.stop="addComment">Add Comment</button>
+          <div class="member-container">
+            
+            <!-- <button @click="userListOpen=!userListOpen">open users list </button> -->
+            <!-- v-if=userListOpen -->
+              <h1 class="member-headline">member list</h1>
+              <div class="user-list">
+                <ul>
+                  <li v-for="user in users" :key="user._id"><i @click="addUserToTaskMember(user)" class="user-icon"></i>{{user.name}} </li>
+                </ul>
+              </div>
+
+          </div>
+      
+            <div class="comments-container">
+                <textarea placeholder="Enter comment" contenteditable="true" name="" id="" cols="75" rows="5" v-model="addedComment.txt"></textarea>
+                <button class="add-comment" @click.stop="addComment">Add Comment</button>
+                <div>
+                  <h4>Comments Card</h4>
+                  <ol>
+                    <li class="comment-body" v-for="comment in editedTask.comments" :key="comment._id">{{comment.txt }} 
+                      <p class="comment-by">Added By: <strong>{{comment.adddedBy}}</strong> {{comment.time | changeDateFilter}}</p>
+                      <hr>
+                    </li>
+                  </ol>
+                </div>
+
+
+            </div>
+        </div>
     </section> 
 </template>
 
@@ -101,24 +114,34 @@ components: {
 
 <style scoped>
 section {
-  background: #de5928c2;
-  color: #231f20;
-}
+    background: #f5f5f5;
+    padding: 26px;
+    border-radius: 8px;
+    color: #231f20;
+    width: 100%
+    }
 h4 {
   text-decoration: underline;
+}
+.details1{
+  flex-grow: 0.5;
+  width: 50%;
 }
 
 .details-container {
   margin: 0 auto;
-  margin-top: 50px;
+  height: fit-content;
   font-size: 1.5rem;
   font-family: 'Mina';
+  flex-wrap: wrap;
+  
 }
 .user-icon{
   display: inline-block;
-  background-image: url("../../assets/icon/add-user.svg");
+  background-image: url("../../assets/icon/adduser.svg");
   width: 30px;
   height:30px;
+  margin-right: 5px;
 }
 
 .details-container textarea {
@@ -126,7 +149,9 @@ h4 {
   border-radius: 5px;
 
 }
-
+/* .add-member-list{
+  
+} */
 .add-comment {
   padding: 5px;
   margin: 10px;
@@ -134,10 +159,12 @@ h4 {
 }
 
 .color {
-  width: 30px;
-  height: 30px;
+  display: flex;
+
+  width: 60px;
+  height: 60px;
   margin-right: 5px;
-  border-radius: 8px;
+  border-radius: 50%;
 }
 .red {
   background: rgb(197, 0, 0);
@@ -157,6 +184,86 @@ h4 {
   width: 30px;
   height:30px;
 }
+.comments-container{
+  flex-grow: 1;
+  width: 100%;
+}
+.member-container{
+  flex-grow: 0.5;
+  width: 50%;
+ 
+}
+.user-list{
+   overflow-y: scroll;
+  background:#f5f5f5;
+  color: black;
+  max-height: 310px;
+}
+.user-list li:hover{
+  color: #ed8f20;
+}
+/* width */
+::-webkit-scrollbar {
+    width: 10px;
+}
+/* Track */
+::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 2px grey; 
+    border-radius: 10px;
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #ed8f20; 
+    border-radius: 10px;
+}
 
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #ed8f20; 
+}
+
+button {
+    background-color: white; 
+    color:#ed8f20;
+    border: 2px solid  #ed8f20;
+    /* border-radius: 5px; */
+}
+
+button:hover {
+    background-color: #ed8f20;
+    color: white;
+}
+button:focus{
+  outline: none
+}
+.member-headline{
+  color:  #ed8f20;
+  text-decoration-color: black;
+  text-decoration: underline;
+  font-size:20px;
+}
+.title-edit{
+  display: block;
+}
+.comments-container{
+  margin:0 auto;
+}
+textarea{
+  display: block;
+  font-size: 20px;
+  padding: 5px;
+  font-family: 'Mina';
+  /* outline-color: #ed8f20 ; */
+  outline: 1px solid #ed8f20;
+}
+textarea:focus{
+  outline-color: #ed8f20;
+}
+.comment-body{
+  font-size: 25px
+}
+.comment-by{
+  font-size:20px; 
+}
 </style>
-// @click.stop="deleteTaskMember(user)"
