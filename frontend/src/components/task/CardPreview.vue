@@ -27,7 +27,6 @@ export default {
         return this.tasks;
       },
       set(changedTasks) {
-        console.log('data sent 1st time on task drag', changedTasks)
         // updateCard(changedTasks); //call method to emit to parent - check parameter
         this.$store.dispatch({ type: "updateTasks", tasks: changedTasks, cardId: this.card._id });
       }

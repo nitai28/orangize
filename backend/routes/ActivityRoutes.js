@@ -10,7 +10,7 @@ module.exports = app => {
 
     app.get("/activity", (req, res) => {
       ActivityService.query().then(activities => {
-        console.log("ACTIVITIES: ", activities);
+        // console.log("ACTIVITIES: ", activities);
         res.json(activities);
       });
     }); 

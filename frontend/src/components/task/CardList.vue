@@ -43,6 +43,7 @@ import Draggable from "vuedraggable";
 export default {
   created() {
     this.$store.dispatch({ type: "loadCards" });
+
     EventBusService.$on("openModal", this.toggleModal);
 
     EventBusService.$on("task removed", card => {
@@ -72,10 +73,10 @@ export default {
     };
   },
   computed: {
-    dragOptions () {
-      return  {
-        ghostClass: 'ghost'
-      }
+    dragOptions() {
+      return {
+        ghostClass: "ghost"
+      };
     },
     selectedTask() {
       return this.$store.getters.selectedTask;
@@ -91,8 +92,10 @@ export default {
           copyCard.tasks = copyCard.tasks.filter(task => {
             if (
               (!this.filter.byLabel || task.label === this.filter.byLabel) &&
-              (!this.filter.byTitle || 
-              task.title.toLowerCase().includes(this.filter.byTitle.toLowerCase()))
+              (!this.filter.byTitle ||
+                task.title
+                  .toLowerCase()
+                  .includes(this.filter.byTitle.toLowerCase()))
             )
               return true;
             else return false;
@@ -115,7 +118,7 @@ export default {
     },
 
     createTask(card) {
-      this.cardsBackUp = JSON.parse(JSON.stringify(this.cards));
+      this.$store.commit({ type: "saveCardsBackUp" });
 
       var editedCard = JSON.parse(JSON.stringify(card));
       let newTask = TaskService.emptyTask(card._id);
@@ -125,18 +128,21 @@ export default {
       let newActivity = ActivityService.getAddTaskActivity(newTask);
       this.$store.commit({ type: "addActivity", activity: newActivity });
 
-      CardService.addTask(editedCard).then(addedTask => {
-         ActivityService.addActivity(newActivity)
-            .then(activity => {
-              ActivityService.query().then(activities =>
-                this.$store.commit({ type: "setActivities", activities }));
-            })
-      })
-       .catch(_ => {
-          this.$store.commit({type: 'setCards', cards: this.cardsBackUp})
+      CardService.addTask(editedCard)
+        .then(addedTask => {
+          ActivityService.addActivity(newActivity).then(activity => {
+            ActivityService.query().then(activities =>
+              this.$store.commit({ type: "setActivities", activities })
+            );
+          });
+        })
+        .catch(_ => {
+          this.$store.commit({ type: "loadCardsBackUp" });
           this.$store.commit({ type: "loadBackupActivities" });
-          console.log('reverting back to state before change if promise was rejected')      
-        })  
+          console.log(
+            "reverting back to state before change if promise was rejected"
+          );
+        });
     },
 
     toggleModal() {
@@ -145,45 +151,76 @@ export default {
 
     addCard() {
       var createdCard = CardService.emptyCard();
-      this.cardsBackUp = JSON.parse(JSON.stringify(this.cards))
       this.addedCard(createdCard);
-       console.log('updating state and frontend before promise sent to DB')
+      console.log("updating state and frontend before promise sent to DB");
 
       CardService.saveCard(createdCard)
-      .then(addedCard => {
-        this.$store.dispatch({type: 'loadCards'})
-        ActivityService.addCard(addedCard).then(activity => {
-          this.$store.commit({type: 'addActivity', activity});
-          })  
-      })
-      .catch(_ => {
-        this.$store.commit({type: 'setCards', cards: this.cardsBackUp})
-          console.log('reverting back to state before change if promise was rejected')      
+        .then(addedCard => {
+          this.$store.dispatch({ type: "loadCards" }).then(_ => {
+            this.$store.commit({ type: "saveCardsBackUp" });
+            // this.cardsBackUp = JSON.parse(JSON.stringify(this.cards))
+          });
+          ActivityService.addCard(addedCard).then(activity => {
+            this.$store.commit({ type: "addActivity", activity });
+          });
         })
+        .catch(_ => {
+          this.$store.commit({ type: "loadCardsBackUp" });
+          console.log(
+            "reverting back to state before change if promise was rejected"
+          );
+        });
     },
 
-    deleteCard(cardId) {
-      this.cardsBackUp = JSON.parse(JSON.stringify(this.cards))
-       this.cardRemoved(cardId);
-      //  this.$store.commit({ type: "deleteCard", cardId });
-       console.log('updating state and frontend before promise sent to DB')
+    // addCard() {
+    //   var createdCard = CardService.emptyCard();
+    //   this.addedCard(createdCard);
+    //   console.log('updating state and frontend before promise sent to DB')
 
-        CardService.getCardById(cardId)
+    //   CardService.saveCard(createdCard)
+    //   .then(addedCard => {
+    //     this.$store.dispatch({type: 'loadCards'}).then(_ => {
+    //       // this.cardsBackUp = JSON.parse(JSON.stringify(this.cards))
+    //       this.$store.commit({ type: "saveCardsBackUp" });
+    //       ActivityService.addCard(addedCard).then(activity => {
+    //         this.$store.commit({type: 'addActivity', activity});
+    //         })
+    //     })
+    //   })
+    //   .catch(_ => {
+    //     this.$store.commit({type: 'setCards', cards: this.cardsBackUp})
+    //       console.log('reverting back to state before change if promise was rejected')
+    //     })
+    // },
+
+    deleteCard(cardId) {
+      this.$store.commit({ type: "saveCardsBackUp" });
+      this.cardRemoved(cardId);
+      //  this.$store.commit({ type: "deleteCard", cardId });
+      console.log("updating state and frontend before promise sent to DB");
+
+      CardService.getCardById(cardId)
         .then(card => {
           CardService.deleteCard(cardId).then(_ => {
             ActivityService.removeCard(card).then(activity => {
-              this.$store.commit({type: 'addActivity', activity});
-                })
-            })
-          })
+              this.$store.commit({ type: "addActivity", activity });
+            });
+          });
+        })
         .catch(_ => {
-          this.$store.commit({type: 'setCards', cards: this.cardsBackUp})
-          console.log('reverting back to state before change if promise was rejected')      
-
-        })  
+          this.$store.commit({ type: "loadCardsBackUp" });
+          console.log(
+            "reverting back to state before change if promise was rejected"
+          );
+        });
     },
     updateCardTitle(updatedCard) {
-      CardService.updateCard(updatedCard);
+      this.$store.commit({ type: "saveCardsBackUp" });
+      this.$store.commit({ type: "updateCard", updatedCard });
+      CardService.updateCard(updatedCard).catch(_ => {
+        this.$store.commit({ type: "loadCardsBackUp" });
+        console.log("DONE");
+      });
     },
 
     editTitle(card) {
@@ -194,35 +231,40 @@ export default {
     updateTask(taskId) {
       let updatedTask;
       this.cards.forEach(card => {
-        let tempTask = card.tasks.find(task => task._id === taskId)
-        if (tempTask) updatedTask = tempTask 
-      })
-      let updatedCard = this.cards.find(card => card._id === updatedTask.cardId)
+        let tempTask = card.tasks.find(task => task._id === taskId);
+        if (tempTask) updatedTask = tempTask;
+      });
+      let updatedCard = this.cards.find(
+        card => card._id === updatedTask.cardId
+      );
       CardService.updateCard(updatedCard);
     },
 
     deleteTask(task) {
-      this.cardsBackUp = JSON.parse(JSON.stringify(this.cards))
-      let card = this.cards.find(currCard => currCard._id === task.cardId)
+      this.$store.commit({ type: "saveCardsBackUp" });
+      let card = this.cards.find(currCard => currCard._id === task.cardId);
 
-      let newActivity = ActivityService.getRemoveTaskActivity(task)
-      this.$store.commit({ type: "addActivity", activity: newActivity});
+      let newActivity = ActivityService.getRemoveTaskActivity(task);
+      this.$store.commit({ type: "addActivity", activity: newActivity });
 
-      let updatedCard = JSON.parse(JSON.stringify(card)) 
-      updatedCard.tasks = updatedCard.tasks.filter(currTask => currTask._id !== task._id);
-      this.updateCard(updatedCard)
+      let updatedCard = JSON.parse(JSON.stringify(card));
+      updatedCard.tasks = updatedCard.tasks.filter(
+        currTask => currTask._id !== task._id
+      );
+      this.updateCard(updatedCard);
 
-        CardService.deleteTask(updatedCard).then(_ => {
-          ActivityService.addActivity(newActivity)
-              .then(activity => {
-                ActivityService.query().then(activities =>
-                  this.$store.commit({ type: "setActivities", activities }));
+      CardService.deleteTask(updatedCard)
+        .then(_ => {
+          ActivityService.addActivity(newActivity).then(activity => {
+            ActivityService.query().then(activities =>
+              this.$store.commit({ type: "setActivities", activities })
+            );
+          });
         })
-      })
-      .catch(_ => {
-        this.$store.commit({type: 'setCards', cards: this.cardsBackUp})
-          this.$store.commit({ type: 'loadBackupActivities'})    
-        })  
+        .catch(_ => {
+          this.$store.commit({ type: "loadCardsBackUp" });
+          this.$store.commit({ type: "loadBackupActivities" });
+        });
     },
     /////////// After DB has been updated ///////////////////
     cardRemoved(cardId) {
@@ -253,7 +295,6 @@ export default {
 </script>
 
 <style scoped>
-
 .btns-container {
   height: 60px;
   padding: 10px;
@@ -274,7 +315,7 @@ export default {
 
 .item {
   padding: 5px;
-  background: #CCCCCC;
+  background: #cccccc;
   border: 1px solid black;
 }
 
@@ -285,7 +326,7 @@ export default {
   transition: transform 0s;
 }
 div .ghost {
-  opacity: .2;
+  opacity: 0.2;
 }
 .list-group {
   min-height: 20px;
@@ -293,12 +334,12 @@ div .ghost {
 .list-group-item {
   cursor: move;
 }
-.list-group-item i{
+.list-group-item i {
   cursor: pointer;
 }
 
 .dragArea {
-     min-height: 20px;	
+  min-height: 20px;
 }
 
 .card-container {
@@ -308,7 +349,8 @@ div .ghost {
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 200px;
+  width: 250px;
+  border-radius: 5px; 
 }
 
 .card-title {
@@ -342,7 +384,6 @@ div .ghost {
   margin: auto;
   margin-top: 40px;
 }
-
 </style>
 <!--
 ////////////// Add Card with deboucnce - for rapid creation glitch bug ////////////

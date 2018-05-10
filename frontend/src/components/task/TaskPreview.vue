@@ -1,11 +1,13 @@
 <template>
-    <section class="task-preview" :class="{[task.label]: (task.label) }" @click="showDetails(task)">
-        <h3>{{ task.title }}</h3>
-        <div class="flex ">
-        <i class="comment-icon"></i><span> {{commentNumbers}}</span> 
-        <i class="user-icon"></i><span> {{usernumbers}}</span> 
+    <section class="task-preview flex space-between" :class="{[task.label]: (task.label) }" @click="showDetails(task)">
+        <div class="flex flex-column">
+          <h3>{{ task.title }}</h3>
+          <div class="task-stats flex align-center">
+            <i class="user-icon"></i><span> {{usernumbers}}</span> 
+            <i class="comment-icon"></i><span> {{commentNumbers}}</span> 
+          </div>
         </div>
-        <button class="delete-task" @click.stop="removeTask(task)"><img src="../../assets/icon/rubbish-bin.svg" /></button>
+          <button class="delete-task" @click.stop="removeTask(task)"><img src="../../assets/icon/rubbish-bin.svg" /></button>
     </section>
 </template>
 
@@ -32,8 +34,6 @@ export default {
       return this.task.comments.length
     },
     usernumbers(){
-      console.log(this.task.users.length);
-      
        return this.task.users.length
     }
   }
@@ -46,7 +46,7 @@ export default {
   flex-direction: row;
   background-color: #eae7e7f0;
   margin-bottom: 4px;
-  border-radius: 5%;
+  border-radius: 5px;
   width: 100%;
   transition: width 0.5s ease-in-out;
 }
@@ -58,10 +58,16 @@ h3 {
   border-radius: 5%;
 }
 
+.task-stats {
+  padding: 5px;
+}
+
 .delete-task {
+  background-color: transparent;
   display: inline-block;
   opacity: 0;
   transition: opacity .3s ease-in-out;
+  border-radius: 5px;
 }
 
 .delete-task img {
@@ -90,11 +96,13 @@ h3 {
   background-image: url("../../assets/icon/users.svg");
   width: 20px;
   height:20px;
+  margin: 5px;
 }
 .comment-icon{
   display: inline-block;
   background-image: url("../../assets/icon/chat.svg");
   width: 20px;
   height:20px;
+  margin: 5px;
 }
 </style>
