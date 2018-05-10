@@ -145,19 +145,21 @@ export default {
 
     addCard() {
       var createdCard = CardService.emptyCard();
-      this.cardsBackUp = JSON.parse(JSON.stringify(this.cards))
       this.addedCard(createdCard);
-       console.log('updating state and frontend before promise sent to DB')
+      console.log('updating state and frontend before promise sent to DB')
 
       CardService.saveCard(createdCard)
       .then(addedCard => {
-        this.$store.dispatch({type: 'loadCards'})
-        ActivityService.addCard(addedCard).then(activity => {
-          this.$store.commit({type: 'addActivity', activity});
-          })  
+        this.$store.dispatch({type: 'loadCards'}).then(_ => {
+          // this.cardsBackUp = JSON.parse(JSON.stringify(this.cards))
+          this.$store.commit({ type: "saveCardsBackUp" });
+          ActivityService.addCard(addedCard).then(activity => {
+            this.$store.commit({type: 'addActivity', activity});
+            })  
+        })
       })
       .catch(_ => {
-        this.$store.commit({type: 'setCards', cards: this.cardsBackUp})
+        this.$store.commit({type: 'loadCardsBackUp', cards: this.cardsBackUp})
           console.log('reverting back to state before change if promise was rejected')      
         })
     },
@@ -308,7 +310,8 @@ div .ghost {
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 200px;
+  width: 250px;
+  border-radius: 5px; 
 }
 
 .card-title {
