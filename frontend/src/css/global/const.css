@@ -1,0 +1,17 @@
+.btn {
+    color: #f26531;
+    background: #231f20;
+    border-radius: 5px;
+    padding: 1px 10px;
+    transition: all 0.3s ease-in-out;
+    box-shadow: 0px 3px 3px 0px #000000;
+}
+
+.input {
+    color: #f26531;
+    background: #231f20;
+    border-radius: 5px;
+    padding: 1px 10px;
+    transition: all 0.3s ease-in-out;
+    box-shadow: 0px 3px 3px 0px #000000;
+}
