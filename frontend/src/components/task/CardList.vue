@@ -351,6 +351,7 @@ div .ghost {
   align-items: center;
   width: 250px;
   border-radius: 5px; 
+  height: fit-content;
 }
 
 .card-title {
