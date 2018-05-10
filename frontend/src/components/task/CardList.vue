@@ -124,7 +124,6 @@ export default {
       let newTask = TaskService.emptyTask(card._id);
       editedCard.tasks.push(newTask);
       this.addedTask(newTask);
-
       let newActivity = ActivityService.getAddTaskActivity(newTask);
       this.$store.commit({ type: "addActivity", activity: newActivity });
 
@@ -305,12 +304,14 @@ export default {
 }
 
 .new-task {
-  background-color: rgba(237, 143, 33, 0.75);
+  background-color: rgba(0, 0, 0, 0.75);
   width: 100%;
+  color: antiquewhite;
   border-radius: 5px;
   border: 1px solid black;
   padding: 5px;
   margin-top: 5px;
+  cursor: pointer;
 }
 
 .item {
@@ -345,12 +346,13 @@ div .ghost {
 .card-container {
   margin: 10px;
   padding: 5px;
-  background: rgba(0, 0, 0, 0.3);
+  background: rgba(204, 202, 184, 0.89);
   display: flex;
   flex-direction: column;
   align-items: center;
   width: 250px;
-  border-radius: 5px; 
+  border-radius: 5px;
+  height: fit-content;
 }
 
 .card-title {

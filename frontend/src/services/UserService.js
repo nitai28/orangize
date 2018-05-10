@@ -70,13 +70,13 @@ function checkLogin(userCred) {
     .then(res => {
       delete res.data.password;
       var userMsg = { txt: "succesful-login", type: "success" };
-      EventBusService.$emit(SHOW_MSG, userMsg);
+      // EventBusService.$emit(SHOW_MSG, userMsg);
       sessionStorage.user = JSON.stringify(res.data)
       return res.data;
     })
     .catch(e => {
       var userMsg = { txt: "Faild to login please Sign Up", type: "danger" };
-      EventBusService.$emit(SHOW_MSG, userMsg);
+      // EventBusService.$emit(SHOW_MSG, userMsg);
     });
   // throw new Error(e)});
 }
