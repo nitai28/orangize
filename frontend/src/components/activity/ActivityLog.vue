@@ -53,7 +53,7 @@ WHITE: #f5f5f5
   overflow: hidden;
   /* max-height: 30px; */
   /* transition: height 0.3s ease-in-out; */
-  transition: transform 1s ease-in-out;
+  transition: transform 0.5s ease-in-out;
   /* transform: translate(195px, 270px); */
   transform: translate(195px, 300px);
 }

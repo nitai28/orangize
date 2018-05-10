@@ -349,7 +349,8 @@ div .ghost {
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 200px;
+  width: 250px;
+  border-radius: 5px; 
 }
 
 .card-title {
