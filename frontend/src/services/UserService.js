@@ -64,6 +64,15 @@ function getUserById(userId) {
   return axios.get(_getUserUrl(userId)).then(res => res.data);
 }
 
+function checkLoggedIn() {
+  return axios
+  .post(`/user/loggedIn`)
+  .then(res => res.data)
+  .catch(err => {
+    console.log(err);
+  })
+}
+
 function checkLogin(userCred) {
   return axios
     .post(`/user/login`, userCred)
@@ -71,7 +80,6 @@ function checkLogin(userCred) {
       delete res.data.password;
       var userMsg = { txt: "succesful-login", type: "success" };
       EventBusService.$emit(SHOW_MSG, userMsg);
-      sessionStorage.user = JSON.stringify(res.data)
       return res.data;
     })
     .catch(e => {
@@ -101,6 +109,7 @@ export default {
   emptyUser,
   getUserById,
   checkLogin,
+  checkLoggedIn,
   logout
 };
 // deleteMultUsers

@@ -5,7 +5,6 @@ module.exports = app => {
   app.get("/user", (req, res) => {
     // UserService.query(req.session.user._id).then(user => {
     UserService.query().then(user => {
-      console.log("USER: ", user);
       res.json(user);
     });
   });
@@ -19,7 +18,6 @@ module.exports = app => {
   });
 
   app.delete(`/user/:userId`, (req, res) => {
-    console.log("delete");
 
     const userId = req.params.userId;
     if (!userId) {
@@ -31,7 +29,7 @@ module.exports = app => {
   });
   
   app.get('/user/logout', (req, res) => {
-    console.log('asdasdasdasdasddad');
+    req[session].reset()
     // req.session.reset();
     res.end('Loggedout');
   });
@@ -53,13 +51,41 @@ module.exports = app => {
       .then(user => res.json(user))
       .catch(err => res.status(500).send("Could not update user"));
   });
-  app.post("/user/login", function(req, res) {
-    // console.log(req.body);
-    
-    var user = { name: req.body.name, password: req.body.password };
-      UserService.checkLogin(user).then(userFromDB=>  res.json(userFromDB))
-      .catch(err => res.status(500).send("Could not login "));
-   
+  app.post('/user/loggedIn', (req, res) => {
+    if(req.session.user) res.json(req.session.user)
+    // console.log(req.session);
+    // res.json(req.session.user);
+  })
+
+  app.post("/user/login", (req, res) => {
+    console.log(req.session.user)
+      var user = { name: req.body.name, password: req.body.password };
+      UserService.checkLogin(user).then(userFromDB => {
+        delete userFromDB.password;
+        req.session.user = userFromDB;
+        res.json(userFromDB);
+      })
+      
+      .catch(err => {
+        req.session.user = null;
+        res.status(500).send("Could not login ")
+      });
+  });
+
+  app.post('/login', (req, res) => {
+
+    const user = req.body;
+    UserService.checkLogin(user).then(userFromDB => {
+      if (userFromDB) {
+        delete userFromDB.password;
+        req.session.user = userFromDB;
+
+        res.json(userFromDB);
+      } else {
+        req.session.user = null;
+        res.status(403).send({ error: 'Login failed!' });
+      }
+    });
   });
 
   
