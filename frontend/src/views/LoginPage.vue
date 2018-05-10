@@ -27,7 +27,7 @@ export default {
     checkLogin(){
           UserService.checkLogin(this.user).then(updatedUser => {
             console.log('updatedUser', updatedUser)
-            this.$store.commit({type:'updateCurrUser',user:updatedUser})
+            this.$store.commit({type:'setCurrUser',user:updatedUser})
           })
         }
   },

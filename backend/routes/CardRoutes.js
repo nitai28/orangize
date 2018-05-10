@@ -5,7 +5,6 @@ module.exports = app => {
   app.get("/card", (req, res) => {
     // CardService.query(req.session.user._id).then(Cards => {
     CardService.getCards().then(Cards => {
-      console.log("CARDS: ", Cards);
       res.json(Cards);
     });
   });
@@ -15,7 +14,6 @@ module.exports = app => {
     const cardId = req.params.cardId;
     // CardService.query(req.session.user._id).then(Cards => {
     CardService.getById(cardId).then(card => {
-      console.log("CARD: ", card);
       res.json(card);
     });
   });
@@ -44,8 +42,6 @@ module.exports = app => {
   app.put(`/card/:cardId`, (req, res) => {
     const cardId = req.params.cardId;
     const card = req.body;
-    console.log(card._id)
-    console.log(cardId, "*********************", card);
     // Card.userId = req.session.user._id;
     CardService.updateCard(card, cardId)
       .then(card => res.json(card))
