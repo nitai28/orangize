@@ -183,7 +183,12 @@ export default {
         })  
     },
     updateCardTitle(updatedCard) {
-      CardService.updateCard(updatedCard);
+      this.$store.commit({type: 'saveCardsBackUp'})
+      this.$store.commit({type: 'updateCard', updatedCard})
+      CardService.updateCard(updatedCard).catch(_ => {
+        this.$store.commit({type: 'loadCardsBackUp'})
+        console.log('DONE')
+      });
     },
 
     editTitle(card) {

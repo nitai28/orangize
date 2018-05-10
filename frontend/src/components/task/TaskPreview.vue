@@ -32,8 +32,6 @@ export default {
       return this.task.comments.length
     },
     usernumbers(){
-      console.log(this.task.users.length);
-      
        return this.task.users.length
     }
   }

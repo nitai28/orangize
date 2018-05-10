@@ -37,7 +37,6 @@ export default {
       const cardIdx = state.cards.findIndex(card => card._id === cardId);
       state.cards[cardIdx].tasks = tasks;
     },
-
     updateCard(state, { updatedCard }) {
       const cardIdx = state.cards.findIndex(
         card => card._id === updatedCard._id
