@@ -2,7 +2,7 @@
   <section class="register">
     <form @submit.prevent="register" class="signUp" :class="{ 'active-sx': !this.isLoginMode, 'inactive-sx': this.isLoginMode }">
       <h3>Create Your Account</h3>
-      <p>Just enter your email address and your password for join.</p>
+      <p>Just enter your user name and your password for join.</p>
       <input class="w100" type="text" placeholder="Insert Username" v-model="user.name" required autocomplete='off' />
       <input type="password" placeholder="Insert Password" v-model="user.password" required />
       <input type="password" placeholder="Verify Password" v-model="verifyPass" required />
@@ -11,8 +11,6 @@
     </form>
     <form @submit.prevent="checkLogin" class="login" :class="{ 'active-dx': this.isLoginMode, 'inactive-dx': !this.isLoginMode }">
       <h3>Welcome Back !</h3>
-      <button class="fb" type="button">Log In With Facebook</button>
-      <p>- or -</p>
       <input ref="txtUserName" type="text" placeholder="Insert Username" v-model="user.name" autocomplete='off' required />
       <input type="password" v-model="user.password" placeholder="Insert Password" required />
       <button class="form-btn sx back" @click="toggleLoginMode" type="button">Back</button>
@@ -48,10 +46,9 @@ export default {
         })
     },
     checkLogin() {
-      UserService.checkLogin(this.user).then(updatedUser => {
-            console.log('updatedUser', updatedUser)
-            this.$store.commit({type:'updateCurrUser',user:updatedUser})
-          })
+        UserService.checkLogin(this.user).then(updatedUser => {
+            this.$store.commit({type:'setCurrUser',user:updatedUser})
+        })
     }
     },
   }
@@ -62,6 +59,7 @@ export default {
 
 body {
   background: #ffc185;
+  margin: 0 auto;
 }
 
 .container {

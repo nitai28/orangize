@@ -3,22 +3,14 @@ import UserService from "../services/UserService.js";
 export default {
   state: {
     users: [],
-    currUser: {
-      "_id" : '5af1486dcac3ed0548c5f630',
-      "name" : "xxx",
-      "password" : "1"
-  }
+    currUser: null
   },
   mutations: {
-    setUser(state, { user }) {
+    setCurrUser(state, { user }) {
       state.currUser = user;
     },
     saveUser(state, { user }) {
       state.users.push(user);
-    },
-    updateCurrUser(state, { user }) {
-      console.log("store curr user", user);
-      state.currUser = user;
     },
     setUsers(state, { users }) {
       state.users = users;
@@ -49,12 +41,12 @@ export default {
 
     login(store, { userCredentials }) {
       return UserService.login(userCredentials).then(user => {
-        store.commit({ type: "setUser", user });
+        store.commit({ type: "setCurrUser", user });
       });
     },
     logout(store) {
       return UserService.logout().then(() => {
-        store.commit({ type: "setUser", user: null });
+        store.commit({ type: "setCurrUser", user: null });
       });
     },
 

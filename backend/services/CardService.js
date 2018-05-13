@@ -31,7 +31,6 @@ function getById(cardId) {
 }
 
 function validateDetails(Card) {
-  console.log(Card);
   return Card.name !== "puki";
 }
 
@@ -41,7 +40,6 @@ function addCard(card) {
       db.collection("card").insert(card, (err, res) => {
         if (err) reject(err);
         else {
-          console.log('res-ops',res.ops)
           resolve(res.ops)};
         db.close();
       });

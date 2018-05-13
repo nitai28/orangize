@@ -19,3 +19,9 @@
     font-weight: normal;
     font-style: normal;
 }
+@font-face {
+    font-family: 'Dosis';
+    src: url('../../assets/fonts/Dosis-Regular.ttf');
+    font-weight: normal;
+    font-style: normal;
+}

@@ -9,7 +9,6 @@ function query() {
         .find({})
         .sort({'at' : -1})
         .toArray((err, activities) => {
-          console.log('activities', activities)
           if (err) reject(err);
           else resolve(activities);
           db.close();
@@ -24,7 +23,6 @@ function addActivity(activity) {
         db.collection("activity").insert(activity, (err, res) => {
           if (err) reject(err);
           else {
-            console.log('res-ops',res.ops)
             resolve(res.ops)};
           db.close();
         });

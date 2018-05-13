@@ -78,6 +78,8 @@ Vue.directive("drugs", {
     });
   }
 });
+const VueCookie = require('vue-cookie');
+Vue.use(VueCookie);
 
 Vue.config.productionTip = false;
 new Vue({

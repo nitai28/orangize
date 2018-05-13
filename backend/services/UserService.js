@@ -1,6 +1,11 @@
 const mongo = require('mongodb');
 var DBService = require('./DBService');
 
+const TokenGenerator = require( 'token-generator' )({
+  salt: 'YOTAM NITAI ITAY - Shlishiyat Nezek',
+  timestampMap: 'yotamnitai', // 10 chars array for obfuscation proposes
+});
+
 function query() {
   return new Promise((resolve, reject) => {
     DBService.dbConnect().then(db => {
@@ -46,7 +51,6 @@ function add(user) {
   return new Promise((resolve, reject) => {
     DBService.dbConnect().then(db => {
       db.collection('user').insertOne(user, (err, res) => {
-        console.log('resresresresresres', res);
         db.collection('user').findOne({_id: new mongo.ObjectID(res.insertedId)}, (err, userFromDB)=>{
           if (err) reject(err)
           else resolve(userFromDB)
@@ -76,7 +80,7 @@ function checkLogin(user){
     .then(db=>{
         db.collection('user').findOne({name:user.name, password:user.password}, function (err, user) {
             if (err || !user)    reject(err)
-            else        resolve(user);
+            else                 resolve(user);        
             db.close();
         });
     })
@@ -91,5 +95,5 @@ module.exports = {
   getById,
   updateUser,
   deleteUser,
-  checkLogin
+  checkLogin,
 }

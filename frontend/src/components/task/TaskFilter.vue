@@ -87,7 +87,7 @@ export default {
   transition: all 0.25s ease-in-out;
   border-radius: 0px 5px 5px 5px;
   opacity: 0;
-  box-shadow: 0px 3px 3px 0px #000000;
+  /* box-shadow: 0px 3px 3px 0px #000000; */
 }
 .opt {
   padding: 5px;
@@ -101,6 +101,11 @@ export default {
 
 .filter-btn span {
   line-height: 37px;
+}
+
+.filter-btn {
+  display: flex;
+  align-items: center;
 }
 
 .search {

@@ -6,11 +6,8 @@
       <i></i> <span>rangize</span>
       </div></router-link>
     </div>
-    <!-- <button v-if="currUser" @click="logout">{{currUser.name}} Logout</button> -->
-    <!-- <router-link to="/login">Login</router-link>
-    <router-link to="/register">Register</router-link> -->
      <router-link v-if="currUser" @click.native="logout" to="/orangize">{{currUser.name}} Logout</router-link>
-    <router-link v-else to="/registerTest">Register</router-link>
+    <router-link v-else to="/registerTest">Login</router-link>
   </section>
 </template>
 
@@ -18,6 +15,7 @@
 export default {
   computed: {
     currUser(){
+      console.log('currUserChanged', this.$store.getters.getCurrUser)
       return this.$store.getters.getCurrUser;
     }
   },

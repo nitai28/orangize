@@ -7,7 +7,9 @@ body{
     font-family: Mina;
     width: 100%;
     height: 100vh;
-    background-image: url('../assets/img/bg.jpg')
+    background-image: url('../assets/img/sand.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
 }
 
 body.flex {
@@ -17,17 +19,27 @@ body.flex {
 .alert {
   color:white;
   padding: 10px;
-  font-size: 1.4em;
+  font-family: 'Dosis';
+  font-size: 3rem;
   position: absolute;
-  top:0;
-  right:0;
-  width: 200px;
-  background-color: grey;
+  bottom:50%;
+  right:35%;
+  width: 400px;
+  height: 200px;
+  text-align: center;
+  background-color: rgb(0, 0, 0);
+}
+a{
+color: black;
+}
+a:active{
+  color: black;
+
 }
 
-.alert-success {
-  background-color: rgb(15, 122, 15);
+/* .alert-success {
+  background-color: rgb(37, 58, 37);
 }
 .alert-danger {
   background-color: rgb(122, 11, 11);
-}
+} */
