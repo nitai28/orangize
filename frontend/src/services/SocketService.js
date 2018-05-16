@@ -3,9 +3,12 @@ import ioClient from 'socket.io-client'
 import busService from './EventBusService';
 
 var socket = null;
-
+let SOCKET_URL = 'http://localhost:3000'
+if (process.env.NODE_ENV !== "development") {
+    SOCKET_URL = "";
+  }
 function connectSocket() {
-    socket = ioClient('http://localhost:3000');
+    socket = ioClient(SOCKET_URL);
     
     socket.on('task removed', (card) => {
         busService.$emit('task removed', card); 
