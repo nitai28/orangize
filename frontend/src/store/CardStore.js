@@ -36,8 +36,8 @@ export default {
       // console.log('AFTER', state.cardsBackUp);
     },
     setTasks(state, { tasks, cardId }) {
-      console.log('tasks', tasks, cardId);
-      
+      // console.log('tasks', tasks, cardId);
+
       const cardIdx = state.cards.findIndex(card => card._id === cardId);
       state.cards[cardIdx].tasks = tasks;
     },
@@ -179,13 +179,13 @@ export default {
     updateTasks(store, { tasks, cardId }) {
       store.commit({ type: "setTasks", tasks, cardId });
       CardService.getCardById(cardId)
-      .then(card => {
-        let copyTasks = JSON.parse(JSON.stringify(tasks));
-        copyTasks.forEach(copyTask => (copyTask.cardId = cardId));
-        card.tasks = copyTasks;
-        CardService.saveCard(card).then(_ => {
-          store.commit({ type: "saveCardsBackUp" });
-          ActivityService.moveTask().then(activity => {
+        .then(card => {
+          let copyTasks = JSON.parse(JSON.stringify(tasks));
+          copyTasks.forEach(copyTask => (copyTask.cardId = cardId));
+          card.tasks = copyTasks;
+          CardService.saveCard(card).then(_ => {
+            store.commit({ type: "saveCardsBackUp" });
+            ActivityService.moveTask().then(activity => {
               store.commit({ type: "addActivity", activity });
             });
           });
@@ -195,35 +195,35 @@ export default {
         });
     },
     addUserToTaskMember(store, { user, taskId }) {
-      console.log(store.state.selectedTask);
-        CardService.getCardById(store.state.selectedTask.cardId).then(card => {
-          // copyTasks.forEach(copyTask => (copyTask.cardId = cardId));
-          let taskIdx=card.tasks.findIndex(task=>task._id===taskId)
-          card.tasks[taskIdx].users.push(user)
-          CardService.saveCard(card).then(_ => {
-            store.commit({
-              type: "setTasks",
-              tasks: card.tasks,
-              cardId: store.state.selectedTask.cardId
-            });
+      // console.log(store.state.selectedTask);
+      CardService.getCardById(store.state.selectedTask.cardId).then(card => {
+        // copyTasks.forEach(copyTask => (copyTask.cardId = cardId));
+        let taskIdx = card.tasks.findIndex(task => task._id === taskId);
+        if (!card.tasks[taskIdx].users.find(userdb => userdb._id === user._id))
+          card.tasks[taskIdx].users.push(user);
+        CardService.saveCard(card).then(_ => {
+          store.commit({
+            type: "setTasks",
+            tasks: card.tasks,
+            cardId: store.state.selectedTask.cardId
           });
         });
+      });
     },
     deleteTaskMember(store, { user, taskId }) {
       console.log(store.state.selectedTask);
-        CardService.getCardById(store.state.selectedTask.cardId).then(card => {
-          // copyTasks.forEach(copyTask => (copyTask.cardId = cardId));
-          let taskIdx=card.tasks.findIndex(task=>task._id===taskId)
-          card.tasks[taskIdx].users.splice(taskIdx,1)
-          CardService.saveCard(card).then(_ => {
-            store.commit({
-              type: "setTasks",
-              tasks: card.tasks,
-              cardId: store.state.selectedTask.cardId
-            });
+      CardService.getCardById(store.state.selectedTask.cardId).then(card => {
+        let taskIdx = card.tasks.findIndex(task => task._id === taskId);
+        card.tasks[taskIdx].users.splice(taskIdx, 1);
+        CardService.saveCard(card).then(_ => {
+          store.commit({
+            type: "setTasks",
+            tasks: card.tasks,
+            cardId: store.state.selectedTask.cardId
           });
         });
-    },
+      });
+    }
   },
   getters: {
     getCards(state) {
@@ -238,11 +238,11 @@ export default {
   }
 };
 // let taskToUpdate = store.state.selectedTask.users.push(user);
-        // let cardIndex = store.state.cards.findIndex(
-          //   card => card.id === taskToUpdate.cardId
-          // );
-        
-          // let taskIdx = store.state.card[cardIndex].tasks.findIndex(
-            //   task => task._id === taskId
-            // );
-            // CardService.updateUserToTask(user,taskToUpdate);
+// let cardIndex = store.state.cards.findIndex(
+//   card => card.id === taskToUpdate.cardId
+// );
+
+// let taskIdx = store.state.card[cardIndex].tasks.findIndex(
+//   task => task._id === taskId
+// );
+// CardService.updateUserToTask(user,taskToUpdate);

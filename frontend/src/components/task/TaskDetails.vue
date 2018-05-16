@@ -3,7 +3,7 @@
       <div class="task-details details-container flex">
         <div class="details1">
           <h3 v-show="isTitleEditMode === false" @dblclick="isTitleEditMode = true">{{editedTask.title}}</h3>
-            <input class="title-edit" v-show="isTitleEditMode === true" v-model="editedTask.title" @blur="isTitleEditMode=false; updateTask()"
+            <input class="title-edit" v-show="isTitleEditMode" v-model="editedTask.title" @blur="!isTitleEditMode; updateTask()"
                   @keyup.enter="isTitleEditMode=false" autofocus>
           <label for="">Label Color:</label>
           <div class="color-container flex">
@@ -16,7 +16,6 @@
               <div class="task-user-list">
                 <ul class="add-member-list">
                   <li v-for="taskMember in taskMembers" :key="taskMember._id"><i @click.stop="deleteTaskMember(taskMember)" class="delete-icon"></i>{{taskMember.name}}
-                    
                   </li>
                 </ul>
               </div>

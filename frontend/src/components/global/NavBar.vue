@@ -6,7 +6,7 @@
       <i></i> <span>rangize</span>
       </div></router-link>
     </div>
-     <router-link v-if="currUser" @click.native="logout" to="/orangize">{{currUser.name}} Logout</router-link>
+     <router-link v-if="currUser" @click.native="logout" to="/">{{currUser.name}} Logout</router-link>
     <router-link v-else to="/registerTest">Login</router-link>
   </section>
 </template>
