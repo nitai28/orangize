@@ -15,7 +15,6 @@
 export default {
   computed: {
     currUser(){
-      console.log('currUserChanged', this.$store.getters.getCurrUser)
       return this.$store.getters.getCurrUser;
     }
   },
