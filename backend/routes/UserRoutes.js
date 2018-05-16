@@ -29,8 +29,7 @@ module.exports = app => {
   });
   
   app.get('/user/logout', (req, res) => {
-    req[session].reset()
-    // req.session.reset();
+    req.session.reset();
     res.end('Loggedout');
   });
   
