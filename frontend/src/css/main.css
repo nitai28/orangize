@@ -10,8 +10,13 @@ body{
     background-image: url('../assets/img/sand.jpg');
     background-repeat: no-repeat;
     background-size: cover;
-}
+    background-attachment: fixed;
+    overflow-y: none;
+  }
+  .card-list {
 
+    padding-top: 40px;
+  }
 body.flex {
   overflow: hidden;
 }
@@ -36,7 +41,9 @@ a:active{
   color: black;
 
 }
-
+input{
+  padding: 5px;
+}
 /* .alert-success {
   background-color: rgb(37, 58, 37);
 }

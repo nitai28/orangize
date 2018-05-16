@@ -28,6 +28,8 @@ export default {
           UserService.checkLogin(this.user).then(updatedUser => {
             console.log('updatedUser', updatedUser)
             this.$store.commit({type:'setCurrUser',user:updatedUser})
+            this.$router.push('/')
+
           })
         }
   },
