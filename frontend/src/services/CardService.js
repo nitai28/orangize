@@ -23,7 +23,7 @@ function saveCard(card) {
     // })
     else return axios.post(CARD_URL, card).then(res => {
       let addedCard = res.data[0];  
-      // SocketService.addCard(addedCard);
+      SocketService.addCard(addedCard);
       return addedCard;
       })
 }

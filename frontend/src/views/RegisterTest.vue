@@ -1,5 +1,6 @@
 <template>
   <section class="register">
+    <div class="container">
     <form @submit.prevent="register" class="signUp" :class="{ 'active-sx': !this.isLoginMode, 'inactive-sx': this.isLoginMode }">
       <h3>Create Your Account</h3>
       <p>Just enter your user name and your password for join.</p>
@@ -16,6 +17,7 @@
       <button class="form-btn sx back" @click="toggleLoginMode" type="button">Back</button>
       <button class="form-btn dx" type="submit" :disabled="!this.user.name || !this.user.password">Log In</button>
     </form>
+    </div>
   </section>
 </template>
 
@@ -65,11 +67,12 @@ body {
 }
 
 .container {
-  position: absolute;
-  width: auto;
-  height: auto;
-  top: calc(50% - 240px);
-  left: calc(50% - 160px);
+  position: relative;
+  display:flex;
+  align-items: center;
+  justify-content: center;
+  width: 100vw;
+  height: 100vh;
 }
 
 form {

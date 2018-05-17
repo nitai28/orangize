@@ -106,9 +106,7 @@ export default {
 
       CardService.saveCard(createdCard)
         .then(addedCard => {
-          store.dispatch({ type: "loadCards" }).then(_ => {
-            store.commit({ type: "saveCardsBackUp" });
-          });
+          store.dispatch({ type: "loadCards" });
           ActivityService.addCard(addedCard).then(activity => {
             store.commit({ type: "addActivity", activity });
           });
@@ -120,18 +118,6 @@ export default {
           );
         });
     },
-
-    // addCard(store) {
-    //   var createdCard = CardService.emptyCard();
-    //   CardService.saveCard(createdCard).then(newCard => {
-    //     store.commit({ type: "newCard", newCard });
-    //   });
-    // },
-    // addCard(store) {
-    //   CardService.saveCard(createdCard).then(newCard => {
-    //     store.commit({ type: "newCard", newCard });
-    //   });
-    // },
 
     deleteCard(store, { cardId }) {
       CardService.deleteCard(cardId).then(() => {
@@ -237,12 +223,3 @@ export default {
     }
   }
 };
-// let taskToUpdate = store.state.selectedTask.users.push(user);
-// let cardIndex = store.state.cards.findIndex(
-//   card => card.id === taskToUpdate.cardId
-// );
-
-// let taskIdx = store.state.card[cardIndex].tasks.findIndex(
-//   task => task._id === taskId
-// );
-// CardService.updateUserToTask(user,taskToUpdate);

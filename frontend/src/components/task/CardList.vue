@@ -56,7 +56,7 @@ export default {
       this.cardRemoved(cardId);
     });
     EventBusService.$on("card added", card => {
-      this.addedCard(card);
+      this.$store.commit({type: 'addCard', card})
     });
     EventBusService.$on("card updated", card => {
       this.updateCard(card);
