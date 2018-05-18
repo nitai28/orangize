@@ -56,7 +56,7 @@ export default {
       this.cardRemoved(cardId);
     });
     EventBusService.$on("card added", card => {
-      this.addedCard(card);
+      this.$store.commit({type: 'addCard', card})
     });
     EventBusService.$on("card updated", card => {
       this.updateCard(card);
@@ -148,50 +148,6 @@ export default {
       this.modalActive = !this.modalActive;
     },
 
-    addCard() {
-      var createdCard = CardService.emptyCard();
-      this.addedCard(createdCard);
-      console.log("updating state and frontend before promise sent to DB");
-
-      CardService.saveCard(createdCard)
-        .then(addedCard => {
-          this.$store.dispatch({ type: "loadCards" }).then(_ => {
-            this.$store.commit({ type: "saveCardsBackUp" });
-            // this.cardsBackUp = JSON.parse(JSON.stringify(this.cards))
-          });
-          ActivityService.addCard(addedCard).then(activity => {
-            this.$store.commit({ type: "addActivity", activity });
-          });
-        })
-        .catch(_ => {
-          this.$store.commit({ type: "loadCardsBackUp" });
-          console.log(
-            "reverting back to state before change if promise was rejected"
-          );
-        });
-    },
-
-    // addCard() {
-    //   var createdCard = CardService.emptyCard();
-    //   this.addedCard(createdCard);
-    //   console.log('updating state and frontend before promise sent to DB')
-
-    //   CardService.saveCard(createdCard)
-    //   .then(addedCard => {
-    //     this.$store.dispatch({type: 'loadCards'}).then(_ => {
-    //       // this.cardsBackUp = JSON.parse(JSON.stringify(this.cards))
-    //       this.$store.commit({ type: "saveCardsBackUp" });
-    //       ActivityService.addCard(addedCard).then(activity => {
-    //         this.$store.commit({type: 'addActivity', activity});
-    //         })
-    //     })
-    //   })
-    //   .catch(_ => {
-    //     this.$store.commit({type: 'setCards', cards: this.cardsBackUp})
-    //       console.log('reverting back to state before change if promise was rejected')
-    //     })
-    // },
-
     deleteCard(cardId) {
       this.$store.commit({ type: "saveCardsBackUp" });
       this.cardRemoved(cardId);
@@ -272,8 +228,9 @@ export default {
     addedTask(task) {
       this.$store.commit({ type: "addTask", task });
     },
-    addedCard(card) {
-      this.$store.commit({ type: "addCard", card });
+    addCard(card) {
+      // this.$store.commit({ type: "addCard", card });
+      this.$store.dispatch({ type: "addCard"});
     },
     updateCard(card) {
       this.$store.commit({ type: "updateCard", updatedCard: card });
