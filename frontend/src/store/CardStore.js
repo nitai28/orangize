@@ -18,9 +18,9 @@ export default {
       state.filter = filter;
     },
 
-    setTasks(state, { tasks }) {
-      state.tasks = tasks;
-    },
+    // setTasks(state, { tasks }) {
+    //   state.tasks = tasks;
+    // },
 
     setCards(state, { cards }) {
       state.cards = cards;
@@ -178,18 +178,18 @@ export default {
       });
     },
     addUserToTaskMember(store, { user, taskId }) {
-      // console.log(store.state.selectedTask);
       CardService.getCardById(store.state.selectedTask.cardId).then(card => {
-        // copyTasks.forEach(copyTask => (copyTask.cardId = cardId));
         let taskIdx = card.tasks.findIndex(task => task._id === taskId);
         if (!card.tasks[taskIdx].users.find(userdb => userdb._id === user._id))
-          card.tasks[taskIdx].users.push(user);
+        card.tasks[taskIdx].users.push(user);
         CardService.saveCard(card).then(_ => {
           store.commit({
             type: "setTasks",
             tasks: card.tasks,
             cardId: store.state.selectedTask.cardId
-          });
+          }); 
+          var task = card.tasks[taskIdx]
+          store.commit({type: "setSelectedTask", task: task})
         });
       });
     },
@@ -204,6 +204,8 @@ export default {
             tasks: card.tasks,
             cardId: store.state.selectedTask.cardId
           });
+          var task = card.tasks[taskIdx]
+          store.commit({type: "setSelectedTask", task: task})
         });
       });
     }
@@ -221,22 +223,6 @@ export default {
     });
   },
 
-  // updateCardsOrder(store, { cards }) {
-  //   CardService.updateAllCards(cards).then(updatedCards => {
-  //     store.commit({ type: "updateCardsOrder", cards: updatedCards });
-  //   });
-  // },
-
-  //     // createTask(store, { card }) {
-  //   var editedCard = JSON.parse(JSON.stringify(card));
-  //   editedCard.tasks.push(TaskService.emptyTask(card._id));
-  //   CardService.saveCard(editedCard).then(_ => {
-  //     store.commit({ type: 'updateCard', updatedCard: editedCard });
-  //     let addedTask = editedCard.tasks[editedCard.tasks.length - 1];
-  //     SocketService.addTask(addedTask);
-  //   });
-  // },
-
   getters: {
     getCards(state) {
       return state.cards;
@@ -249,12 +235,3 @@ export default {
     }
   }
 };
-// let taskToUpdate = store.state.selectedTask.users.push(user);
-// let cardIndex = store.state.cards.findIndex(
-//   card => card.id === taskToUpdate.cardId
-// );
-
-// let taskIdx = store.state.card[cardIndex].tasks.findIndex(
-//   task => task._id === taskId
-// );
-// CardService.updateUserToTask(user,taskToUpdate);

@@ -1,12 +1,12 @@
 const CARD_URL = "/card";
-import SocketService from './SocketService.js'
-import ActivityService from './ActivityService.js';
+import SocketService from "./SocketService.js";
+import ActivityService from "./ActivityService.js";
 
 function emptyCard() {
-    return {
-        title : 'New List',
-        tasks : []
-    }
+  return {
+    title: "New List",
+    tasks: []
+  };
 }
 
 function getCards() {
@@ -17,32 +17,34 @@ function getCards() {
 }
 
 function saveCard(card) {
-    if (card._id) return axios.put(_getCardUrl(card._id), card).then(_ => {
+  if (card._id)
+    return axios.put(_getCardUrl(card._id), card).then(_ => {
       SocketService.updateCard(card);
-    })
-    else return axios.post(CARD_URL, card).then(res => {
-      let addedCard = res.data[0];  
+    });
+  else
+    return axios.post(CARD_URL, card).then(res => {
+      let addedCard = res.data[0];
       SocketService.addCard(addedCard);
       return addedCard;
-      })
+    });
 }
 
 function updateCard(updatedCard) {
   return axios.put(_getCardUrl(updatedCard._id), updatedCard).then(_ => {
     SocketService.updateCard(updatedCard);
-  })
+  });
 }
 
 function deleteTask(card) {
   return axios.put(_getCardUrl(card._id), card).then(_ => {
     SocketService.removeTask(card);
-  })
+  });
 }
 
 function moveTask(card) {
-  return axios.put(_getCardUrl(card._id), card).then(_ =>{
+  return axios.put(_getCardUrl(card._id), card).then(_ => {
     SocketService.moveTask(card);
-  })
+  });
 }
 
 function addTask(card) {
@@ -50,7 +52,7 @@ function addTask(card) {
     let addedTask = card.tasks[card.tasks.length - 1];
     SocketService.addTask(addedTask);
     return addedTask;
-})
+  });
 }
 
 function deleteCard(cardId) {
@@ -69,13 +71,11 @@ function _getCardUrl(cardId) {
 
 function updateAllCards(cards) {
   // axios.put(_getCardUrl(card._id), card)
-  return axios.put('/board', cards).then(res => { 
-    SocketService.updateAllCards(res.data)  
-    return res.data
+  return axios.put("/board", cards).then(res => {
+    SocketService.updateAllCards(res.data);
+    return res.data;
   });
 }
-
-
 
 export default {
   getCards,

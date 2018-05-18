@@ -61,8 +61,13 @@ export default {
   },
   methods: {
     addComment() {
-      this.editedTask.comments.unshift(this.addedComment);
-      this.$store.dispatch({ type: "updateTask", editedTask: this.editedTask });
+      if (this.addedComment.txt) {
+        this.editedTask.comments.unshift(this.addedComment);
+        this.$store.dispatch({
+          type: "updateTask",
+          editedTask: this.editedTask
+        });
+      } else return;
     },
     updateTask() {
       this.$store.dispatch({ type: "updateTask", editedTask: this.editedTask });
@@ -135,8 +140,8 @@ h4 {
   flex-grow: 0.5;
   width: 50%;
 }
-.task-details{
-      width: 58%;
+.task-details {
+  width: 58%;
 }
 
 .details-container {
@@ -203,7 +208,7 @@ h4 {
   background: rgb(223, 152, 0);
 }
 .delete-icon {
- display: inline-block;
+  display: inline-block;
   background-image: url("../../assets/icon/user-minus.svg");
   background-position: cover;
   background-repeat: no-repeat;
@@ -298,9 +303,9 @@ textarea:focus {
   font-size: 12px;
   color: lightslategrey;
 }
-.user-list-container{
+.user-list-container {
   /* margin: 0 auto; */
   float: right;
-  width: 60%
+  width: 60%;
 }
 </style>

@@ -23,6 +23,7 @@ export default {
       this.mutableActived = !this.mutableActived;
       this.$el.blur();
       this.$emit("updateTask", this.$route.params.id);
+      this.$router.push('/');
     }
   },
   watch: {

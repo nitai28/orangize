@@ -19,8 +19,10 @@ export default {
   props: ["task"],
   methods: {
     showDetails(task) {
+      if(this.$store.getters.getCurrUser){
       EventBusService.$emit('openModal');
       this.$store.commit({type: 'setSelectedTask', task});
+      }else return
     },
     removeTask(task) {
       this.$emit('removeTask', task)
