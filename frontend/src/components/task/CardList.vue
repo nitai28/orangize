@@ -49,13 +49,14 @@ export default {
     EventBusService.$on("task removed", card => {
       this.updateCard(card);
     });
-    EventBusService.$on("task added", task => {
-      this.addedTask(task);
+    EventBusService.$on("task added", card => {
+      this.updateCard(card);
     });
     EventBusService.$on("card removed", cardId => {
       this.cardRemoved(cardId);
     });
     EventBusService.$on("card added", card => {
+      console.log('LALAL')
       this.$store.commit({ type: "addCard", card });
     });
     EventBusService.$on("card updated", card => {
@@ -109,6 +110,14 @@ export default {
     }
   },
   methods: {
+    // ----- [SOCKETS] -----
+    cardRemoved(cardId) {
+      this.$store.commit({ type: "deleteCard", cardId });
+    },
+
+    updateCard(card) {
+      this.$store.commit({ type: "updateCard", updatedCard: card });
+    },
     // ----- [CARD] -----
     addCard(card) {
       if (!this.$store.getters.getCurrUser)
@@ -127,10 +136,6 @@ export default {
         return EventBusService.$emit("NotLoggedInError");
       this.editableCardId = card._id;
       this.currCard = JSON.parse(JSON.stringify(card));
-    },
-
-    updateCard(card) {
-      store.commit({ type: "updateCard", updatedCard });
     },
 
     updateCardTitle(updatedCard) {

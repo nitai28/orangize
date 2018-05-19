@@ -64,8 +64,8 @@ io.on('connection', (socket) => {
   socket.on('card removed', (cardId) => {
     socket.broadcast.emit('card removed', cardId)
   }),
-  socket.on('task added', (task) => {
-    socket.broadcast.emit('task added', task)
+  socket.on('task added', (card) => {
+    socket.broadcast.emit('task added', card)
   }),
   socket.on('card added', (card) => {
     socket.broadcast.emit('card added', card)

@@ -14,8 +14,8 @@ function connectSocket() {
         busService.$emit('task removed', card); 
     });
 
-    socket.on('task added', (task) => {
-        busService.$emit('task added', task);
+    socket.on('task added', (card) => {
+        busService.$emit('task added', card);
     })
 
     socket.on('card removed', (cardId) => {

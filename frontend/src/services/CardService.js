@@ -49,8 +49,8 @@ function moveTask(card) {
 
 function addTask(card) {
   return axios.put(_getCardUrl(card._id), card).then(_ => {
+    SocketService.addTask(card);
     let addedTask = card.tasks[card.tasks.length - 1];
-    SocketService.addTask(addedTask);
     return addedTask;
   });
 }
