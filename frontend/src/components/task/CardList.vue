@@ -118,30 +118,7 @@ export default {
     },
 
     createTask(card) {
-      this.$store.commit({ type: "saveCardsBackUp" });
-
-      var editedCard = JSON.parse(JSON.stringify(card));
-      let newTask = TaskService.emptyTask(card._id);
-      editedCard.tasks.push(newTask);
-      this.addedTask(newTask);
-      let newActivity = ActivityService.getAddTaskActivity(newTask);
-      this.$store.commit({ type: "addActivity", activity: newActivity });
-
-      CardService.addTask(editedCard)
-        .then(addedTask => {
-          ActivityService.addActivity(newActivity).then(activity => {
-            ActivityService.query().then(activities =>
-              this.$store.commit({ type: "setActivities", activities })
-            );
-          });
-        })
-        .catch(_ => {
-          this.$store.commit({ type: "loadCardsBackUp" });
-          this.$store.commit({ type: "loadBackupActivities" });
-          console.log(
-            "reverting back to state before change if promise was rejected"
-          );
-        });
+      this.$store.dispatch({type: 'addTask', card})
     },
 
     toggleModal() {
@@ -224,9 +201,6 @@ export default {
     /////////// After DB has been updated ///////////////////
     cardRemoved(cardId) {
       this.$store.commit({ type: "deleteCard", cardId: cardId });
-    },
-    addedTask(task) {
-      this.$store.commit({ type: "addTask", task });
     },
     addCard(card) {
       // this.$store.commit({ type: "addCard", card });
