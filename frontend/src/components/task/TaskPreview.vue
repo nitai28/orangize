@@ -12,31 +12,31 @@
 </template>
 
 <script>
-import EventBusService from '../../services/EventBusService';
-import TaskService from '../../services/TaskService';
+import EventBusService from "../../services/EventBusService";
+import TaskService from "../../services/TaskService";
 export default {
   name: "TaskPreview",
   props: ["task"],
   methods: {
     showDetails(task) {
-      if(this.$store.getters.getCurrUser){
-      EventBusService.$emit('openModal');
-      this.$store.commit({type: 'setSelectedTask', task});
-      }else return
+      if (this.$store.getters.getCurrUser) {
+        EventBusService.$emit("openModal");
+        this.$store.commit({ type: "setSelectedTask", task });
+        } else EventBusService.$emit('NotLoggedInError');
     },
     removeTask(task) {
-      this.$emit('removeTask', task)
+      this.$emit("removeTask", task);
     }
   },
-  computed:{
-    label(){
-      return this.task.labels[0]
+  computed: {
+    label() {
+      return this.task.labels[0];
     },
-    commentNumbers(){
-      return this.task.comments.length
+    commentNumbers() {
+      return this.task.comments.length;
     },
-    usernumbers(){
-       return this.task.users.length
+    usernumbers() {
+      return this.task.users.length;
     }
   }
 };
@@ -68,7 +68,7 @@ h3 {
   background-color: transparent;
   display: inline-block;
   opacity: 0;
-  transition: opacity .3s ease-in-out;
+  transition: opacity 0.3s ease-in-out;
   border-radius: 5px;
 }
 
@@ -93,18 +93,18 @@ h3 {
 .orange {
   background: rgb(255, 174, 0);
 }
-.user-icon{
+.user-icon {
   display: inline-block;
   background-image: url("../../assets/icon/users.svg");
   width: 20px;
-  height:20px;
+  height: 20px;
   margin: 5px;
 }
-.comment-icon{
+.comment-icon {
   display: inline-block;
   background-image: url("../../assets/icon/chat.svg");
   width: 20px;
-  height:20px;
+  height: 20px;
   margin: 5px;
 }
 </style>

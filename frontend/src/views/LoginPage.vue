@@ -29,6 +29,11 @@ export default {
             console.log('updatedUser', updatedUser)
             this.$store.commit({type:'setCurrUser',user:updatedUser})
             this.$router.push('/')
+              this.$notify({
+                group: "success",
+                title: "Log-in",
+                text: 'Hello,  You\'ve been logged-in successfully!'
+              });
 
           })
         }

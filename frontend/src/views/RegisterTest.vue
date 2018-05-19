@@ -51,7 +51,11 @@ export default {
         UserService.checkLogin(this.user).then(updatedUser => {
             this.$store.commit({type:'setCurrUser',user:updatedUser})
             this.$router.push('/')
-            
+            this.$notify({
+                group: "success",
+                title: `Hello, ${this.user.name}`,
+                text: 'You\'ve been logged-in successfully!'
+            });
         })
     }
     },

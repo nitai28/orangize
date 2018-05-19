@@ -1,6 +1,6 @@
 <template>
     <section class="card-preview">
-        <draggable element='ul' v-model="cardTasks" class="dragArea" :move="isFilter" :options="{ghostClass: 'ghost', group:'cardTasks'}">
+        <draggable element='ul' v-model="cardTasks" class="dragArea" :move="isMoveEnabled" :options="{ghostClass: 'ghost', group:'cardTasks'}">
             <li v-for="task in cardTasks" :key="task._id">
             <router-link :to="'/orangize/'+task._id">
                 <task-preview @removeTask="removeTask" :task="task"></task-preview>
@@ -40,6 +40,9 @@ export default {
   methods: {
     isFilter() {
       return !this.$store.getters.getFilter.byLabel;
+    },
+    isMoveEnabled: function() {
+      return (!!this.isFilter() && !!this.$store.getters.getCurrUser)
     },
     removeTask(task) {
       this.$emit('removeTask', task)

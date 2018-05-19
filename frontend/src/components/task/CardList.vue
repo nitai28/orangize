@@ -5,7 +5,7 @@
         <button class="clean-btn btn" @click="addCard">Add List</button>
       </div>
       <ul class="flex flex-row">
-        <draggable element="div" v-model="cards" :options="dragOptions" class="flex flex-row clean-card" :move="isFilter">
+        <draggable element="div" v-model="cards" :options="dragOptions" class="flex flex-row clean-card" :move="isMoveEnabled">
         <li class="card-container" v-for="card in cards" :key="card._id">
           <div class="card-title">
             <h3 v-show="editableCardId !== card._id" @dblclick="editTitle(card)">{{card.title}}</h3>
@@ -56,7 +56,7 @@ export default {
       this.cardRemoved(cardId);
     });
     EventBusService.$on("card added", card => {
-      this.$store.commit({type: 'addCard', card})
+      this.$store.commit({ type: "addCard", card });
     });
     EventBusService.$on("card updated", card => {
       this.updateCard(card);
@@ -109,24 +109,24 @@ export default {
     }
   },
   methods: {
-    isFilter: function() {
-      return !this.filter.byLabel;
-    },
-
-    setFilter(filter) {
-      this.filter = filter;
-    },
-
-    createTask(card) {
-      this.$store.dispatch({type: 'addTask', card})
-    },
-
-    toggleModal() {
-      this.modalActive = !this.modalActive;
+    // ----- [CARD] -----
+    addCard(card) {
+      if (!this.$store.getters.getCurrUser)
+        return EventBusService.$emit("NotLoggedInError");
+      this.$store.dispatch({ type: "addCard" });
     },
 
     deleteCard(cardId) {
-      this.$store.dispatch({type: 'deleteCard', cardId});
+      if (!this.$store.getters.getCurrUser)
+        return EventBusService.$emit("NotLoggedInError");
+      this.$store.dispatch({ type: "deleteCard", cardId });
+    },
+
+    editTitle(card) {
+      if (!this.$store.getters.getCurrUser)
+        return EventBusService.$emit("NotLoggedInError");
+      this.editableCardId = card._id;
+      this.currCard = JSON.parse(JSON.stringify(card));
     },
 
     updateCardTitle(updatedCard) {
@@ -138,9 +138,49 @@ export default {
       });
     },
 
-    editTitle(card) {
-      this.editableCardId = card._id;
-      this.currCard = JSON.parse(JSON.stringify(card));
+    updateCard(card) {
+      this.$store.commit({ type: "updateCard", updatedCard: card });
+    },
+
+    updatedCardsOrder(cards) {
+      this.$store.commit({ type: "setCards", cards: cards });
+    },
+
+    // ----- [TASK] -----
+    createTask(card) {
+      if (!this.$store.getters.getCurrUser)
+        return EventBusService.$emit("NotLoggedInError");
+      this.$store.dispatch({ type: "addTask", card });
+    },
+
+    deleteTask(task) {
+      if (!this.$store.getters.getCurrUser)
+        return EventBusService.$emit("NotLoggedInError");
+
+      let card = this.cards.find(currCard => currCard._id === task.cardId);
+
+      let newActivity = ActivityService.getRemoveTaskActivity(task, this.$store.getters.getCurrUser);
+      this.$store.commit({ type: "addActivity", activity: newActivity });
+
+      let updatedCard = JSON.parse(JSON.stringify(card));
+      updatedCard.tasks = updatedCard.tasks.filter(
+        currTask => currTask._id !== task._id
+      );
+      this.updateCard(updatedCard);
+
+      CardService.deleteTask(updatedCard)
+        .then(_ => {
+          this.$store.commit({ type: "saveCardsBackUp" });
+          ActivityService.addActivity(newActivity).then(activity => {
+            ActivityService.query().then(activities =>
+              this.$store.commit({ type: "setActivities", activities })
+            );
+          });
+        })
+        .catch(_ => {
+          this.$store.commit({ type: "loadCardsBackUp" });
+          this.$store.commit({ type: "loadBackupActivities" });
+        });
     },
 
     updateTask(taskId) {
@@ -155,41 +195,21 @@ export default {
       CardService.updateCard(updatedCard);
     },
 
-    deleteTask(task) {
-      this.$store.commit({ type: "saveCardsBackUp" });
-      let card = this.cards.find(currCard => currCard._id === task.cardId);
-
-      let newActivity = ActivityService.getRemoveTaskActivity(task);
-      this.$store.commit({ type: "addActivity", activity: newActivity });
-
-      let updatedCard = JSON.parse(JSON.stringify(card));
-      updatedCard.tasks = updatedCard.tasks.filter(
-        currTask => currTask._id !== task._id
-      );
-      this.updateCard(updatedCard);
-
-      CardService.deleteTask(updatedCard)
-        .then(_ => {
-          ActivityService.addActivity(newActivity).then(activity => {
-            ActivityService.query().then(activities =>
-              this.$store.commit({ type: "setActivities", activities })
-            );
-          });
-        })
-        .catch(_ => {
-          this.$store.commit({ type: "loadCardsBackUp" });
-          this.$store.commit({ type: "loadBackupActivities" });
-        });
+    toggleModal() {
+      this.modalActive = !this.modalActive;
     },
-    addCard(card) {
-      this.$store.dispatch({ type: "addCard"});
+
+    // ----- [FILTER] -----
+    isFilter: function() {
+      return !this.filter.byLabel;
     },
-    updateCard(card) {
-      this.$store.commit({ type: "updateCard", updatedCard: card });
+
+    setFilter(filter) {
+      this.filter = filter;
     },
-    updatedCardsOrder(cards) {
-      // console.log('LALALA')
-      this.$store.commit({ type: "setCards", cards: cards });
+
+    isMoveEnabled: function() {
+      return (!!this.isFilter() && !!this.$store.getters.getCurrUser)
     }
   },
   components: {
@@ -296,29 +316,4 @@ div .ghost {
   margin-top: 40px;
 }
 </style>
-<!--
-////////////// Add Card with deboucnce - for rapid creation glitch bug ////////////
-// addCard() {
-//       var createdCard = CardService.emptyCard();
-//       this.cardsBackUp = JSON.parse(JSON.stringify(this.cards))
-//       this.addedCard(createdCard);
-//        console.log('updating state and frontend before promise sent to DB')
-
-//       CardService.saveCard(createdCard)
-//       .then(addedCard => {
-//         debounce(function() {
-//           this.$store.dispatch({type: 'loadCards'})
-//           ActivityService.addCard(addedCard).then(activity => {
-//               this.$store.commit({type: 'addActivity', activity});
-//             })  
-//         }, 200)
-          
-//         })
-//       .catch(_ => {
-//           this.$store.commit({type: 'setCards', cards: this.cardsBackUp})
-//           console.log('reverting back to state before change if promise was rejected')      
-//         })
-
-//     },
--->
 

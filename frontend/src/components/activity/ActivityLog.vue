@@ -17,8 +17,6 @@ export default {
   data() {
     return {
       isOpen: true,
-      activity: {txt: 'Yotam has deleted a task.', at: new Date(2018, 4, 24)},
-      activity2: {txt: 'Itay has updated a task.', at: Date.now()}
     };
   },
   created() {
@@ -26,7 +24,6 @@ export default {
   },
   computed: {
     activities() {
-      // console.log('ACTIVITIES:', this.$store.getters.getActivities)
       return this.$store.getters.getActivities;
     }
   },
@@ -51,14 +48,10 @@ WHITE: #f5f5f5
   bottom: 0px;
   right: 0px;
   overflow: hidden;
-  /* max-height: 30px; */
-  /* transition: height 0.3s ease-in-out; */
   transition: transform 0.5s ease-in-out;
-  /* transform: translate(195px, 270px); */
   transform: translate(195px, 300px);
 }
 .activity-log.open {
-  /* height: 300px; */
   transform: translate(0px, 0px);
 }
 
@@ -88,7 +81,6 @@ WHITE: #f5f5f5
   color: #f5f5f5;
   height: 300px;
   width: 300px;
-  /* margin-top: -0.5px; Stucks the toggle-btn together with log. */
 }
 
 .activity-container {

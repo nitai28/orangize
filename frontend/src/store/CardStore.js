@@ -79,8 +79,10 @@ export default {
       CardService.saveCard(createdCard)
         .then(addedCard => {
           store.dispatch({ type: "loadCards" });
-          ActivityService.addCard(addedCard).then(activity => {
-            store.commit({ type: "addActivity", activity });
+          let newActivity = ActivityService.getAddCardActivity(addedCard, store.getters.getCurrUser);
+          ActivityService.addActivity(newActivity).then(activity => {
+            ActivityService.query().then(activities =>
+              store.commit({ type: "setActivities", activities }))
           });
         })
         .catch(_ => {
@@ -101,8 +103,10 @@ export default {
         .then(card => {
           CardService.deleteCard(cardId).then(_ => {
             store.commit({ type: "saveCardsBackUp" });
-            ActivityService.removeCard(card).then(activity => {
-              store.commit({ type: "addActivity", activity });
+            let newActivity = ActivityService.getRemoveCardActivity(card, store.getters.getCurrUser);
+            ActivityService.addActivity(newActivity).then(activity => {
+              ActivityService.query().then(activities =>
+                store.commit({ type: "setActivities", activities }))
             });
           });
         })
@@ -114,21 +118,18 @@ export default {
         });
     },
 
-    updateCard(store, { updatedCard }) {
-      CardService.saveCard(updatedCard).then(() => {
-        store.commit({ type: "updateCard", updatedCard });
-        ActivityService.updateCard(updatedCard).then(activity => {
-          store.commit({ type: "addActivity", activity });
-        });
-      });
-    },
-
     updateCardsOrder(store, { cards }) {
       store.commit({ type: "setCards", cards });
       CardService.updateAllCards(cards)
         .then(updatedCards => {
           store.commit({ type: "setCards", cards: updatedCards });
           store.commit({ type: "saveCardsBackUp" });
+          let newActivity = ActivityService.getMoveCardActivity(store.getters.getCurrUser);
+            ActivityService.addActivity(newActivity).then(activity => {
+              ActivityService.query().then(activities =>
+                store.commit({ type: "setActivities", activities }))
+          });
+          
         })
         .catch(err => {
           console.log("Failed updateCardsOrder", err);
@@ -155,9 +156,11 @@ export default {
           store.commit({ type: "updateCard", updatedCard: card });
           store.commit({ type: "saveCardsBackUp" });
           store.commit({ type: "setSelectedTask", task: card.tasks[taskIdx] });
-          // ActivityService.updateTask(editedTask).then(activity => {
-          //   store.commit({type: 'addActivity', activity});
-          // })
+          let newActivity = ActivityService.getUpdateTaskActivity(editedTask, store.getters.getCurrUser);
+          ActivityService.addActivity(newActivity).then(activity => {
+            ActivityService.query().then(activities =>
+              store.commit({ type: "setActivities", activities }))
+          });
         });
       });
     },
@@ -173,7 +176,7 @@ export default {
       CardService.addTask(editedCard)
         .then(addedTask => {
           store.commit({ type: "saveCardsBackUp" });
-          let newActivity = ActivityService.getAddTaskActivity(newTask);
+          let newActivity = ActivityService.getAddTaskActivity(newTask, store.getters.getCurrUser);
           ActivityService.addActivity(newActivity).then(activity => {
             ActivityService.query().then(activities =>
               store.commit({ type: "setActivities", activities })
@@ -209,8 +212,10 @@ export default {
           card.tasks = copyTasks;
           CardService.saveCard(card).then(_ => {
             store.commit({ type: "saveCardsBackUp" });
-            ActivityService.moveTask().then(activity => {
-              store.commit({ type: "addActivity", activity });
+            let newActivity = ActivityService.getMoveTaskActivity(store.getters.getCurrUser);
+            ActivityService.addActivity(newActivity).then(activity => {
+              ActivityService.query().then(activities =>
+                store.commit({ type: "setActivities", activities }))
             });
           });
         })
