@@ -126,26 +126,9 @@ export default {
     },
 
     deleteCard(cardId) {
-      this.$store.commit({ type: "saveCardsBackUp" });
-      this.cardRemoved(cardId);
-      //  this.$store.commit({ type: "deleteCard", cardId });
-      console.log("updating state and frontend before promise sent to DB");
-
-      CardService.getCardById(cardId)
-        .then(card => {
-          CardService.deleteCard(cardId).then(_ => {
-            ActivityService.removeCard(card).then(activity => {
-              this.$store.commit({ type: "addActivity", activity });
-            });
-          });
-        })
-        .catch(_ => {
-          this.$store.commit({ type: "loadCardsBackUp" });
-          console.log(
-            "reverting back to state before change if promise was rejected"
-          );
-        });
+      this.$store.dispatch({type: 'deleteCard', cardId});
     },
+
     updateCardTitle(updatedCard) {
       this.$store.commit({ type: "saveCardsBackUp" });
       this.$store.commit({ type: "updateCard", updatedCard });
@@ -198,12 +181,7 @@ export default {
           this.$store.commit({ type: "loadBackupActivities" });
         });
     },
-    /////////// After DB has been updated ///////////////////
-    cardRemoved(cardId) {
-      this.$store.commit({ type: "deleteCard", cardId: cardId });
-    },
     addCard(card) {
-      // this.$store.commit({ type: "addCard", card });
       this.$store.dispatch({ type: "addCard"});
     },
     updateCard(card) {

@@ -92,12 +92,26 @@ export default {
     },
 
     deleteCard(store, { cardId }) {
-      CardService.deleteCard(cardId).then(() => {
-        store.commit({
-          cardId,
-          type: "deleteCard"
+      // if card isn't loaded yet, do nothing.
+      if (!cardId) return;
+      store.commit({ type: "deleteCard", cardId });
+      console.log("updating state and frontend before promise sent to DB");
+
+      CardService.getCardById(cardId)
+        .then(card => {
+          CardService.deleteCard(cardId).then(_ => {
+            store.commit({ type: "saveCardsBackUp" });
+            ActivityService.removeCard(card).then(activity => {
+              store.commit({ type: "addActivity", activity });
+            });
+          });
+        })
+        .catch(_ => {
+          store.commit({ type: "loadCardsBackUp" });
+          console.log(
+            "reverting back to state before change if promise was rejected"
+          );
         });
-      });
     },
 
     updateCard(store, { updatedCard }) {
