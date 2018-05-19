@@ -25,13 +25,8 @@ function saveUser(user) {
     let userFromDB = users.find(DBuser => DBuser.name === user.name);
     if (!userFromDB) {
       // TODO: Add on DB and then Event msg.
-      EventBusService.$emit(SHOW_MSG,{ txt: "Registration Completed! please login",type:'success'});
       return axios.post("/user", user)
     } else {
-      EventBusService.$emit(SHOW_MSG, {
-        txt: `Username has been taken already.`,
-        type: 'danger'
-      });
       throw new Error('Username has been taken already.')
     }
   });

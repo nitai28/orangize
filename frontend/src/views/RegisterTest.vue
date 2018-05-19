@@ -22,49 +22,60 @@
 </template>
 
 <script>
-import UserService from '../services/UserService';
-import EventBusService, { SHOW_MSG } from '../services/EventBusService.js'
+import UserService from "../services/UserService";
+import EventBusService, { SHOW_MSG } from "../services/EventBusService.js";
 
 export default {
-  name: 'LoginPage',
+  name: "LoginPage",
   data() {
     return {
-      user: { name: '', password: '' },
-      verifyPass: '',
+      user: { name: "", password: "" },
+      verifyPass: "",
       isLoginMode: true
-    }
+    };
   },
   methods: {
     toggleLoginMode() {
       this.isLoginMode = !this.isLoginMode;
-      this.user = {name: '', password: ''}
+      this.user = { name: "", password: "" };
     },
     register() {
-      if(this.verifyPass !== this.user.password) return false;
-       UserService.saveUser(this.user)
+      if (this.verifyPass !== this.user.password) return false;
+      UserService.saveUser(this.user)
         .then(res => {
           let newUser = res.data;
-          this.toggleLoginMode()
+          this.$notify({
+            group: "success",
+            title: `Hello, ${newUser.name}`,
+            text: "Sign-up has been completed! You may log-in now."
+          });
+          this.toggleLoginMode();
         })
+        .catch(err => {
+          this.$notify({
+            group: "error",
+            title: `Error`,
+            text: "This username is already exists."
+          });
+        });
     },
     checkLogin() {
-        UserService.checkLogin(this.user).then(updatedUser => {
-            this.$store.commit({type:'setCurrUser',user:updatedUser})
-            this.$router.push('/')
-            this.$notify({
-                group: "success",
-                title: `Hello, ${this.user.name}`,
-                text: 'You\'ve been logged-in successfully!'
-            });
-        })
+      UserService.checkLogin(this.user).then(updatedUser => {
+        this.$store.commit({ type: "setCurrUser", user: updatedUser });
+        this.$router.push("/");
+        this.$notify({
+          group: "success",
+          title: `Hello, ${this.user.name}`,
+          text: "You've been logged-in successfully!"
+        });
+      });
     }
-    },
   }
+};
 // };
 </script>
 
 <style scoped>
-
 body {
   background: #ffc185;
   margin: 0 auto;
@@ -72,7 +83,7 @@ body {
 
 .container {
   position: relative;
-  display:flex;
+  display: flex;
   align-items: center;
   justify-content: center;
   width: 100vw;

@@ -129,17 +129,12 @@ export default {
       this.currCard = JSON.parse(JSON.stringify(card));
     },
 
-    updateCardTitle(updatedCard) {
-      this.$store.commit({ type: "saveCardsBackUp" });
-      this.$store.commit({ type: "updateCard", updatedCard });
-      CardService.updateCard(updatedCard).catch(_ => {
-        this.$store.commit({ type: "loadCardsBackUp" });
-        console.log("DONE");
-      });
+    updateCard(card) {
+      store.commit({ type: "updateCard", updatedCard });
     },
 
-    updateCard(card) {
-      this.$store.commit({ type: "updateCard", updatedCard: card });
+    updateCardTitle(updatedCard) {
+      this.$store.dispatch({type: 'updateCardTitle', updatedCard});
     },
 
     updatedCardsOrder(cards) {

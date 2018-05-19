@@ -39,23 +39,10 @@ export default {
         .catch(err => err);
     },
 
-    login(store, { userCredentials }) {
-      return UserService.login(userCredentials).then(user => {
-        store.commit({ type: "setCurrUser", user });
-      });
-    },
     logout(store) {
       return UserService.logout().then(() => {
         store.commit({ type: "setCurrUser", user: null });
       });
     },
-
-    register(store, { user }) {
-      console.log("$$$$$$$$$$$$$", user);
-
-      return UserService.saveUser(user).then(() => {
-        store.commit({ type: "saveUser", user });
-      });
-    }
   }
 };

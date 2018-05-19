@@ -110,10 +110,23 @@ function getRemoveCardActivity(card, user) {
   };
 }
 
+function getUpdateCardActivity(card, user) {
+    return {
+      _id: shortid.generate(),
+      action: "Update Card",
+      txt: `A card '${card.title}' has been updated by ${user.name}.`,
+      at: Date.now(),
+      by: {
+        user
+      },
+      cardId: card._id
+    };
+  }
+
 function getMoveCardActivity(user) {
   return {
     _id: shortid.generate(),
-    action: "Update Card",
+    action: "Move Card",
     txt: `Cards order has been changed by ${user.name}.`,
     at: Date.now(),
     by: {
@@ -128,8 +141,9 @@ export default {
   getAddTaskActivity,
   getRemoveTaskActivity,
   getUpdateTaskActivity,
-  getRemoveCardActivity,
-  getMoveCardActivity,
-  getAddCardActivity,
   getMoveTaskActivity,
+  getAddCardActivity,
+  getRemoveCardActivity,
+  getUpdateCardActivity,
+  getMoveCardActivity,
 };
