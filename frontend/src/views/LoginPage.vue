@@ -12,7 +12,7 @@
     </form>
     <form @submit.prevent="checkLogin" class="login" :class="{ 'active-dx': this.isLoginMode, 'inactive-dx': !this.isLoginMode }">
       <h3>Welcome Back !</h3>
-      <input ref="txtUserName" type="text" placeholder="Insert Username" v-model="user.name" autocomplete='off' required />
+      <input ref="userNameInput" type="text" placeholder="Insert Username" v-model="user.name" autocomplete='off' required />
       <input type="password" v-model="user.password" placeholder="Insert Password" required />
       <button class="form-btn sx back" @click="toggleLoginMode" type="button">Back</button>
       <button class="form-btn dx" type="submit" :disabled="!this.user.name || !this.user.password">Log In</button>
@@ -60,7 +60,8 @@ export default {
         });
     },
     checkLogin() {
-      UserService.checkLogin(this.user).then(updatedUser => {
+      UserService.checkLogin(this.user)
+      .then(updatedUser => {
         this.$store.commit({ type: "setCurrUser", user: updatedUser });
         this.$router.push("/");
         this.$notify({
@@ -68,7 +69,15 @@ export default {
           title: `Hello, ${this.user.name}`,
           text: "You've been logged-in successfully!"
         });
-      });
+      })
+      .catch(e => {
+        this.$notify({
+          group: "error",
+          title: `Failed to log-in`,
+          text: "Wrong credentials."
+        });
+        this.$refs.userNameInput.focus();
+      })
     }
   }
 };
