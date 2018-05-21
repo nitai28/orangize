@@ -33,14 +33,11 @@ function connectSocket() {
     socket.on('cards order updated',(cards) => {
         busService.$emit('cards order updated', cards);
     });
-    
     socket.on('task moved',(card) => {
         busService.$emit('task moved', card);
     });
-    socket.on('chat msg', function (msg) {
-        // JIF
-        // if (user.nickName === msg.from) msgs[msgs.length - 1].processed = true;
-        // else msgs.push(msg);
+    socket.on('activity added', (activity) => {
+        busService.$emit('activity added', activity);
     });
 }
 
@@ -71,6 +68,10 @@ const updateAllCards = (cards) => {
 const moveTask = (card) => {
     socket.emit('task moved', card)
 }
+
+const addActivity = (activity) => {
+    socket.emit('activity added', activity)
+}
 // const send = (msg) => {
 //     msgs.push(msg);
 //     socket.emit('chat msg', msg);
@@ -94,7 +95,8 @@ export default {
     removeCard,
     addCard,
     updateCard,
-    updateAllCards    
+    updateAllCards,
+    addActivity
 }
 
 

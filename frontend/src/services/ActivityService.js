@@ -1,4 +1,5 @@
 import shortid from "shortid";
+import SocketService from "./SocketService";
 var debounce = require("debounce");
 
 const ACTIVITY_URL = "/activity";
@@ -25,6 +26,7 @@ function query() {
 function addActivity(activity) {
   return axios.post(ACTIVITY_URL, activity).then(res => {
     let addedActivity = res.data[0];
+    SocketService.addActivity(addedActivity);
     return addedActivity;
   });
 }

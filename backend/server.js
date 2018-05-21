@@ -76,6 +76,8 @@ io.on('connection', (socket) => {
   socket.on('task moved', (card) => {
     io.emit('task moved', card)
   })
-  
+  socket.on('activity added', (activity) => {
+    socket.broadcast.emit('activity added', activity);
+  })
 });
 

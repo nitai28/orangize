@@ -65,6 +65,9 @@ export default {
     EventBusService.$on("cards order updated", cards => {
       this.updatedCardsOrder(cards);
     });
+    EventBusService.$on("activity added", activity => {
+      this.$store.commit({type: 'addActivity', activity});
+    })
   },
   data() {
     return {
