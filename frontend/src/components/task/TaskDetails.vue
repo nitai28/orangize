@@ -31,7 +31,7 @@
             </div>
           </div>
             <div class="comments-container">
-                <textarea placeholder="Enter comment" contenteditable="true" name="" id="" cols="75" rows="5" v-model="addedComment.txt"></textarea>
+                <textarea placeholder="Enter comment" contenteditable="true" name="" id="" rows="5" v-model="addedComment.txt"></textarea>
                 <button class="add-comment" @click.stop="addComment">Add Comment</button>
                 <div>
                   <h4>Comments</h4>
@@ -166,6 +166,7 @@ h4 {
 .details-container textarea {
   margin: 10px 0;
   border-radius: 5px;
+  width: 100%;
 }
 
 .add-comment {

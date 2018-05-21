@@ -22,6 +22,7 @@ export default {
       if (this.$store.getters.getCurrUser) {
         EventBusService.$emit("openModal");
         this.$store.commit({ type: "setSelectedTask", task });
+        this.$router.push(`/task/${this.task._id}`);
         } else EventBusService.$emit('NotLoggedInError');
     },
     removeTask(task) {
