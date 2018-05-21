@@ -4,7 +4,7 @@
     <form @submit.prevent="register" class="signUp" :class="{ 'active-sx': !this.isLoginMode, 'inactive-sx': this.isLoginMode }">
       <h3>Create Your Account</h3>
       <p>Just enter your user name and your password for join.</p>
-      <input class="w100" type="text" placeholder="Insert Username" v-model="user.name" required autocomplete='off' />
+      <input class="w100" ref="userNameInputRegister" type="text" placeholder="Insert Username" v-model="user.name" required autocomplete='off' />
       <input type="password" placeholder="Insert Password" v-model="user.password" required />
       <input type="password" placeholder="Verify Password" v-model="verifyPass" required />
       <button class="form-btn sx log-in" @click="toggleLoginMode" type="button">Log In</button>
@@ -12,7 +12,7 @@
     </form>
     <form @submit.prevent="checkLogin" class="login" :class="{ 'active-dx': this.isLoginMode, 'inactive-dx': !this.isLoginMode }">
       <h3>Welcome Back !</h3>
-      <input ref="userNameInput" type="text" placeholder="Insert Username" v-model="user.name" autocomplete='off' required />
+      <input ref="userNameInputLogin" type="text" placeholder="Insert Username" v-model="user.name" autocomplete='off' required />
       <input type="password" v-model="user.password" placeholder="Insert Password" required />
       <button class="form-btn sx back" @click="toggleLoginMode" type="button">Back</button>
       <button class="form-btn dx" type="submit" :disabled="!this.user.name || !this.user.password">Log In</button>
@@ -38,6 +38,8 @@ export default {
     toggleLoginMode() {
       this.isLoginMode = !this.isLoginMode;
       this.user = { name: "", password: "" };
+      if(this.isLoginMode) this.$refs.userNameInputLogin.focus();
+      else this.$refs.userNameInputRegister.focus();
     },
     register() {
       if (this.verifyPass !== this.user.password) return false;
@@ -50,6 +52,7 @@ export default {
             text: "Sign-up has been completed! You may log-in now."
           });
           this.toggleLoginMode();
+          
         })
         .catch(err => {
           this.$notify({
@@ -76,7 +79,7 @@ export default {
           title: `Failed to log-in`,
           text: "Wrong credentials."
         });
-        this.$refs.userNameInput.focus();
+        this.$refs.userNameInputLogin.focus();
       })
     }
   }
