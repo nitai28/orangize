@@ -19,13 +19,13 @@
 
 <script>
 var debounce = require("debounce");
-
 export default {
   name: "TaskFilter",
   data() {
     return {
       isOpen: false,
-      filter: { byLabel: "", byTitle: "" }
+      filter: { byLabel: "", byTitle: "" },
+      filterByLabelTimer: null
     };
   },
   computed: {
@@ -39,6 +39,13 @@ export default {
   methods: {
     toggleOpts() {
       this.isOpen = !this.isOpen;
+      if(this.filterByLabelTimer) clearTimeout(this.filterByLabelTimer);
+      if(this.isOpen) {
+        this.filterByLabelTimer = setTimeout(()=> {
+          this.isOpen = false
+        }, 3000);
+      }
+      
     },
     emitFilter() {
       let copyFilter = Object.assign({}, this.filter);
