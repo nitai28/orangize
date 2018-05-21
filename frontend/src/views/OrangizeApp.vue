@@ -10,7 +10,6 @@
 <script>
 
 import UserMsg from "../components/global/UserMsg.vue";
-import SocketSerivce from '../services/SocketService.js'
 import CardList from '../components/task/CardList.vue';
 import ActivityLog from '../components/activity/ActivityLog.vue'
 
@@ -19,9 +18,6 @@ export default {
   data() {
     return {
     };
-  },
-  created() {
-    SocketSerivce.connectSocket(); 
   },
   components: {
     UserMsg,

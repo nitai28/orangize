@@ -6,7 +6,6 @@ module.exports = app => {
   app.get("/list", (req, res) => {
     // ListService.query(req.session.user._id).then(Lists => {
     ListService.getLists().then(Lists => {
-      console.log("LISTS: ", Lists);
       res.json(Lists);
     });
   });
@@ -16,7 +15,6 @@ module.exports = app => {
     const listId = req.params.listId;
     // ListService.query(req.session.user._id).then(Lists => {
     ListService.getById(listId).then(list => {
-      console.log("LIST: ", list);
       res.json(list);
     });
   });
@@ -45,8 +43,6 @@ module.exports = app => {
   app.put(`/list/:listId`, (req, res) => {
     const listId = req.params.listId;
     const list = req.body;
-    console.log(list._id)
-    console.log(listId, "*********************", list);
     // List.userId = req.session.user._id;
     ListService.updateList(list, listId)
       .then(list => res.json(list))

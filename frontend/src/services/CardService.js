@@ -51,6 +51,7 @@ function addTask(card) {
   return axios.put(_getCardUrl(card._id), card).then(_ => {
     SocketService.addTask(card);
     let addedTask = card.tasks[card.tasks.length - 1];
+    console.log('Task has been added successfully!', addedTask)
     return addedTask;
   });
 }

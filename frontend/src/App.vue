@@ -12,6 +12,8 @@ import UserMsg from "./components/global/UserMsg.vue";
 import NavBar from "./components/global/NavBar.vue";
 import UserService from "./services/UserService";
 import EventBusService from "./services/EventBusService";
+import SocketSerivce from './services/SocketService.js'
+
 export default {
   name: "app",
   components: {
@@ -19,6 +21,7 @@ export default {
     NavBar
   },
   created() {
+    SocketSerivce.connectSocket(); 
     UserService.checkLoggedIn().then(updatedUser => {
       this.$store.commit({ type: "setCurrUser", user: updatedUser });
     });

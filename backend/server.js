@@ -6,7 +6,7 @@ var io = require('socket.io')(http);
 var bodyParser = require('body-parser')
 
 var corsOptions = {
-  origin: /http:\/\/127.0.0.1:\d+/,
+  origin: /http:\/\/localhost:\d+/,
 	credentials: true
 };
 
@@ -53,11 +53,8 @@ http.listen(PORT, () => {
   console.log('listening on *:3000');
 });
 
-
-
-var nums = []
-
 io.on('connection', (socket) => {
+  console.log('User has been connected');
   socket.on('task removed', (card) => {
     socket.broadcast.emit('task removed', card)
   }),
@@ -80,28 +77,5 @@ io.on('connection', (socket) => {
     io.emit('task moved', card)
   })
   
-
-  // socket.on('user connected', (num) => {
-  //   nums.push(num);
-  //   io.emit('users changed', nums);
-  // }),
-  // socket.on('disconnect', function(){
-  //   if(!users) return;
-  //   removeUser(user.id);
-  //   socket.broadcast.emit('chat msg', {txt: `${user.nickName} has been disconnected!`, processed: false, from: 'SERVER'});
-  //   io.emit('users changed', users);
-  // });
-  // socket.on('chat msg', function(msg){
-  //   socket.broadcast.emit('chat msg', msg);
-  //   console.log('msg: ' + msg);
-  // });
-  // socket.on('user typing', function(typingUser, isTyping) {
-  //   console.log('isTyping:', isTyping);
-  //   setTypingUser(typingUser.id, isTyping);
-  //   io.emit('users changed', users);
-  // }),
-  // socket.on('open private chat', function(userId1, userId2) {
-    
-  // })
 });
 

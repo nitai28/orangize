@@ -20,9 +20,6 @@ export default {
       user: { name:'' , password: '' }
     };
   },
-  created() {
-    
-  },
   methods: {
     checkLogin(){
           UserService.checkLogin(this.user).then(updatedUser => {

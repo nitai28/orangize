@@ -56,7 +56,7 @@ export default {
       this.cardRemoved(cardId);
     });
     EventBusService.$on("card added", card => {
-      console.log('LALAL')
+      console.log('Card added! SOCKET DEBUG')
       this.$store.commit({ type: "addCard", card });
     });
     EventBusService.$on("card updated", card => {

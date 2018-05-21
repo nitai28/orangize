@@ -52,12 +52,9 @@ module.exports = app => {
   });
   app.post('/user/loggedIn', (req, res) => {
     if(req.session.user) res.json(req.session.user)
-    // console.log(req.session);
-    // res.json(req.session.user);
   })
 
   app.post("/user/login", (req, res) => {
-    console.log(req.session.user)
       var user = { name: req.body.name, password: req.body.password };
       UserService.checkLogin(user).then(userFromDB => {
         delete userFromDB.password;
