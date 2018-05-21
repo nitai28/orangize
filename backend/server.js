@@ -47,10 +47,9 @@ addBoardRoutes(app)
 const addActivityRoutes = require('./routes/ActivityRoutes.js')
 addActivityRoutes(app)
 
-
 const PORT = process.env.PORT || 3000
 http.listen(PORT, () => {
-  console.log('listening on *:3000');
+  console.log(`listening on ${PORT}`);
 });
 
 io.on('connection', (socket) => {

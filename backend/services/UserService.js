@@ -1,11 +1,6 @@
 const mongo = require('mongodb');
 var DBService = require('./DBService');
 
-const TokenGenerator = require( 'token-generator' )({
-  salt: 'YOTAM NITAI ITAY - Shlishiyat Nezek',
-  timestampMap: 'yotamnitai', // 10 chars array for obfuscation proposes
-});
-
 function query() {
   return new Promise((resolve, reject) => {
     DBService.dbConnect().then(db => {
