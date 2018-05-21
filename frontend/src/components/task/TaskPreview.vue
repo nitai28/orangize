@@ -1,12 +1,17 @@
 <template>
     <section class="task-preview flex space-between" :class="{[task.label]: (task.label) }" @click="showDetails(task)">
-        <div class="flex flex-column">
+        <div class="task-info flex flex-column">
           <h3>{{ task.title }}</h3>
-          <div class="task-stats flex align-center">
-            <i class="user-icon"></i><span> {{usernumbers}}</span> 
-            <i class="comment-icon"></i><span> {{commentNumbers}}</span> 
+          <div class="flex space-between">
+            <div class="task-stats flex align-center">
+              <i class="user-icon"></i><span> {{usernumbers}}</span> 
+              <i class="comment-icon"></i><span> {{commentNumbers}}</span> 
+              <i class="copyright-icon"></i><span>{{ task.createdBy.name }}</span>
+            </div>
+            <div class="flex align-center">
+            </div>
+            </div>
           </div>
-        </div>
           <button class="delete-task" @click.stop="removeTask(task)"><img src="../../assets/icon/rubbish-bin.svg" /></button>
     </section>
 </template>
@@ -23,7 +28,7 @@ export default {
         EventBusService.$emit("openModal");
         this.$store.commit({ type: "setSelectedTask", task });
         this.$router.push(`/task/${this.task._id}`);
-        } else EventBusService.$emit('NotLoggedInError');
+      } else EventBusService.$emit("NotLoggedInError");
     },
     removeTask(task) {
       this.$emit("removeTask", task);
@@ -63,6 +68,9 @@ h3 {
 
 .task-stats {
   padding: 5px;
+}
+.task-info {
+  width: 100%;
 }
 
 .delete-task {
@@ -104,6 +112,13 @@ h3 {
 .comment-icon {
   display: inline-block;
   background-image: url("../../assets/icon/chat.svg");
+  width: 20px;
+  height: 20px;
+  margin: 5px;
+}
+.copyright-icon {
+  display: inline-block;
+  background-image: url("../../assets/icon/copyright.svg");
   width: 20px;
   height: 20px;
   margin: 5px;

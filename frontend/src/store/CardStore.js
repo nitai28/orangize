@@ -184,7 +184,7 @@ export default {
       // If card isn't loaded, do nothing.
       if (!card._id) return;
       var editedCard = JSON.parse(JSON.stringify(card));
-      let newTask = TaskService.emptyTask(card._id);
+      let newTask = TaskService.emptyTask(card._id, store.getters.getCurrUser);
       editedCard.tasks.push(newTask);
       store.commit({ type: "updateCard", updatedCard: editedCard });
 

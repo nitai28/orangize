@@ -2,7 +2,7 @@ const TASK_URL = '/task';
 import CardService from './CardService.js'
 var shortid = require('shortid');
 
-function emptyTask(cardId) {
+function emptyTask(cardId, user) {
     return {
         _id: shortid.generate(),
         title : 'EMPTY TASK',
@@ -12,7 +12,8 @@ function emptyTask(cardId) {
         comments : [],
         deadline : '10/05/2018',
         isDone : false,
-        cardId
+        cardId,
+        createdBy: user
     }
 }
 
