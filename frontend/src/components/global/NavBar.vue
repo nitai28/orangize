@@ -7,7 +7,7 @@
       </div></router-link>
     </div>
      <router-link v-if="currUser" @click.native="logout" to="/">{{currUser.name}} Logout</router-link>
-    <router-link v-else to="/registerTest">Login</router-link>
+    <router-link v-else to="/login">Login</router-link>
   </section>
 </template>
 
@@ -36,6 +36,7 @@ WHITE: #f5f5f5
 */
 
 .nav-bar {
+  z-index: 2;
   background: #231f20;
   height: 40px;
   box-shadow: 0px 0px 4px 2px #000000c4;

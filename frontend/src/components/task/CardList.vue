@@ -56,7 +56,7 @@ export default {
       this.cardRemoved(cardId);
     });
     EventBusService.$on("card added", card => {
-      console.log("LALAL");
+      console.log('Card added! SOCKET DEBUG')
       this.$store.commit({ type: "addCard", card });
     });
     EventBusService.$on("card updated", card => {
@@ -65,6 +65,9 @@ export default {
     EventBusService.$on("cards order updated", cards => {
       this.updatedCardsOrder(cards);
     });
+    EventBusService.$on("activity added", activity => {
+      this.$store.commit({type: 'addActivity', activity});
+    })
   },
   data() {
     return {
@@ -184,18 +187,16 @@ export default {
           this.$store.commit({ type: "loadCardsBackUp" });
           this.$store.commit({ type: "loadBackupActivities" });
         });
+      this.$store.dispatch({type: "deleteTask", task})
     },
 
     updateTask(taskId) {
-      let updatedTask;
+      let editedTask;
       this.cards.forEach(card => {
         let tempTask = card.tasks.find(task => task._id === taskId);
-        if (tempTask) updatedTask = tempTask;
+        if (tempTask) editedTask = tempTask;
       });
-      let updatedCard = this.cards.find(
-        card => card._id === updatedTask.cardId
-      );
-      CardService.updateCard(updatedCard);
+      this.$store.dispatch({type: 'updateTask', editedTask })
     },
 
     toggleModal() {

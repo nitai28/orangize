@@ -166,6 +166,7 @@ h4 {
 .details-container textarea {
   margin: 10px 0;
   border-radius: 5px;
+  width: 100%;
 }
 
 .add-comment {

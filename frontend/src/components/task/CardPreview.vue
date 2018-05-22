@@ -2,9 +2,9 @@
     <section class="card-preview">
         <draggable element='ul' v-model="cardTasks" class="dragArea" :move="isMoveEnabled" :options="{ghostClass: 'ghost', group:'cardTasks'}">
             <li v-for="task in cardTasks" :key="task._id">
-            <router-link :to="'/orangize/'+task._id">
+            <!-- <router-link :to="'/task/'+task._id"> -->
                 <task-preview @removeTask="removeTask" :task="task"></task-preview>
-            </router-link> 
+            <!-- </router-link>  -->
             </li>
         </draggable>
     </section>

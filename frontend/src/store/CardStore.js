@@ -184,7 +184,7 @@ export default {
       // If card isn't loaded, do nothing.
       if (!card._id) return;
       var editedCard = JSON.parse(JSON.stringify(card));
-      let newTask = TaskService.emptyTask(card._id);
+      let newTask = TaskService.emptyTask(card._id, store.getters.getCurrUser);
       editedCard.tasks.push(newTask);
       store.commit({ type: "updateCard", updatedCard: editedCard });
 
@@ -206,16 +206,31 @@ export default {
         });
     },
 
-    removeTask(store, { task }) {
-      CardService.getCardById(task.cardId).then(card => {
-        card.tasks = card.tasks.filter(currTask => currTask._id !== task._id);
-        CardService.saveCard(card).then(_ => {
-          store.commit({
-            type: "updateCard",
-            updatedCard: card
+    deleteTask(store, { task }) {
+      let card = store.getters.getCards.find(currCard => currCard._id === task.cardId);
+
+      let newActivity = ActivityService.getRemoveTaskActivity(task, store.getters.getCurrUser);
+      store.commit({ type: "addActivity", activity: newActivity });
+
+      let updatedCard = JSON.parse(JSON.stringify(card));
+      updatedCard.tasks = updatedCard.tasks.filter(
+        currTask => currTask._id !== task._id
+      );
+      store.commit({ type: "updateCard", updatedCard });
+
+      CardService.deleteTask(updatedCard)
+        .then(_ => {
+          store.commit({ type: "saveCardsBackUp" });
+          ActivityService.addActivity(newActivity).then(activity => {
+            ActivityService.query().then(activities =>
+              store.commit({ type: "setActivities", activities })
+            );
           });
+        })
+        .catch(_ => {
+          store.commit({ type: "loadCardsBackUp" });
+          store.commit({ type: "loadBackupActivities" });
         });
-      });
     },
 
     updateTasks(store, { tasks, cardId }) {
