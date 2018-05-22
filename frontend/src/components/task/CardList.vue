@@ -56,7 +56,7 @@ export default {
       this.cardRemoved(cardId);
     });
     EventBusService.$on("card added", card => {
-      console.log('LALAL')
+      console.log("LALAL");
       this.$store.commit({ type: "addCard", card });
     });
     EventBusService.$on("card updated", card => {
@@ -139,7 +139,7 @@ export default {
     },
 
     updateCardTitle(updatedCard) {
-      this.$store.dispatch({type: 'updateCardTitle', updatedCard});
+      this.$store.dispatch({ type: "updateCardTitle", updatedCard });
     },
 
     updatedCardsOrder(cards) {
@@ -159,7 +159,10 @@ export default {
 
       let card = this.cards.find(currCard => currCard._id === task.cardId);
 
-      let newActivity = ActivityService.getRemoveTaskActivity(task, this.$store.getters.getCurrUser);
+      let newActivity = ActivityService.getRemoveTaskActivity(
+        task,
+        this.$store.getters.getCurrUser
+      );
       this.$store.commit({ type: "addActivity", activity: newActivity });
 
       let updatedCard = JSON.parse(JSON.stringify(card));
@@ -209,7 +212,7 @@ export default {
     },
 
     isMoveEnabled: function() {
-      return (!!this.isFilter() && !!this.$store.getters.getCurrUser)
+      return !!this.isFilter() && !!this.$store.getters.getCurrUser;
     }
   },
   components: {
@@ -275,7 +278,9 @@ div .ghost {
 .card-container {
   margin: 10px;
   padding: 5px;
-  background: rgba(204, 202, 184, 0.89);
+  background: rgb(35, 31, 32);
+  box-shadow: 0 0 11px 1px #fefafa;
+  color: #f26531;
   display: flex;
   flex-direction: column;
   align-items: center;

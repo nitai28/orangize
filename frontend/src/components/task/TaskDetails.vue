@@ -22,7 +22,7 @@
         </div>
           <div class="member-container">
             <div class="user-list-container">
-              <h1 class="member-headline">member list</h1>
+              <h1 class="member-headline">Member List</h1>
               <div class="user-list">
                 <ul>
                   <li v-for="user in users" :key="user._id"><i @click="addUserToTaskMember(user)" class="user-icon"></i>{{user.name}} </li>
@@ -31,8 +31,8 @@
             </div>
           </div>
             <div class="comments-container">
-                <textarea placeholder="Enter comment" contenteditable="true" name="" id="" cols="75" rows="5" v-model="addedComment.txt"></textarea>
-                <button class="add-comment" @click.stop="addComment">Add Comment</button>
+                <textarea placeholder="Enter comment" @keyup.ctrl.enter="addComment" contenteditable="true" name="" id="" v-model="addedComment.txt"></textarea>
+                <button class="add-comment"  @click.stop="addComment">Add Comment</button>
                 <div>
                   <h4>Comments</h4>
                   <ol>
@@ -89,7 +89,7 @@ export default {
         user,
         taskId: this.$route.params.id
       });
-    }
+    },
   },
   computed: {
     editedTask() {
@@ -286,6 +286,7 @@ i:hover {
 textarea {
   display: block;
   font-size: 20px;
+  width: 100%;
   /* width: 700px; */
   padding: 5px;
   font-family: "Mina";
