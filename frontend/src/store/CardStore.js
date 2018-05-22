@@ -76,10 +76,11 @@ export default {
       store.commit({ type: "addCard", card: createdCard });
       console.log("updating state and frontend before promise sent to DB");
 
-      CardService.saveCard(createdCard)
-        .then(addedCard => {
-          store.dispatch({ type: "loadCards" });
-          let newActivity = ActivityService.getAddCardActivity(addedCard, store.getters.getCurrUser);
+      CardService.updateAllCards(store.getters.getCards)
+        .then(cards => {
+          store.commit({ type: "setCards", cards });
+          store.commit({ type: "saveCardsBackUp" });
+          let newActivity = ActivityService.getAddCardActivity(createdCard, store.getters.getCurrUser);
           ActivityService.addActivity(newActivity).then(activity => {
             ActivityService.query().then(activities =>
               store.commit({ type: "setActivities", activities }))

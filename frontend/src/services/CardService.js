@@ -12,14 +12,15 @@ function emptyCard() {
 function getCards() {
   return axios
     .get(CARD_URL)
-    .then(res => res.data)
+    .then(res => {
+      return res.data
+    })
     .catch(e => console.log("No Cards", e));
 }
 
 function saveCard(card) {
   if (card._id)
     return axios.put(_getCardUrl(card._id), card).then(_ => {
-      SocketService.updateCard(card);
     });
   else
     return axios.post(CARD_URL, card).then(res => {

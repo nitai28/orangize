@@ -7,7 +7,6 @@ function getCards(cards) {
       db
         .collection("card")
         .find({})
-        .sort ({_id : -1})
         .toArray((err, cards) => {
           if (err) reject(err);
           else resolve(cards);
