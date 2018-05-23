@@ -298,11 +298,13 @@ div .ghost {
 }
 
 .card-title h3 {
+  cursor: pointer;
   display: inline-block;
   width: 85%;
 }
 
 .delete-card {
+  cursor: pointer;
   display: inline-block;
   width: 15px;
   height: 15px;

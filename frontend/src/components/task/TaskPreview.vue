@@ -50,6 +50,8 @@ export default {
 
 <style scoped>
 .task-preview {
+  cursor: pointer;
+  color: #231f20;
   display: flex;
   flex-direction: row;
   background-color: #eae7e7f0;
@@ -74,6 +76,7 @@ h3 {
 }
 
 .delete-task {
+  cursor: pointer;
   background-color: transparent;
   display: inline-block;
   opacity: 0;
@@ -87,6 +90,7 @@ h3 {
 }
 
 .delete-task:hover {
+  background: #231f20;
   opacity: 1;
 }
 

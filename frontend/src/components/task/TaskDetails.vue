@@ -170,6 +170,7 @@ h4 {
 }
 
 .add-comment {
+  cursor: pointer;
   padding: 5px;
   border-radius: 5%;
 }
