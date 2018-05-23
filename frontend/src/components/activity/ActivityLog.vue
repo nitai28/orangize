@@ -16,7 +16,7 @@ const moment = require('moment');
 export default {
   data() {
     return {
-      isOpen: true,
+      isOpen: false,
     };
   },
   created() {

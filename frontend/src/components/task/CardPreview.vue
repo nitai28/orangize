@@ -1,6 +1,6 @@
 <template>
     <section class="card-preview">
-        <draggable element='ul' v-model="cardTasks" class="dragArea" :move="isMoveEnabled" :options="{ghostClass: 'ghost', group:'cardTasks'}">
+        <draggable v-if="card._id" element='ul' v-model="cardTasks" class="dragArea" :move="isMoveEnabled" :options="{ghostClass: 'ghost', group:'cardTasks'}">
             <li v-for="task in cardTasks" :key="task._id">
             <!-- <router-link :to="'/task/'+task._id"> -->
                 <task-preview @removeTask="removeTask" :task="task"></task-preview>

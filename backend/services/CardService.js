@@ -1,7 +1,7 @@
 const mongo = require("mongodb");
 var DBService = require("./DBService");
 
-function getCards(cards) {
+function getCards() {
   return new Promise((resolve, reject) => {
     DBService.dbConnect().then(db => {
       db
@@ -39,7 +39,8 @@ function addCard(card) {
       db.collection("card").insert(card, (err, res) => {
         if (err) reject(err);
         else {
-          resolve(res.ops)};
+          resolve(res.ops);
+        }
         db.close();
       });
     });
@@ -53,9 +54,9 @@ function deleteCard(cardId) {
       db.collection("card").deleteOne({ _id: cardId }, (err, res) => {
         if (err) reject(err);
         else {
-          resolve(cardId)
+          resolve(cardId);
           // socketService.sendUsers(users) //socketService funcs will come here
-        };
+        }
         db.close();
       });
     });
@@ -67,13 +68,11 @@ function updateCard(card, cardId) {
   delete card._id;
   return new Promise((resolve, reject) => {
     DBService.dbConnect().then(db => {
-      db.collection("card")
-        .updateOne({ _id: cardId }, card, (err, updatedCard) => {
-          if (err) reject(err);
-          else {
-          resolve(updatedCard);
-          //socketService funcs will come here
-        }
+      // MADE A console.log to cards here - BEFORE.
+      db.collection("card").updateOne({ _id: cardId }, card, (err, updatedCard) => {
+        // And here - AFTER.
+        if (err) reject(err);
+          else     resolve(updatedCard);
           db.close();
         });
     });
