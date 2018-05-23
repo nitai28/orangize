@@ -38,6 +38,9 @@
 .flex-row {
     flex-direction: row;
 }
+.flex-column{
+    flex-direction: column;
+}
 
 .inline-flex {
     display: inline-flex;

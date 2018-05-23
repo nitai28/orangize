@@ -36,9 +36,12 @@
                 <div>
                   <h4>Comments</h4>
                   <ol>
-                    <li class="comment-body" v-for="comment in editedTask.comments" :key="comment._id">{{comment.txt }} 
+                    <li class="comment-body flex" v-for="comment in editedTask.comments" :key="comment._id">
+                      <i class="comment-icon"></i>
+                      <div>
+                      <h4 class="comment-content">{{comment.txt }}</h4> 
                       <p class="comment-by">Added By: <strong>{{comment.adddedBy}}</strong> {{comment.time | changeDateFilter}}</p>
-                      <hr>
+                      </div>
                     </li>
                   </ol>
                 </div>
@@ -89,7 +92,7 @@ export default {
         user,
         taskId: this.$route.params.id
       });
-    },
+    }
   },
   computed: {
     editedTask() {
@@ -134,16 +137,21 @@ section {
   width: 100%;
 }
 h4 {
-  text-decoration: underline;
+  font-size: 20px;
 }
 .details1 {
   flex-grow: 0.5;
   width: 50%;
 }
 .task-details {
-  width: 58%;
+  width: 40%;
 }
-
+.comment-content {
+  font-weight: 100;
+    margin-top: 0px;
+  margin-bottom: 2px; 
+  text-decoration: none;
+}
 .details-container {
   margin: 0 auto;
   height: fit-content;
@@ -157,16 +165,28 @@ h4 {
   background-image: url("../../assets/icon/user-plus.svg");
   background-position: cover;
   background-repeat: no-repeat;
-  background-size: 30px;
-  width: 30px;
-  height: 30px;
+  background-size: 18px;
+  width: 25px;
+  height: 18px;
   margin-right: 5px;
+}
+
+.comment-icon {
+  display: inline-block;
+  background-image: url("../../assets/icon/unicorn.jpg");
+  background-position: cover;
+  background-repeat: no-repeat;
+  background-size: 37px;
+  width: 41px;
+  height: 37px;
+  margin-right: 5px;
+  margin-top: 5px;
 }
 
 .details-container textarea {
   margin: 10px 0;
   border-radius: 5px;
-  width: 100%;
+  width: 80%;
 }
 
 .add-comment {
@@ -176,9 +196,9 @@ h4 {
 }
 .color {
   display: flex;
-  width: 60px;
-  height: 60px;
-  margin-right: 5px;
+  width: 40px;
+  height: 40px;
+  margin-right: 7px;
   border-radius: 50%;
 }
 .color:hover {
@@ -214,9 +234,9 @@ h4 {
   background-image: url("../../assets/icon/user-minus.svg");
   background-position: cover;
   background-repeat: no-repeat;
-  background-size: 30px;
-  width: 30px;
-  height: 30px;
+  background-size: 18px;
+  width: 25px;
+  height: 18px;
   margin-right: 5px;
 }
 .comments-container {
@@ -257,26 +277,25 @@ h4 {
 ::-webkit-scrollbar-thumb:hover {
   background: #ed8f20;
 }
-
 button {
-  background-color: white;
-  color: #ed8f20;
-  border: 2px solid #ed8f20;
-  /* border-radius: 5px; */
+  background-color: #ee942d;
+  color: white;
+  border: none;
+  transition: all 0.2s;
+  cursor: pointer;
 }
 
 button:hover {
-  background-color: #ed8f20;
+  background-color: #e28317;
   color: white;
 }
 button:focus {
   outline: none;
 }
 .member-headline {
-  color: #ed8f20;
   text-decoration-color: black;
-  text-decoration: underline;
   font-size: 20px;
+  margin-bottom: 10px;
 }
 .title-edit {
   display: block;
@@ -287,13 +306,12 @@ i:hover {
 }
 textarea {
   display: block;
-  font-size: 20px;
+  font-size: 15px;
   width: 100%;
-  /* width: 700px; */
   padding: 5px;
+  margin-top: 15px;
   font-family: "Mina";
   resize: none;
-  /* outline-color: #ed8f20 ; */
   outline: 1px solid #ed8f20;
 }
 textarea:focus {
@@ -301,6 +319,8 @@ textarea:focus {
 }
 .comment-body {
   font-size: 25px;
+  padding-bottom: 7px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.308);
 }
 .comment-by {
   font-size: 12px;
@@ -310,5 +330,14 @@ textarea:focus {
   /* margin: 0 auto; */
   float: right;
   width: 60%;
+}
+h4 {
+  margin-bottom: 10px;
+  margin-top: 5px;
+}
+label {
+  margin-bottom: 10px;
+  margin-top: 8px;
+  display: block;
 }
 </style>

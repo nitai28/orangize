@@ -66,6 +66,8 @@ export default {
   margin: 5px;
   border-radius: 5%;
 }
+
+
 .dragArea {
   min-height: 10px;
 }

@@ -25,3 +25,9 @@
     font-weight: normal;
     font-style: normal;
 }
+@font-face {
+    font-family: 'Gorditas';
+    src: url('../../assets/fonts/Gorditas-Bold.ttf');
+    font-weight: normal;
+    font-style: normal;
+}

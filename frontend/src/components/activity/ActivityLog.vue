@@ -4,7 +4,7 @@
     <button class="toggle-btn" @click="isOpen = !isOpen">Activity Log</button>
     <ul class="clean-list activities-container">
         <li v-for="activity in activities" :key="activity._id" class="activity-container flex space-between">
-          <div class="activity-txt">{{activity.txt}}</div> <div class="timestamp">{{activity.at | changeDateFilter}}</div>
+          <div class="activity-txt">{{activity.txt}}<span class="user-name">{{activity.by.user.name}}</span>.</div> <div class="timestamp">{{activity.at | changeDateFilter}}</div>
         </li>
     </ul>
   </section>
@@ -97,6 +97,7 @@ WHITE: #f5f5f5
 .activity-txt {
   width:70%;
   }
+ 
 
 .timestamp {
   width:30%;
@@ -131,4 +132,7 @@ Black: #231f20
 LightOrange: #f26531
 WHITE: #f5f5f5
 */
+.user-name{
+  color: #23ff06;
+}
 </style>

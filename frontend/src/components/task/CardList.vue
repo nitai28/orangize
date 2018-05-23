@@ -17,7 +17,8 @@
           <ul class="clean-card tasks-container">
             <card-preview @removeTask="deleteTask" @updateCard="updateCard" :card="card" :tasks="card.tasks"></card-preview>
             <li class="new-task task-preview" @click="createTask(card)">
-                Create task...
+               <img class="icon-create" src="../../assets/icon/plus1.png" alt="">
+                Create Task
             </li>
           </ul>
           </li>
@@ -234,6 +235,9 @@ export default {
 
 .task-filter {
   margin-right: 20px;
+}
+.icon-create{
+  margin-right: 3px;
 }
 
 .new-task {

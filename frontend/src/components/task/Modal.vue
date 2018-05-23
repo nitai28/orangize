@@ -23,7 +23,7 @@ export default {
       this.mutableActived = !this.mutableActived;
       this.$el.blur();
       this.$emit("updateTask", this.$route.params.id);
-      this.$router.push('/');
+      this.$router.push("/");
     }
   },
   watch: {
@@ -165,7 +165,9 @@ a {
   content: "X";
   font-weight: 700;
   text-align: center;
-  font-size: 35px;
+  font-size: 30px;
+  position: absolute;
+  right: 465px;
   transition: 50ms;
 }
 .modal-body .modal-close:hover:before {

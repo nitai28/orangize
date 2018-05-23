@@ -59,6 +59,12 @@ export default {
   border-radius: 5px;
   width: 100%;
   transition: width 0.5s ease-in-out;
+  transition: all 0.3s;
+}
+.task-preview:hover{
+  transform: rotate(5deg);
+  cursor: pointer;
+  column-rule-color: black;
 }
 
 h3 {
