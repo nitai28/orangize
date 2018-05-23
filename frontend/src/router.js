@@ -1,6 +1,6 @@
 import Vue from "vue";
 import Router from "vue-router";
-import Home from "./views/Home.vue";
+import About from "./views/About.vue";
 import Login from "./views/LoginPage.vue";
 import MyStore from "./store/index.js";
 import OrangizeApp from "./views/OrangizeApp.vue";
@@ -14,6 +14,7 @@ export default new Router({
       // beforeEnter: userOnlyRoute
     },
     { path: "/login", component: Login },
+    { path: "/About", component: About },
     { path: "/task/:id", component: OrangizeApp },
   ]
 });

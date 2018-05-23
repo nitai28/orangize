@@ -36,7 +36,7 @@ function addActivity(activity) {
 function getAddTaskActivity(task, user) {
   return {
     action: "Add Task",
-    txt: `A new task has been added by ${user.name}.`,
+    txt: `A new task has been added by `,
     at: Date.now(),
     by: {
       user
@@ -48,7 +48,7 @@ function getAddTaskActivity(task, user) {
 function getRemoveTaskActivity(task, user) {
   return {
     action: "Remove Task",
-    txt: `${task.title} has been removed by ${user.name}.`,
+    txt: `${task.title} has been removed by `,
     at: Date.now(),
     by: {
       user
@@ -60,7 +60,7 @@ function getRemoveTaskActivity(task, user) {
 function getUpdateTaskActivity(task, user) {
   return {
     action: "Update Task",
-    txt: `${task.title} has been updated by ${user.name}.`,
+    txt: `${task.title} has been updated by `,
     at: Date.now(),
     by: {
       user
@@ -74,7 +74,7 @@ function getMoveTaskActivity(user) {
   return {
       _id: shortid.generate(),
       action: "Move Task",
-      txt: `Task order has been changed by ${user.name}.`,
+      txt: `Task order has been changed by `,
       at: Date.now(),
       by: {
         user
@@ -89,7 +89,7 @@ function getAddCardActivity(card, user) {
   return {
       _id: shortid.generate(),
       action: "Add Card",
-      txt: `A new card has been added by ${user.name}.`,
+      txt: `A new card has been added by `,
       at: Date.now(),
       by: {
         user
@@ -103,7 +103,7 @@ function getRemoveCardActivity(card, user) {
   return {
     _id: shortid.generate(),
     action: "Remove Card",
-    txt: `A card '${card.title}' has been removed by ${user.name}.`,
+    txt: `A card '${card.title}' has been removed by `,
     at: Date.now(),
     by: {
       user
@@ -116,7 +116,7 @@ function getUpdateCardActivity(card, user) {
     return {
       _id: shortid.generate(),
       action: "Update Card",
-      txt: `A card '${card.title}' has been updated by ${user.name}.`,
+      txt: `A card '${card.title}' has been updated by `,
       at: Date.now(),
       by: {
         user
@@ -129,7 +129,7 @@ function getMoveCardActivity(user) {
   return {
     _id: shortid.generate(),
     action: "Move Card",
-    txt: `Cards order has been changed by ${user.name}.`,
+    txt: `Cards order has been changed by `,
     at: Date.now(),
     by: {
       user

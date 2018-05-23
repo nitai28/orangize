@@ -5,7 +5,7 @@
       <button class="btn clean-btn" type="submit" ><i><img src="../../assets/icon/search.svg"/></i></button>
     </form>
     <div class="btn filter-btn clean-btn" :class='filterBtnClass' @click='toggleOpts'>
-      <span>filter By Label</span>
+      <span>Filter By Label</span>
       <ul class="opts-container" :class="{'open-opts': isOpen}">
         <li class='opt all' @click="filter.byLabel = ''; emitFilter()">No Filter</li>
         <li class='opt red' @click="filter.byLabel = 'red'; emitFilter()">Immediate Attention</li>

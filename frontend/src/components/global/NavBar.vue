@@ -1,6 +1,6 @@
 <template>
   <section class="nav-bar flex space-between align-center justify-left">
-    <router-link to="/about">About</router-link>
+    <router-link to="/About">About</router-link>
     <div class="logo-container flex align-center">
       <router-link to="/"><div class="logo flex">
       <i></i> <span>rangize</span>
