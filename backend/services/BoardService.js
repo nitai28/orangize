@@ -5,10 +5,11 @@ function updateBoard(cards) {
   return new Promise((resolve, reject) => {
     DBService.dbConnect().then(db => {
       db.collection("card").drop((err, res) => {
-        if (err) reject(err);
+        if (err) console.log('DROP', err);
         else {
           cards.forEach(card => card._id = new mongo.ObjectID(card._id));
           db.collection("card").insertMany(cards, (err, res) => {
+            console.log('INSERTMANY', err);
             if (err) reject(err);
             else resolve(res);
             db.close();

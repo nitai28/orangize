@@ -54,7 +54,7 @@ export default {
     },
     filterBySearch: debounce(function() {
       this.emitFilter();
-    }, 500)
+    }, 200)
   }
 };
 </script>

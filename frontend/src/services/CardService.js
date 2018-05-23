@@ -12,7 +12,9 @@ function emptyCard() {
 function getCards() {
   return axios
     .get(CARD_URL)
-    .then(res => res.data)
+    .then(res => {
+      return res.data
+    })
     .catch(e => console.log("No Cards", e));
 }
 
@@ -47,14 +49,15 @@ function moveTask(card) {
   });
 }
 
-function addTask(card) {
-  return axios.put(_getCardUrl(card._id), card).then(_ => {
-    SocketService.addTask(card);
-    let addedTask = card.tasks[card.tasks.length - 1];
-    console.log('Task has been added successfully!', addedTask)
-    return addedTask;
-  });
-}
+// // Not in use.
+// function addTask(card) {
+//   return axios.put(_getCardUrl(card._id), card).then(_ => {
+//     SocketService.addTask(card);
+//     let addedTask = card.tasks[card.tasks.length - 1];
+//     console.log('Task has been added successfully!', addedTask)
+//     return addedTask;
+//   });
+// }
 
 function deleteCard(cardId) {
   return axios.delete(_getCardUrl(cardId)).then(() => {
@@ -85,7 +88,7 @@ export default {
   emptyCard,
   getCardById,
   updateAllCards,
-  addTask,
+  // addTask,
   deleteTask,
   updateCard
 };

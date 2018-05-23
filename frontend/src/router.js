@@ -5,6 +5,8 @@ import Login from "./views/LoginPage.vue";
 import MyStore from "./store/index.js";
 import OrangizeApp from "./views/OrangizeApp.vue";
 
+import lala from "./views/lala.vue";
+
 Vue.use(Router);
 
 export default new Router({
@@ -13,6 +15,7 @@ export default new Router({
     { path: "/", component: OrangizeApp,
       // beforeEnter: userOnlyRoute
     },
+    { path: "/lala", component: lala},
     { path: "/login", component: Login },
     { path: "/About", component: About },
     { path: "/task/:id", component: OrangizeApp },
