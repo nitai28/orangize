@@ -5,6 +5,8 @@ module.exports = app => {
     const newCards = req.body;
     BoardService.updateBoard(newCards)
       .then(response => res.json(response.ops))
-      .catch(err => res.status(500).send(err));
+      .catch(err => {
+        res.status(500).send(err)
+      });
   });    
 }
