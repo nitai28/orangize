@@ -1,9 +1,8 @@
 <template>
   <section id="modal-component" @keyup.esc="close">
   <div class="modal-body" v-bind:class="{'active-in-component': mutableActived }"> 
-    <div class="modal-content"><slot class="modal-slot"></slot></div>
-      <div class="modal-close" @click="close"><i class="zmdi zmdi-close"></i>
-      </div>
+    <div class="modal-content"><div class="modal-close" @click="close"><i class="zmdi zmdi-close"></i>
+      </div><slot class="modal-slot"></slot></div>  
     </div>     
 </section>
 
@@ -154,7 +153,7 @@ a {
   width: 100px;
   height: 100px;
   top: 2vh;
-  right: 1vw;
+  right: 28vw;
   padding: 30px;
   cursor: pointer;
   display: flex;
@@ -162,12 +161,13 @@ a {
   align-items: center;
 }
 .modal-body .modal-close:before {
+  color: black;
   content: "X";
   font-weight: 700;
   text-align: center;
   font-size: 30px;
   position: absolute;
-  right: 465px;
+  /* right: 465px; */
   transition: 50ms;
 }
 .modal-body .modal-close:hover:before {

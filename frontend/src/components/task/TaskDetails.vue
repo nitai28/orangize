@@ -144,7 +144,7 @@ h4 {
   width: 50%;
 }
 .task-details {
-  width: 40%;
+  width: 55%;
 }
 .comment-content {
   font-weight: 100;
