@@ -7,6 +7,7 @@ function getCards() {
       db
         .collection("card")
         .find({})
+        .sort({pos: 1})
         .toArray((err, cards) => {
           if (err) reject(err);
           else resolve(cards);
@@ -36,14 +37,17 @@ function validateDetails(Card) {
 function addCard(card) {
   return new Promise((resolve, reject) => {
     DBService.dbConnect().then(db => {
-      db.collection("card").insert(card, (err, res) => {
-        if (err) reject(err);
-        else {
-          resolve(res.ops);
-        }
+      db.collection('card').update({}, {$inc: {pos: 1}}, {multi: true}, (err, res) => {
+        if(err) reject(err);
+      })
+        db.collection("card").insert(card, (err, res) => {
+          if (err) reject(err);
+          else {
+            resolve(res.ops);
+          }
+        });
         db.close();
       });
-    });
   });
 }
 

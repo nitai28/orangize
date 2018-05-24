@@ -4,6 +4,7 @@ import ActivityService from "./ActivityService.js";
 
 function emptyCard() {
   return {
+    pos: 1,
     title: "New List",
     tasks: []
   };
@@ -79,6 +80,12 @@ function updateAllCards(cards) {
     SocketService.updateAllCards(res.data);
     return res.data;
   });
+}
+
+function updateCardsPos(cards, pos) {
+  return axios.put('/card/updateOrder').then(res => {
+    console.log('updateCardsPos - res:', res);
+  })
 }
 
 export default {

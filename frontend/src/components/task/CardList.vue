@@ -92,6 +92,10 @@ export default {
     cards: {
       get() {
         let cards = this.$store.getters.getCards;
+        console.log('Store Cards:');
+        cards.forEach(card => {
+          console.log('pos:', card.pos, card.title)
+        });
         var copyCards = JSON.parse(JSON.stringify(cards));
         copyCards.forEach((copyCard, idx) => {
           copyCard.tasks = copyCard.tasks.filter(task => {

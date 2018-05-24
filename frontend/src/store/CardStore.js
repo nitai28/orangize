@@ -42,7 +42,8 @@ export default {
       state.cards[cardIdx].tasks = tasks;
     },
     updateCard(state, { updatedCard }) {
-      const cardIdx = state.cards.findIndex(card => card._id === updatedCard._id
+      const cardIdx = state.cards.findIndex(
+        card => card._id === updatedCard._id
       );
       state.cards.splice(cardIdx, 1, updatedCard);
     },
@@ -56,7 +57,17 @@ export default {
     },
 
     addCard(state, { card }) {
+      state.cards.forEach(card => card.pos++);
       state.cards.unshift(card);
+    },
+    updateAddedCard(state, { updatedCard }) {
+      for (let i = state.cards.length-1; i >= 0; i--) {
+        let card = state.cards[i];
+        if(!card._id){
+          state.cards.splice(i, 1, updatedCard);
+          return;
+        }
+      }
     }
   },
   actions: {
@@ -75,11 +86,12 @@ export default {
       store.commit({ type: "addCard", card: createdCard });
       console.log("updating state and frontend before promise sent to DB");
 
-      CardService.updateAllCards(store.getters.getCards)
-        .then(cards => {
-          console.log(cards);
+      // CardService.updateAllCards(store.getters.getCards)
+      CardService.saveCard(createdCard)
+        .then(addedCard => {
+          store.commit({type: 'updateAddedCard', updatedCard: addedCard})
           let newActivity = ActivityService.getAddCardActivity(
-            createdCard,
+            addedCard,
             store.getters.getCurrUser
           );
           ActivityService.addActivity(newActivity).then(activity => {
@@ -89,6 +101,7 @@ export default {
           });
         })
         .catch(_ => {
+          console.log(_);
           store.commit({ type: "loadCardsBackUp" });
           console.log(
             "reverting back to state before change if promise was rejected"
@@ -175,29 +188,37 @@ export default {
     },
 
     updateTask(store, { editedTask }) {
-      let selectedCard = store.getters.getCards.find(card => card._id === editedTask.cardId);
+      let selectedCard = store.getters.getCards.find(
+        card => card._id === editedTask.cardId
+      );
       let copyCard = JSON.parse(JSON.stringify(selectedCard));
-      let taskIdx = copyCard.tasks.findIndex(task => task._id === editedTask._id);
+      let taskIdx = copyCard.tasks.findIndex(
+        task => task._id === editedTask._id
+      );
       copyCard.tasks.splice(taskIdx, 1, editedTask);
       store.commit({ type: "updateCard", updatedCard: copyCard });
 
-      CardService.updateAllCards(store.getters.getCards).then(_ => {
-        store.commit({ type: "saveCardsBackUp" });
-        store.commit({ type: "setSelectedTask", task: copyCard.tasks[taskIdx] });
-        let newActivity = ActivityService.getUpdateTaskActivity(
-          editedTask,
-          store.getters.getCurrUser
-        );
-          ActivityService.addActivity(newActivity).then(activity => {
-          ActivityService.query().then(activities =>
-            store.commit({ type: "setActivities", activities })
+      CardService.updateAllCards(store.getters.getCards)
+        .then(_ => {
+          store.commit({ type: "saveCardsBackUp" });
+          store.commit({
+            type: "setSelectedTask",
+            task: copyCard.tasks[taskIdx]
+          });
+          let newActivity = ActivityService.getUpdateTaskActivity(
+            editedTask,
+            store.getters.getCurrUser
           );
+          ActivityService.addActivity(newActivity).then(activity => {
+            ActivityService.query().then(activities =>
+              store.commit({ type: "setActivities", activities })
+            );
+          });
+        })
+        .catch(err => {
+          console.log("Failed updateTask", err);
+          store.commit({ type: "loadCardsBackUp" });
         });
-      })
-      .catch(err => {
-        console.log("Failed updateTask", err);
-        store.commit({ type: "loadCardsBackUp" });
-      });
     },
     addTask(store, { card }) {
       // If card isn't loaded, do nothing.
@@ -271,7 +292,7 @@ export default {
       let copyCards = store.getters.getCards;
       let cardIdx = copyCards.findIndex(card => card._id === copyCard._id);
       copyCards[cardIdx] = copyCard;
-      store.commit({type: 'updateCard', updatedCard: copyCard});
+      store.commit({ type: "updateCard", updatedCard: copyCard });
       CardService.updateAllCards(copyCards)
         .then(_ => {
           store.commit({ type: "saveCardsBackUp" });
