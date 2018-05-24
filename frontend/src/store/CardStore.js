@@ -53,6 +53,11 @@ export default {
 
     deleteCard(state, { cardId }) {
       const cardIdx = state.cards.findIndex(card => card._id === cardId);
+      state.cards.forEach((card, idx) => {
+        console.log("card", card, "pos", card.pos);
+        if (state.cards[cardIdx].pos < card.pos) state.cards[idx].pos--;
+      });
+
       state.cards.splice(cardIdx, 1);
     },
 
@@ -61,9 +66,9 @@ export default {
       state.cards.unshift(card);
     },
     updateAddedCard(state, { updatedCard }) {
-      for (let i = state.cards.length-1; i >= 0; i--) {
+      for (let i = state.cards.length - 1; i >= 0; i--) {
         let card = state.cards[i];
-        if(!card._id){
+        if (!card._id) {
           state.cards.splice(i, 1, updatedCard);
           return;
         }
@@ -86,10 +91,10 @@ export default {
       store.commit({ type: "addCard", card: createdCard });
       console.log("updating state and frontend before promise sent to DB");
 
-      // CardService.updateAllCards(store.getters.getCards)
       CardService.saveCard(createdCard)
         .then(addedCard => {
-          store.commit({type: 'updateAddedCard', updatedCard: addedCard})
+          // store.commit({type: 'updateAddedCard', updatedCard: addedCard})
+          store.dispatch({ type: "loadCards" });
           let newActivity = ActivityService.getAddCardActivity(
             addedCard,
             store.getters.getCurrUser
@@ -112,25 +117,26 @@ export default {
     deleteCard(store, { cardId }) {
       // if card isn't loaded yet, do nothing.
       if (!cardId) return;
+      let card = store.getters.getCards.find(currCard => currCard._id === cardId);
+    
       store.commit({ type: "deleteCard", cardId });
       console.log("updating state and frontend before promise sent to DB");
-
-      CardService.getCardById(cardId)
-        .then(card => {
-          CardService.deleteCard(cardId).then(_ => {
-            store.commit({ type: "saveCardsBackUp" });
-            let newActivity = ActivityService.getRemoveCardActivity(
-              card,
-              store.getters.getCurrUser
+      
+      CardService.deleteCard(cardId)
+        .then(_ => {
+          store.commit({ type: "saveCardsBackUp" });
+          let newActivity = ActivityService.getRemoveCardActivity(
+            card,
+            store.getters.getCurrUser
+          );
+          ActivityService.addActivity(newActivity).then(activity => {
+            ActivityService.query().then(activities =>
+              store.commit({ type: "setActivities", activities })
             );
-            ActivityService.addActivity(newActivity).then(activity => {
-              ActivityService.query().then(activities =>
-                store.commit({ type: "setActivities", activities })
-              );
-            });
           });
         })
         .catch(_ => {
+          console.log(_);
           store.commit({ type: "loadCardsBackUp" });
           console.log(
             "reverting back to state before change if promise was rejected"

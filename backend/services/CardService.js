@@ -55,6 +55,14 @@ function deleteCard(cardId) {
   cardId = new mongo.ObjectID(cardId);
   return new Promise((resolve, reject) => {
     DBService.dbConnect().then(db => {
+      db.collection("card").findOne({ _id: cardId }, (err, card) => {
+        if (err) reject(err);
+        else if(card) {
+          db.collection('card').update({pos: {$gt: card.pos}}, {$inc: {pos: -1}}, {multi: true}, (err, res) => {
+            if(err) reject(err);
+          })
+        }
+      });
       db.collection("card").deleteOne({ _id: cardId }, (err, res) => {
         if (err) reject(err);
         else {
